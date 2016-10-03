@@ -1,0 +1,17 @@
+import(sp)
+import(spdep)
+import(ncdf4)
+import(ncdf4.helpers)
+import(rgdal)
+import(qmap)
+import(methods)
+useDynLib(meteoland)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
+importFrom("qmap","fitQmap","doQmap","fitQmapQUANT")
+importFrom("grDevices", "colorRampPalette", "topo.colors")
+importFrom("graphics", "abline", "hist", "lines", "par")
+importFrom("utils", "read.table", "setTxtProgressBar",
+             "txtProgressBar", "write.table")
+
+S3method(plot,interpolation.cv)
