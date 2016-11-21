@@ -135,12 +135,7 @@ downscalingpoints<-function(object, points, elevation = NULL, dates = NULL, expo
   sel = (cchist@coords[,1] >= object@bbox[1,1] & cchist@coords[,1] <=object@bbox[1,2]) &
     (cchist@coords[,2] >= object@bbox[2,1] & cchist@coords[,2] <=object@bbox[2,2])
   if(sum(sel)<npoints) {
-    cat("WARNING: Some points are outside the boundary box of 'object'.\n")
-    cat("         Using only those that are inside.\n")
-    if(inherits(points,"SpatialPointsDataFrame")) points@data = points@data[sel,]
-    else points@data = points@data[sel]
-    points@coords = points@coords[sel,]
-    npoints = sum(sel)
+    warning("At least one target point is outside the boundary box of 'object'.\n", call. = FALSE, immediate.=TRUE)
   } else if(verbose) cat(paste("All points inside boundary box.\n", sep=""))
 
   longlat = spTransform(points,CRS("+proj=longlat"))
@@ -187,16 +182,28 @@ downscalingpoints<-function(object, points, elevation = NULL, dates = NULL, expo
     if(inherits(object@historicdata,"list")) {
       rcmhist = object@historicdata[[ipred]]
     } else {
-      f = paste(object@historicdata$dir[ipred], object@historicdata$filename[ipred],sep="/")
-      if(!file.exists(f)) stop(paste("Predicted climate historical file '", f,"' does not exist!", sep=""))
-      rcmhist = readmeteorologypoint(f)
+      if(("dir" %in% names(object@historicdata))&&("filename" %in% names(object@historicdata))) {
+        f = paste(object@historicdata$dir[ipred], object@historicdata$filename[ipred],sep="/")
+        if(!file.exists(f)) stop(paste("Predicted climate historical file '", f,"' does not exist!", sep=""))
+        rcmhist = readmeteorologypoint(f)
+      } else if(nrow(object@coords)==1) {
+        rcmhist = object@historicdata
+      } else {
+        stop("Cannot access historic climate data")
+      }
     }
     if(inherits(object@futuredata,"list")) {
       rcmfut = object@futuredata[[ipred]]
     } else {
-      f = paste(object@futuredata$dir[ipred], object@futuredata$filename[ipred],sep="/")
-      if(!file.exists(f)) stop(paste("Predicted climate future file '", f,"' does not exist!",sep=""))
-      rcmfut = readmeteorologypoint(f)
+      if(("dir" %in% names(object@futuredata))&&("filename" %in% names(object@futuredata))) {
+        f = paste(object@futuredata$dir[ipred], object@futuredata$filename[ipred],sep="/")
+        if(!file.exists(f)) stop(paste("Predicted climate future file '", f,"' does not exist!",sep=""))
+        rcmfut = readmeteorologypoint(f)
+      } else if(nrow(object@coords)==1) {
+        rcmfut = object@futuredata
+      } else {
+        stop("Cannot access future climate data")
+      }
     }
 
     #Call dowscaling correction routine

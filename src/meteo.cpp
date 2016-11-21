@@ -277,6 +277,7 @@ double interpolatePrecipitationPoint(double xp, double yp, double zp, NumericVec
     }
   }
   pop = pop/Weventsum;
+  // Rcout<<" Rp "<<Rp<<" Weventsum "<<Weventsum<<" pop "<< pop<<"\n";
   //If precipitation occurs then calculate amount
   if(pop >=popcrit) {
     Rp = estimateRp(r, iniRp, alpha_amount, N_amount, iterations);
@@ -379,12 +380,12 @@ NumericMatrix interpolatePrecipitationSeriesPoints(NumericVector Xp, NumericVect
   NumericMatrix Pp(npoints,nDays);
   LogicalVector missing(nstations);
   for(int d = 0;d<nDays;d++) {
-//    Rcout<<"Day: "<<d<<"\n";
     int nmis = 0;
     for(int i=0;i<nstations;i++) {
       missing[i] = NumericVector::is_na(P(i,d));
       if(missing[i]) nmis++;
     }
+    // Rcout<<"Day: "<<d<<" non miss "<< nstations-nmis<<"\n";
     NumericVector Pday(nstations-nmis);
     NumericVector Psmoothday(nstations-nmis);
     NumericVector Xday(nstations-nmis);

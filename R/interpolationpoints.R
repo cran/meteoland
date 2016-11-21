@@ -96,7 +96,8 @@
     Wsp = as.vector(Wp$WS)
     Wdp = as.vector(Wp$WD)
   } else if((!is.null(object@WindSpeed)) && (!is.null(object@WindDirection))){
-    Wp = .interpolateWindStationSeriesPoints(Xp= x, Yp =y, object@WindSpeed, object@WindDirection,
+    Wp = .interpolateWindStationSeriesPoints(Xp= x, Yp =y, object@WindSpeed[,dayIndices, drop=FALSE], 
+                                             object@WindDirection[,dayIndices, drop=FALSE],
                                            X = object@coords[,1],
                                            Y = object@coords[,2],
                                            iniRp = mPar$initial_Rp,

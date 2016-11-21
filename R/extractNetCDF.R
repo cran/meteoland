@@ -1,40 +1,62 @@
-extractNetCDF<-function(ncdf_files, bbox, export = TRUE,  exportDir = getwd(), exportFormat = "meteoland", mpfilename = "MP.txt") {
+extractNetCDF<-function(ncdf_files, bbox = NULL, offset = 0, cells = NULL, export = TRUE,  exportDir = getwd(), exportFormat = "meteoland", mpfilename = "MP.txt") {
 
   nfiles = length(ncdf_files)
   cat(paste("Number of NetCDFs: ", nfiles,"\n", sep=""))
-
-  if((ncol(bbox)!= 2)||(nrow(bbox)!= 2)) stop("Wrong dimensions of bbox")
-  if(is.null(dimnames(bbox))){
-    colnames(bbox)<-c("min","max")
-    rownames(bbox)<-c("lon","lat")
-  }
 
   #Read spatial info from first file
   ncname<-ncdf_files[1]
   ncin <- nc_open(ncname)
   lat <- ncvar_get(ncin, "lat")
   lon <- ncvar_get(ncin, "lon")
-  lat_ver <- ncvar_get(ncin, "lat_vertices")
-  lon_ver <- ncvar_get(ncin, "lon_vertices")
-  nc_close(ncin)
+  varlist <- nc.get.variable.list(ncin)
   nx = nrow(lat)
   ny = ncol(lat)
-
-  #Select target cells when at least one vertex falls in the boundary box
+  cat(paste("NetCDF grid: nx",nx, "ny",ny,"ncells", nx*ny,"\n"))
+  
   sel = matrix(FALSE, nrow=nx, ncol=ny)
-  for(v in 1:4) {
-    sel1 = (lon_ver[v,,] >= bbox[1,1]) &
-           (lon_ver[v,,] <= bbox[1,2]) &
-           (lat_ver[v,,] >= bbox[2,1]) &
-           (lat_ver[v,,] <= bbox[2,2])
-    sel = sel | sel1
+  vertices = FALSE
+  if(!is.null(bbox)) {
+    if((ncol(bbox)!= 2)||(nrow(bbox)!= 2)) stop("Wrong dimensions of bbox")
+    if(is.null(dimnames(bbox))){
+      colnames(bbox)<-c("min","max")
+      rownames(bbox)<-c("lon","lat")
+    }
+    vertices = ("lat_vertices" %in% varlist) & ("lon_vertices" %in% varlist)
+    if(vertices) {
+      lat_ver <- ncvar_get(ncin, "lat_vertices")
+      lon_ver <- ncvar_get(ncin, "lon_vertices")
+      #Select target cells when at least one vertex falls in the boundary box
+      for(v in 1:4) {
+        sel1 = (lon_ver[v,,] +offset >= bbox[1,1]) &
+          (lon_ver[v,,] - offset <= bbox[1,2]) &
+          (lat_ver[v,,] +offset >= bbox[2,1]) &
+          (lat_ver[v,,] -offset <= bbox[2,2])
+        sel = sel | sel1
+      }
+      minlon = pmin(lon_ver[1,,], lon_ver[2,,], lon_ver[3,,], lon_ver[4,,])
+      maxlon = pmax(lon_ver[1,,], lon_ver[2,,], lon_ver[3,,], lon_ver[4,,])
+      minlat = pmin(lat_ver[1,,], lat_ver[2,,], lat_ver[3,,], lat_ver[4,,])
+      maxlat = pmax(lat_ver[1,,], lat_ver[2,,], lat_ver[3,,], lat_ver[4,,])
+      #Select one cell if boundary box is within it
+      selbox = (bbox[1,1]>=minlon) &
+        (bbox[2,1]>=minlat) &
+        (bbox[1,2]<=maxlon) &
+        (bbox[2,2]<=maxlat)
+      sel = sel | selbox
+    } else {
+      veclat<-(lat+offset >=bbox[2,1]) & (lat -offset <=bbox[2,2])
+      veclon<-(lon+offset >=bbox[1,1]) & (lon - offset <=bbox[1,2])
+      sel=veclat & veclon
+    }
+  } else if(!is.null(cells)) {
+    if(!is.matrix(cells)) stop("'cells' has to be a matrix")
+    if(ncol(cells)!=2) stop("'cells' has to be a matrix of two columns")
+    for(i in 1:nrow(cells)) sel[cells[i,1],cells[i,2]] = TRUE
+  } else {
+    cat("No user cell selection. All cells will be extracted.")
   }
-  #Select one cell if boundary box is within it
-  selbox = (bbox[1,1]<=lon_ver[3,,]) &
-           (bbox[2,1]<=lat_ver[3,,]) &
-           (bbox[1,2]>=lon_ver[1,,]) &
-           (bbox[2,2]>=lat_ver[1,,])
-  sel = sel | selbox
+  nc_close(ncin)
+  
   ncells = sum(sel)
   cat(paste("Cells to extract: ", ncells,"\n", sep=""))
 
@@ -48,11 +70,12 @@ extractNetCDF<-function(ncdf_files, bbox, export = TRUE,  exportDir = getwd(), e
     tunits <- ncatt_get(ncin, "time", "units")
     nc_close(ncin)
     s = strsplit(tunits$value, " ")[[1]]
+    s = s[3]
     t <- floor(t)
     if(length(unique(t))!=length(t)) stop("Duplicated days!")
     maxday <-max(t)
     minday <-min(t)
-    refDate = as.Date(s[length(s)])
+    refDate = as.Date(s)
     datesfile <- as.character(seq.Date(refDate, length.out=maxday, by="day")[t])
     dates = sort(unique(c(dates, datesfile)))
   }
@@ -100,11 +123,12 @@ extractNetCDF<-function(ncdf_files, bbox, export = TRUE,  exportDir = getwd(), e
           nt = length(t)
           tunits <- ncatt_get(ncin, "time", "units")
           s = strsplit(tunits$value, " ")[[1]]
+          s = s[3]
           t <- floor(t)
           if(length(unique(t))!=length(t)) stop("Duplicated days!")
           maxday <-max(t)
           minday <-min(t)
-          refDate = as.Date(s[length(s)])
+          refDate = as.Date(s)
           datesfile <- as.character(seq.Date(refDate, length.out=maxday, by="day")[t])
 
           varlist = nc.get.variable.list(ncin)
@@ -147,14 +171,16 @@ extractNetCDF<-function(ncdf_files, bbox, export = TRUE,  exportDir = getwd(), e
           else dir = getwd()
           spdf@data$dir[cnt] = dir
           spdf@data$filename[cnt] = filename
-          spdf@data$v1_lat[cnt] = lat_ver[1,xi,yi]
-          spdf@data$v2_lat[cnt] = lat_ver[2,xi,yi]
-          spdf@data$v3_lat[cnt] = lat_ver[3,xi,yi]
-          spdf@data$v4_lat[cnt] = lat_ver[4,xi,yi]
-          spdf@data$v1_lon[cnt] = lon_ver[1,xi,yi]
-          spdf@data$v2_lon[cnt] = lon_ver[2,xi,yi]
-          spdf@data$v3_lon[cnt] = lon_ver[3,xi,yi]
-          spdf@data$v4_lon[cnt] = lon_ver[4,xi,yi]
+          if(vertices) {
+            spdf@data$v1_lat[cnt] = lat_ver[1,xi,yi]
+            spdf@data$v2_lat[cnt] = lat_ver[2,xi,yi]
+            spdf@data$v3_lat[cnt] = lat_ver[3,xi,yi]
+            spdf@data$v4_lat[cnt] = lat_ver[4,xi,yi]
+            spdf@data$v1_lon[cnt] = lon_ver[1,xi,yi]
+            spdf@data$v2_lon[cnt] = lon_ver[2,xi,yi]
+            spdf@data$v3_lon[cnt] = lon_ver[3,xi,yi]
+            spdf@data$v4_lon[cnt] = lon_ver[4,xi,yi]
+          }
           if(exportDir!="") f = paste(exportDir,filename, sep="/")
           else f = filename
           writemeteorologypoint(df,f, exportFormat)

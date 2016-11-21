@@ -1,5 +1,5 @@
 ### R code from vignette source 'Meteorology.Rnw'
-### Encoding: UTF-8
+### Encoding: ISO8859-1
 
 ###################################################
 ### code chunk number 1: Meteorology.Rnw:25-27

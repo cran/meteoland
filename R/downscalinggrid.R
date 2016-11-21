@@ -44,7 +44,7 @@ downscalinggrid<-function(object, gridfiles, elevation = NULL, dates = NULL, max
   if(verbose) cat(paste("Grid cells to process: ", length(cchist),"\n", sep=""))
   sel = (cchist@coords[,1] >= object@bbox[1,1] & cchist@coords[,1] <=object@bbox[1,2]) &
     (cchist@coords[,2] >= object@bbox[2,1] & cchist@coords[,2] <=object@bbox[2,2])
-  if(sum(sel)<length(sel)) stop("Some grid cells are outside the boundary box of 'object'")
+  if(sum(sel)<length(sel)) warning("Some target grid cells are outside the boundary box of 'object'", call. = FALSE, immediate. = TRUE)
   if(verbose) cat(paste("All grid cells inside boundary box.\n", sep=""))
 
 
