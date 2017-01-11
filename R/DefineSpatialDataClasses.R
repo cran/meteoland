@@ -28,3 +28,42 @@ setMethod("spplot", signature("SpatialGridTopography"), definition =
               }
             }
 )
+
+setMethod("[", signature("SpatialPointsMeteorology"),definition =
+  function (x, i, j, ..., drop = TRUE) 
+  {
+    if (!missing(j)) 
+      warning("j index ignored")
+    if (is.character(i)) 
+      i <- match(i, row.names(x))
+    else if (is(i, "Spatial")) 
+      i = !is.na(over(x, geometry(i)))
+    if (any(is.na(i))) 
+      stop("NAs not permitted in row index")
+    sp = as(x,"SpatialPoints")[i, , drop=drop]
+    SpatialPointsMeteorology(sp, x@data[i], x@dates)
+  }
+)
+
+setMethod("[", signature("SpatialPointsTopography"),definition =
+    function (x, i, j, ..., drop = TRUE) 
+    {
+      missing.i = missing(i)
+      if (!missing(j)) 
+        warning("j index ignored")
+      if (missing.i) i = TRUE
+      if (is.matrix(i)) 
+        stop("matrix argument not supported in SpatialPointsDataFrame selection")
+      if (is(i, "Spatial")) 
+        i = !is.na(over(x, geometry(i)))
+      if (is.character(i)) 
+        i <- match(i, row.names(x))
+      if (any(is.na(i))) 
+        stop("NAs not permitted in row index")
+      sp = as(x,"SpatialPoints")[i, , drop=drop]
+      x@coords = sp@coords
+      x@bbox = sp@bbox
+      x@data = x@data[i, , ..., drop = FALSE]
+      x
+    }
+)

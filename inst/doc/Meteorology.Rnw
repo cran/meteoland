@@ -329,6 +329,16 @@ where $m(i)$ is the month of day $i$.
 Mean temperature, minimum temperature, maximum temperature, radiation and wind speed are downscaled using this general bias correction procedure. In the case of relative humidity, values are transformed to specific humidity, bias correction is applied to this variable and the result is back-transformed to relative humidity. Since historic wind data is often not available, if wind speed data is missing the coarse-scale wind estimate is taken directly without correction.
 
 \section{Miscellaneous functions}
+\subsection{Downloading data from AEMET}
+
+National meteorological agencies are now entering into the open data philosophy and one of them is the Spanish meteorological agency (Agencia Española de Meteorología, AEMET). In \texttt{meteoland} we provide two functions that retrieve AEMET data using their OpenData API (API keys need to be obtained from AEMET):
+\begin{itemize}
+\item{\texttt{downloadAEMETstationlist()} : Gets the list of stations from which daily meteorological data is available.}
+\item{\texttt{downloadAEMETpoints()} : Downloads historical daily meteorological data corresponding to a input set of stations and period.}
+\item{\texttt{downloadAEMETcurrentday()} : Downloads and averages last 24h of meteorological data corresponding to a input set of stations.}
+\end{itemize}
+
+
 \subsection{Extraction of climatic netCDF data}
 
 \textbf{NetCDF} is a standard data format for meteorological data. In particular, this format is used to store the predictions of global and regional climate models. Function \texttt{extractNetCDF()} parses a set of \textbf{NetCDFs} and extracts the daily meteorological data of a landscape boundary box for use within \texttt{meteoland}. The function first identifies which cells in NetCDF data should be extracted (according to the input boundary box), and the overall period. For each cell to be processed, the function loops over all files (which can describe different variables and time periods) and extracts the corresponding data. The function transforms units to the units used in meteoland. If specific humidity and mean temperature are available, the function also calculates mean relative humidity.

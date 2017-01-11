@@ -202,7 +202,7 @@ List interpolateWindStationSeriesPoints(NumericVector Xp, NumericVector Yp, Nume
     //    Rcout<<"Day: "<<d<<"\n";
     int nmis = 0;
     for(int i=0;i<nstations;i++) {
-      missing[i] = IntegerVector::is_na(WS(i,d));
+      missing[i] = NumericVector::is_na(WS(i,d));
       if(missing[i]) nmis++;
     }
     if(nstations> nmis) {

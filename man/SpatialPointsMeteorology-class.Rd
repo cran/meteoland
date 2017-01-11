@@ -3,6 +3,7 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{SpatialPointsMeteorology-class}
+\alias{[,SpatialPointsMeteorology,ANY,ANY,ANY-method}
 
 \title{Class \code{"SpatialPointsMeteorology"}}
 \description{
@@ -24,7 +25,11 @@ Objects can be created by calls of the form \code{new("SpatialPointsMeteorology"
 Class \code{"\linkS4class{SpatialPoints}"}, directly.
 Class \code{"\linkS4class{Spatial}"}, by class "SpatialPoints", distance 2.
 }
-
+\section{Methods}{
+  \describe{
+    \item{[}{\code{signature(x = "SpatialPointsTopography", i = "ANY", j = "ANY", drop = "ANY")}: subsets the spatial points and the corresponding list of meteorological data; only rows (points can be subsetted.}
+	 }
+}
 \author{
 Miquel De \enc{Cáceres}{Caceres} Ainsa, Centre Tecnologic Forestal de Catalunya
 }

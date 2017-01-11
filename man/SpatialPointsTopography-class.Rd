@@ -3,6 +3,7 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{SpatialPointsTopography-class}
+\alias{[,SpatialPointsTopography,ANY,ANY,ANY-method}
 
 \title{Class \code{"SpatialPointsTopography"}}
 \description{
@@ -24,7 +25,11 @@ Class \code{"\linkS4class{SpatialPointsDataFrame}"}, directly.
 Class \code{"\linkS4class{SpatialPoints}"}, by class "SpatialPointsDataFrame", distance 2.
 Class \code{"\linkS4class{Spatial}"}, by class "SpatialPointsDataFrame", distance 3.
 }
-
+\section{Methods}{
+  \describe{
+     \item{[}{\code{signature(x = "SpatialPointsTopography", i = "ANY", j = "ANY", drop = "ANY")}: subsets the points; only rows (points can be subsetted.}
+	 }
+}
 \author{
 Miquel De \enc{Cáceres}{Caceres} Ainsa, Biodiversity and Landscape Ecology Laboratory, Centre Tecnologic Forestal de Catalunya
 }
