@@ -25,8 +25,12 @@
     corrPrec[[m]]<-fitQmap(DatTemp[,"Precipitation"],ModelTempHist[,"Precipitation"],method=c("QUANT"))
     corrRad[[m]]<-mean(ModelTempHist[,"Radiation"]-DatTemp[,"Radiation"], na.rm=TRUE)
     corrTmean[[m]]<-mean(ModelTempHist[,"MeanTemperature"]-DatTemp[,"MeanTemperature"], na.rm=TRUE)
-    corrTmin[[m]]<-mean(ModelTempHist[,"MinTemperature"]-DatTemp[,"MinTemperature"], na.rm=TRUE)
-    corrTmax[[m]]<-mean(ModelTempHist[,"MaxTemperature"]-DatTemp[,"MaxTemperature"], na.rm=TRUE)
+    difTminHist = (ModelTempHist[,"MinTemperature"]-ModelTempHist[,"MeanTemperature"])
+    difTminDat = (DatTemp[,"MinTemperature"]-DatTemp[,"MeanTemperature"])
+    corrTmin[[m]]<-mean(difTminHist-difTminDat, na.rm=TRUE)
+    difTmaxHist = (ModelTempHist[,"MaxTemperature"]-ModelTempHist[,"MeanTemperature"])
+    difTmaxDat = (DatTemp[,"MaxTemperature"]-DatTemp[,"MeanTemperature"])
+    corrTmax[[m]]<-mean(difTmaxHist-difTmaxDat, na.rm=TRUE)
     corrWS[[m]]<-mean(ModelTempHist[,"WindSpeed"]-DatTemp[,"WindSpeed"], na.rm=TRUE)
     HSData<-.HRHS(Tc=DatTemp[,"MeanTemperature"] ,HR=DatTemp[,"MeanRelativeHumidity"])
     HSmodelHist<-.HRHS(Tc=ModelTempHist[,"MeanTemperature"] ,HR=ModelTempHist[,"MeanRelativeHumidity"])
@@ -35,7 +39,7 @@
   return(list(corrPrec=corrPrec,corrRad=corrRad,corrTmean=corrTmean,corrTmin=corrTmin,
               corrTmax=corrTmax,corrHS=corrHS,corrWS=corrWS))
 }
-.downscalingonepoint<-function(mbias, MODFut, dates = NULL, fill_wind = FALSE, verbose=TRUE){
+.correctiononepoint<-function(mbias, MODFut, dates = NULL, fill_wind = FALSE, verbose=TRUE){
   if(!is.null(dates)) {
     sel3 = rownames(MODFut) %in% as.character(dates)
     if(sum(sel3)!=length(dates)) stop("Some dates are outside the predicted period.")
@@ -77,10 +81,10 @@
     ModelTempFut.TM.cor<-ModelTempFut$MeanTemperature-(mbias$corrTmean[[m]])
 
     #Correction Tmin
-    ModelTempFut.TN.cor<-ModelTempFut$MinTemperature-(mbias$corrTmin[[m]])
+    ModelTempFut.TN.cor<-ModelTempFut.TM.cor + pmin(0,(ModelTempFut$MinTemperature-ModelTempFut$MeanTemperature) - (mbias$corrTmin[[m]]))
 
-    #Correction Tmax
-    ModelTempFut.TX.cor<-ModelTempFut$MaxTemperature-(mbias$corrTmax[[m]])
+    #Correction Tmax = Tmean_corrected + 
+    ModelTempFut.TX.cor<-ModelTempFut.TM.cor + pmax(0, (ModelTempFut$MaxTemperature-ModelTempFut$MeanTemperature) - (mbias$corrTmax[[m]]))
 
     #Correction WS (if NA then use input WS)
     if(!is.na(mbias$corrWS[[m]])) ModelTempFut.WS.cor<-ModelTempFut$WindSpeed-(mbias$corrWS[[m]])
@@ -102,6 +106,15 @@
     ModelTempFut.RHN.cor[ModelTempFut.RHN.cor<0]<-0
     ModelTempFut.RHN.cor[ModelTempFut.RHN.cor>100]<-100
 
+    #Check Tmin < = Tmean <= Tmax and RHmin <= RHmean <= RHmax
+    # ModelTempFut.TN.cor = pmin(ModelTempFut.TN.cor, ModelTempFut.TX.cor)
+    # ModelTempFut.TX.cor = pmax(ModelTempFut.TN.cor, ModelTempFut.TX.cor)
+    # ModelTempFut.TM.cor = pmin(pmax(ModelTempFut.TM.cor, ModelTempFut.TN.cor),ModelTempFut.TX.cor)
+    ModelTempFut.RHN.cor = pmin(ModelTempFut.RHN.cor, ModelTempFut.RHX.cor)
+    ModelTempFut.RHX.cor = pmax(ModelTempFut.RHN.cor, ModelTempFut.RHX.cor)
+    ModelTempFut.RHM.cor = pmin(pmax(ModelTempFut.RHM.cor, ModelTempFut.RHN.cor),ModelTempFut.RHX.cor)
+    
+    #Store results
     ResCor$MeanTemperature[selFut]=ModelTempFut.TM.cor
     ResCor$MinTemperature[selFut]=ModelTempFut.TN.cor
     ResCor$MaxTemperature[selFut]=ModelTempFut.TX.cor
@@ -116,12 +129,12 @@
   return(ResCor)
 }
 
-downscalingpoints<-function(object, points, elevation = NULL, dates = NULL, export = FALSE,
+correctionpoints<-function(object, points, topodata = NULL, dates = NULL, export = FALSE,
                             exportDir = getwd(), exportFormat = "meteoland",
                             metadatafile = "MP.txt", verbose=TRUE) {
 
   #Check input classes
-  if(!inherits(object,"MeteorologyDownscalingData")) stop("'object' has to be of class 'MeteorologyDownscalingData'.")
+  if(!inherits(object,"MeteorologyUncorrectedData")) stop("'object' has to be of class 'MeteorologyUncorrectedData'.")
   if(!inherits(points,"SpatialPointsMeteorology") && !inherits(points,"SpatialPointsDataFrame")) stop("'points' has to be of class 'SpatialPointsMeteorology' or 'SpatialPointsDataFrame'.")
 
   mPar = object@params
@@ -144,7 +157,12 @@ downscalingpoints<-function(object, points, elevation = NULL, dates = NULL, expo
   #Project long/lat coordinates of predicted climatic objects into the projection of points
   xypred = spTransform(SpatialPoints(object@coords,object@proj4string,object@bbox), points@proj4string)
   colnames(xypred@coords)<-c("x","y")
-
+  if(!is.null(topodata)) {
+    latrad = latitude*(pi/180)
+    elevation = topodata$elevation
+    slorad = topodata$slope*(pi/180)
+    asprad = topodata$aspect*(pi/180)
+  }
   # Define vector of data frames
   dfvec = vector("list",npoints)
   if(inherits(points,"SpatialPointsMeteorology")) {
@@ -164,7 +182,7 @@ downscalingpoints<-function(object, points, elevation = NULL, dates = NULL, expo
 
   #Loop over all points
   for(i in 1:npoints) {
-    if(verbose) cat(paste("Downscaling to point '",ids[i],"' (",i,"/",npoints,") -",sep=""))
+    if(verbose) cat(paste("Correcting point '",ids[i],"' (",i,"/",npoints,") -",sep=""))
     xy = points@coords[i,]
     #observed data frame
     if(inherits(points,"SpatialPointsMeteorology")) {
@@ -174,50 +192,52 @@ downscalingpoints<-function(object, points, elevation = NULL, dates = NULL, expo
       if(!file.exists(f)) stop(paste("Observed file '", f,"' does not exist!", sep=""))
       obs = readmeteorologypoint(f)
     }
-    #Find closest predicted climatic cell for historical/projection periods (ideally the same)
+    #Find closest predicted climatic cell for reference/projection periods (ideally the same)
     d = sqrt(rowSums(sweep(xypred@coords,2,xy,"-")^2))
     ipred = which.min(d)[1]
     if(verbose) cat(paste(" ipred = ",ipred, sep=""))
     #predicted climatic data frames
-    if(inherits(object@historicdata,"list")) {
-      rcmhist = object@historicdata[[ipred]]
+    if(inherits(object@reference_data,"list")) {
+      rcmhist = object@reference_data[[ipred]]
     } else {
-      if(("dir" %in% names(object@historicdata))&&("filename" %in% names(object@historicdata))) {
-        f = paste(object@historicdata$dir[ipred], object@historicdata$filename[ipred],sep="/")
-        if(!file.exists(f)) stop(paste("Predicted climate historical file '", f,"' does not exist!", sep=""))
+      if(("dir" %in% names(object@reference_data))&&("filename" %in% names(object@reference_data))) {
+        f = paste(object@reference_data$dir[ipred], object@reference_data$filename[ipred],sep="/")
+        if(!file.exists(f)) stop(paste("Reference meteorology file '", f,"' does not exist!", sep=""))
         rcmhist = readmeteorologypoint(f)
       } else if(nrow(object@coords)==1) {
-        rcmhist = object@historicdata
+        rcmhist = object@reference_data
       } else {
-        stop("Cannot access historic climate data")
+        stop("Cannot access reference meteorology data")
       }
     }
-    if(inherits(object@futuredata,"list")) {
-      rcmfut = object@futuredata[[ipred]]
+    if(inherits(object@projection_data,"list")) {
+      rcmfut = object@projection_data[[ipred]]
     } else {
-      if(("dir" %in% names(object@futuredata))&&("filename" %in% names(object@futuredata))) {
-        f = paste(object@futuredata$dir[ipred], object@futuredata$filename[ipred],sep="/")
-        if(!file.exists(f)) stop(paste("Predicted climate future file '", f,"' does not exist!",sep=""))
+      if(("dir" %in% names(object@projection_data))&&("filename" %in% names(object@projection_data))) {
+        f = paste(object@projection_data$dir[ipred], object@projection_data$filename[ipred],sep="/")
+        if(!file.exists(f)) stop(paste("Projection meteorology file '", f,"' does not exist!",sep=""))
         rcmfut = readmeteorologypoint(f)
       } else if(nrow(object@coords)==1) {
-        rcmfut = object@futuredata
+        rcmfut = object@projection_data
       } else {
-        stop("Cannot access future climate data")
+        stop("Cannot access projection meteorology data")
       }
     }
 
-    #Call dowscaling correction routine
+    #Call statistical correction routine
     mbias = .monthbiasonepoint(obs,rcmhist, verbose)
-    df = .downscalingonepoint(mbias,rcmfut, dates, mPar$fill_wind, verbose)
+    df = .correctiononepoint(mbias,rcmfut, dates, mPar$fill_wind, verbose)
 
+    if(is.null(dates)) dates = as.Date(rownames(df))
     #Calculate PET
-    if(!is.null(elevation)) {
-      df$PET = penmanpoint(latitude[i], elevation[i], df$DOY, df$MinTemperature, df$MaxTemperature,
+    if(!is.null(topodata)) {
+      J = radiation_dateStringToJulianDays(as.character(dates))
+      df$PET = .penmanpoint(latrad[i], elevation[i],slorad[i], asprad[i], J, 
+                         df$MinTemperature, df$MaxTemperature,
                          df$MinRelativeHumidity, df$MaxRelativeHumidity, df$Radiation,
                          df$WindSpeed, mPar$wind_height,
                          0.001, 0.25);
     }
-    if(is.null(dates)) dates = as.Date(rownames(df))
 
     #Write file
     if(!export) {

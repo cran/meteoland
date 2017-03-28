@@ -2,24 +2,26 @@
 \name{interpolation.cv}
 \alias{interpolation.cv}
 \alias{interpolation.calibration}
+\alias{summary.interpolation.cv}
 \alias{plot.interpolation.cv}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Calibration and validation of interpolation procedures
 }
 \description{
-Function \code{interpolation.calibration} determines optimal interpolation parameters 'N' and 'alpha' for a given meteorological variable. Optimization is done by minimizing mean absolute error (MAE) (Thornton et al. 1997). Function \code{interpolation.cv} calculates average mean absolute errors (MAE) for the prediction period of an object of class '\code{MeteorologyInterpolationData}'.  Function \code{plot.interpolation.cv} plots cross-validation results. In both calibration and validation procedures, predictions for each weather station are made using a leave-one-out procedure (i.e. after excluding the station from the predictive set).
+Function \code{interpolation.calibration} determines optimal interpolation parameters 'N' and 'alpha' for a given meteorological variable. Optimization is done by minimizing mean absolute error (MAE) (Thornton et al. 1997). Function \code{interpolation.cv} calculates average mean absolute errors (MAE) for the prediction period of an object of class '\code{MeteorologyInterpolationData}'.  Function \code{summary.interpolation.cv} returns a data.frame with cross-validation  summaries and \code{plot.interpolation.cv} plots cross-validation results. In both calibration and validation procedures, predictions for each weather station are made using a leave-one-out procedure (i.e. after excluding the station from the predictive set).
 }
 \usage{
 interpolation.calibration(object, stations = NULL, variable="Tmin",
                         N_seq = seq(5,30, by=5), alpha_seq = seq(0.25,10, by=0.25),
                         verbose = FALSE)
 interpolation.cv(object, stations = NULL, verbose = FALSE)
+\S3method{summary}{interpolation.cv}(object, ...)
 \S3method{plot}{interpolation.cv}(x, type = "stations", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{object}{An object of class \code{\link{MeteorologyInterpolationData-class}}.}
+  \item{object}{In the case of function \code{interpolation.cv}, an object of class \code{\link{MeteorologyInterpolationData-class}}. In the case of function \code{summary}, an object of class \code{\link{interpolation.cv}}}
   \item{stations}{A numeric vector containing the indices of stations to be used to calculate mean absolute errors (MAE) in the calibration or cross-validation analysis. All the stations with data are included in the training set but predictive MAE are calculated for the 'stations' subset only.}
   \item{variable}{A string indicating the meteorological variable for which interpolation parameters 'N' and 'alpha' will be calibrated. Accepted values are 'Tmin' (for minimum temperature), 'Tmax' (for maximum temperature), 'Tdew' (for dew-point temperature), 'PrecEvent' (for precipitation events),'Prec' (for regression of precipitation amounts),'Prec' (for precipitation with the same values for precipitation events and regression of precipitation amounts).}
   \item{N_seq}{Set of average number of points to be tested.}
@@ -27,7 +29,7 @@ interpolation.cv(object, stations = NULL, verbose = FALSE)
   \item{verbose}{A logical flag to generate additional console output.}
   \item{x}{A S3 object of class \code{interpolation.cv} with cross-validation results.}
   \item{type}{A string of the plot type to be produced (either "stations" or "dates").}
-  \item{...}{Additional parameters passed to plot functions.}
+  \item{...}{Additional parameters passed to summary and plot functions.}
 }
 \value{
 Function \code{interpolation.calibration} returns an object of class \code{'interpolation.calibration'}  with the following items:
@@ -106,6 +108,9 @@ exampleinterpolationdata@params$alpha_Precipitation = prec_cal$alpha
 
 #Run cross validation
 cv = interpolation.cv(exampleinterpolationdata, stations = 1:5, verbose = TRUE)
+
+#Print cross validation summaries
+summary(cv)
 
 #Plot results
 plot(cv)

@@ -41,13 +41,13 @@
   #relative humidity
   if(is.null(object@RelativeHumidity)) { #Estimate VP assuming that dew-point temperature is equal to Tmin
     rhmean = .relativeHumidityFromMinMaxTemp(tmin, tmax)
-    VP = .temp2VP(tmin)
+    VP = .temp2SVP(tmin) #kPa
     rhmax = rep(100, length(rhmean))
     rhmin = pmax(0,.relativeHumidityFromDewpointTemp(tmax, tmin))
   } else {
     TdewM = .dewpointTemperatureFromRH(0.606*as.matrix(object@MaxTemperature[,i,drop=FALSE])+0.394*as.matrix(object@MinTemperature[,i,drop=FALSE]),
                                        as.matrix(object@RelativeHumidity))
-    tdew = .interpolateTemperatureSeriesPoints(Xp= cc[,1], Yp =cc[,2], Zp = z,
+    tdew = .interpolateTdewSeriesPoints(Xp= cc[,1], Yp =cc[,2], Zp = z,
                                                X = object@coords[,1],
                                                Y = object@coords[,2],
                                                Z = object@elevation,
@@ -57,13 +57,14 @@
                                                N = mPar$N_DewTemperature,
                                                iterations = mPar$iterations)
     rhmean = .relativeHumidityFromDewpointTemp(tmean, tdew)
-    VP = .temp2VP(tdew)
+    VP = .temp2SVP(tdew) #kPa
     rhmin = pmax(0,.relativeHumidityFromDewpointTemp(tmax, tdew))
     rhmax = pmin(100,.relativeHumidityFromDewpointTemp(tmin, tdew))
   }
 
   #radiation
   doy = as.numeric(format(object@dates[i],"%j"))
+  J = radiation_dateStringToJulianDays(d)
   diffTemp = tmax-tmin
   diffTempMonth = .interpolateTemperatureSeriesPoints(Xp= cc[,1], Yp =cc[,2], Zp = z,
                                                       X = object@coords[,1],
@@ -75,7 +76,11 @@
                                                       N = mPar$N_MinTemperature,
                                                       iterations = mPar$iterations)
 
-  rad = .radiationPoints(latitude, grid$elevation, grid$aspect, grid$slope, doy, diffTemp, diffTempMonth, VP, prec)
+  latrad = latitude * (pi/180)
+  asprad = grid$aspect * (pi/180)
+  slorad = grid$slope  * (pi/180)
+  rad = .radiationPoints(latrad, grid$elevation, slorad, asprad, J, 
+                         diffTemp, diffTempMonth, VP, prec)
   #wind
   if((!is.null(object@WFIndex)) && (!is.null(object@WFFactor))) {
     wstopo = getGridTopology(object@WindFields$windSpeed)
@@ -111,7 +116,7 @@
     Wd = rep(NA,nrow(cc))
   }
   #PET
-  pet = .PenmanPETPointsDay(latitude, grid$elevation, doy, tmin, tmax,
+  pet = .PenmanPETPointsDay(latrad, grid$elevation, slorad, asprad, J, tmin, tmax,
                             rhmin, rhmax, rad, Ws, mPar$wind_height,
                             0.001, 0.25);
   df = data.frame(MeanTemperature = as.vector(tmean),
@@ -134,9 +139,16 @@ interpolationgrid<-function(object, grid, dates,
   if(!inherits(object,"MeteorologyInterpolationData")) stop("'object' has to be of class 'MeteorologyInterpolationData'.")
   if(!inherits(grid,"SpatialGridTopography")) stop("'grid' has to be of class 'SpatialGridTopography'.")
   if(proj4string(grid)!=proj4string(object)) stop("CRS projection in 'grid' has to the same as in 'object'.")
-  if(!is.null(dates)) {if(class(dates)!="Date") stop("'dates' has to be of class 'Date'.")}
+  if(!is.null(dates)) {
+    if(class(dates)!="Date") stop("'dates' has to be of class 'Date'.")
+    if(sum(as.character(dates) %in% as.character(object@dates))<length(dates)) 
+      stop("At least one of the dates is outside the time period for which interpolation is possible.")
+  }
   else dates = object@dates
-
+  bbox = object@bbox
+  gbbox = grid@bbox
+  insidebox = (gbbox[1,1]>=bbox[1,1]) && (gbbox[1,2]<=bbox[1,2]) && (gbbox[2,1]>=bbox[2,1]) && (gbbox[2,2]<=bbox[2,2])
+  if(!insidebox) stop("Boundary box of target grid is not within boundary box of interpolation data object.")
   longlat = spTransform(as(grid,"SpatialPoints"),CRS("+proj=longlat"))
   latitude = longlat@coords[,2]
   ndates = length(dates)

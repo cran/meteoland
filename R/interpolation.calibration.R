@@ -45,20 +45,36 @@ interpolation.calibration<-function(object, stations = NULL, variable="Tmin", N_
   Ocoords = Ccoords[stations,]
   Oelevation = Celevation[stations]
   cat(paste("Number of stations used for MAE: ", length(stations),"\n",sep=""))
-  cat(paste("Number of parameter combinations to test: ", length(N_seq)*length(alpha_seq),"\n\n",sep=""))
+  ncomb = length(N_seq)*length(alpha_seq)
+  cat(paste("Number of parameter combinations to test: ", ncomb,"\n\n",sep=""))
   #Initialize MAE to optimize
   minMAE = 9999999.0
   imin = NA
   jmin = NA
   cat("Evaluation of parameter combinations...\n")
+  if(!verbose) pb = txtProgressBar(0, ncomb, style=3)
   for(i in 1:length(N_seq)) {
     for(j in 1:length(alpha_seq)) {
+      if(!verbose) setTxtProgressBar(pb, (i-1)*length(alpha_seq) + j)
       Pmat = Omat
       Pmat[] = 0.0
       for(p in 1:length(stations)) {
         station = stations[p]
-        if((variable=="Tmin") | (variable=="Tmax") |(variable=="Tdew")) {
+        if((variable=="Tmin") | (variable=="Tmax")) {
           mp= .interpolateTemperatureSeriesPoints( Xp = Ocoords[p,1],
+                                                   Yp = Ocoords[p,2],
+                                                   Zp = Oelevation[p],
+                                                   X = Ccoords[-station,1],
+                                                   Y = Ccoords[-station,2],
+                                                   Z = Celevation[-station],
+                                                   T = Cmat[-station,],
+                                                   iniRp = mPar$initial_Rp,
+                                                   alpha = alpha_seq[j],
+                                                   N = N_seq[i],
+                                                   iterations = mPar$iterations)
+          Pmat[p,] = as.vector(mp)
+        }else if(variable=="Tdew") {
+          mp= .interpolateTdewSeriesPoints( Xp = Ocoords[p,1],
                                                    Yp = Ocoords[p,2],
                                                    Zp = Oelevation[p],
                                                    X = Ccoords[-station,1],
@@ -157,7 +173,7 @@ interpolation.calibration<-function(object, stations = NULL, variable="Tmin", N_
           MAE[i,j] = sqrt((num1/den1)*(num2/den2))
           # MAE[i,j] = mean(abs(Pmat-Omat), na.rm=TRUE)
         }
-        cat(paste("   N: ", N_seq[i], " alpha: ",alpha_seq[j], " MAE = ", MAE[i,j], "\n",sep=""))
+        if(verbose) cat(paste("   N: ", N_seq[i], " alpha: ",alpha_seq[j], " MAE = ", MAE[i,j], "\n",sep=""))
         if(MAE[i,j]<minMAE) {
           minMAE = MAE[i,j]
           imin = i

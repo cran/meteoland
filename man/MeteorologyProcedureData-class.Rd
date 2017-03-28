@@ -18,8 +18,7 @@ A virtual class for estimating meteorology over landscapes
 }
 \section{Methods}{
   \describe{
-    \item{meteogrid}{\code{signature(object = "MeteorologyProcedureData")}: Generates \code{\link{SpatialGridDataFrame}} objects with raster maps of meteorological variables for an input set of days. }
-    \item{meteopoints}{\code{signature(object = "MeteorologyProcedureData")}:  Generates data.frame objects with time series of meteorological variables for a given set of points. }
+    \item{subsample}{\code{signature(object = "MeteorologyProcedureData")}: Generates \code{MeteorologyProcedureData} objects for a smaller area and a subset of dates. }
 	 }
 }
 \section{Extends}{
@@ -31,7 +30,7 @@ Miquel De \enc{Cáceres}{Caceres} Ainsa, Biodiversity and Landscape Ecology Labo
 }
 
 \seealso{
-\code{\link{MeteorologyInterpolationData-class}}, \code{\link{MeteorologyDownscalingData-class}}
+\code{\link{MeteorologyInterpolationData-class}}, \code{\link{MeteorologyUncorrectedData-class}}
 }
 \examples{
 showClass("MeteorologyProcedureData")

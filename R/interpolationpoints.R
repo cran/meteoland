@@ -41,16 +41,17 @@
                                                popcrit = mPar$pop_crit,
                                                fmax = mPar$f_max)
   DOY = as.numeric(format(dates,"%j"))
+  J = radiation_dateStringToJulianDays(as.character(dates))
   if(is.null(object@RelativeHumidity)) { #Estimate VP assuming that dew-point temperature is equal to Tmin
     rhmean = .relativeHumidityFromMinMaxTemp(tmin, tmax)
-    VP = .temp2VP(tmin)
+    VP = .temp2SVP(tmin) #kPA
     rhmax = rep(100, length(rhmean))
     rhmin = pmax(0,.relativeHumidityFromDewpointTemp(tmax, tmin))
   } else {
     TdewM = .dewpointTemperatureFromRH(0.606*object@MaxTemperature[,dayIndices, drop=FALSE]+
                                          0.394*object@MinTemperature[,dayIndices, drop=FALSE],
                                        object@RelativeHumidity[,dayIndices, drop=FALSE])
-    tdew = .interpolateTemperatureSeriesPoints(Xp= x, Yp =y, Zp = elevation,
+    tdew = .interpolateTdewSeriesPoints(Xp= x, Yp =y, Zp = elevation,
                                                X = object@coords[,1],
                                                Y = object@coords[,2],
                                                Z = object@elevation,
@@ -60,7 +61,7 @@
                                                N = mPar$N_DewTemperature,
                                                iterations = mPar$iterations)
     rhmean = .relativeHumidityFromDewpointTemp(tmean, tdew)
-    VP = .temp2VP(tdew)
+    VP = .temp2SVP(tdew) #kPa
     rhmax = pmin(100,.relativeHumidityFromDewpointTemp(tmin,tdew))
     rhmin = pmax(0,.relativeHumidityFromDewpointTemp(tmax,tdew))
   }
@@ -75,7 +76,11 @@
                                                       alpha = mPar$alpha_MinTemperature,
                                                       N = mPar$N_MinTemperature,
                                                       iterations = mPar$iterations)
-  rad = .radiationSeries(latitude, elevation, aspect, slope, DOY,diffTemp, diffTempMonth, VP, prec)
+  latrad = latitude * (pi/180)
+  slorad = slope * (pi/180)
+  asprad = aspect* (pi/180)
+  rad = .radiationSeries(latrad, elevation, slorad, asprad, J,
+                         diffTemp, diffTempMonth, VP, prec)
   #wind
   if((!is.null(object@WFIndex)) && (!is.null(object@WFFactor))) {
     wstopo = getGridTopology(object@WindFields$windSpeed)
@@ -112,7 +117,7 @@
   }
 
   #PET
-  pet = penmanpoint(latitude, elevation, DOY, tmin, tmax,
+  pet = .penmanpoint(latrad, elevation, slorad, asprad, J, tmin, tmax,
                     rhmin, rhmax, rad, Wsp, mPar$wind_height,
                     0.001, 0.25);
 
@@ -138,6 +143,11 @@ interpolationpoints<-function(object, points, dates = NULL,
   if(!inherits(object,"MeteorologyInterpolationData")) stop("'object' has to be of class 'MeteorologyInterpolationData'.")
   if(!inherits(points,"SpatialPointsTopography")) stop("'points' has to be of class 'SpatialPointsTopography'.")
   if(proj4string(points)!=proj4string(object)) stop("CRS projection in 'points' has to the same as in 'object'.")
+  if(!is.null(dates)) {
+    if(class(dates)!="Date") stop("'dates' has to be of class 'Date'.")
+    if(sum(as.character(dates) %in% as.character(object@dates))<length(dates)) 
+      stop("At least one of the dates is outside the time period for which interpolation is possible.")
+  }
   cc = coordinates(points)
   ids = row.names(cc)
   npoints = nrow(cc)
@@ -159,9 +169,12 @@ interpolationpoints<-function(object, points, dates = NULL,
   rownames(dfout) = ids
   spdf = SpatialPointsDataFrame(as(points,"SpatialPoints"), dfout)
   colnames(spdf@coords)<-c("x","y")
-
+  bbox = object@bbox
+  
   for(i in 1:npoints) {
     if(verbose) cat(paste("Processing point '",ids[i],"' (",i,"/",npoints,") -",sep=""))
+    insidebox = (cc[i,1]>=bbox[1,1] && cc[i,1]<=bbox[1,2]) && (cc[i,2]>=bbox[2,1] && cc[i,2]<=bbox[2,2])
+    if(!insidebox) warning(paste("Point '",ids[i],"' outside the boundary box of interpolation data object.",sep=""))
     df = .interpolatePointSeries(object, latitude[i],cc[i,1], cc[i,2], elevation[i], slope[i], aspect[i], dates)
     if(is.null(dates)) dates = as.Date(rownames(df))
     if(!export) {

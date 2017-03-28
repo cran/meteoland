@@ -1,6 +1,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-#include "gaussianFilter.h"
+#include "interpolationutils.h"
 
 
 
@@ -86,7 +86,8 @@ List getWindFieldIndexAndFactor(NumericMatrix windSpeed, NumericMatrix windDirec
  */
 NumericVector interpolateWindPoint(double xp, double yp, NumericVector ws, NumericVector wd,
                                    NumericVector X, NumericVector Y,
-                                   double iniRp = 140000, double alpha = 2.0, int N = 1, int iterations = 3){
+                                   double iniRp = 140000, double alpha = 2.0, int N = 1, int iterations = 3,
+                                   double directionsAvailable = TRUE){
   int nstations = X.size();
   NumericVector r(nstations);
   for(int i=0;i<nstations;i++) {
@@ -95,7 +96,14 @@ NumericVector interpolateWindPoint(double xp, double yp, NumericVector ws, Numer
   double Rp = estimateRp(r, iniRp, alpha, N, iterations);
   // Rcout<<Rp<<"\n";
   NumericVector W = gaussianFilter(r, Rp, alpha);
-  return(vectorAverage(ws, wd, W));
+  if(directionsAvailable) return(vectorAverage(ws, wd, W));
+  else {
+    NumericVector wws = ws*W;
+    double num  = std::accumulate(wws.begin(),wws.end(),0.0);
+    double den = std::accumulate(W.begin(),W.end(),0.0);
+    // Rcout<<" num: "<<num<<" den: "<<den<<"\n";
+    return(NumericVector::create(num/den, NA_REAL));
+  }
 }
 /*
  * Interpolates wind direction and wind speed of meteorological stations
@@ -103,7 +111,8 @@ NumericVector interpolateWindPoint(double xp, double yp, NumericVector ws, Numer
  */
 NumericMatrix interpolateWindStationPoints(NumericVector Xp, NumericVector Yp, NumericVector WS, NumericVector WD,
                                          NumericVector X, NumericVector Y,
-                                         double iniRp = 140000, double alpha = 2.0, int N = 1, int iterations = 3){
+                                         double iniRp = 140000, double alpha = 2.0, int N = 1, int iterations = 3,
+                                         double directionsAvailable = TRUE){
   int npoints = Xp.size();
   NumericMatrix Wp(npoints,2);
   NumericVector wvec;
@@ -111,7 +120,7 @@ NumericMatrix interpolateWindStationPoints(NumericVector Xp, NumericVector Yp, N
   for(int i=0;i<npoints;i++) {
     wvec = interpolateWindPoint(Xp[i], Yp[i], WS, WD,
                                 X,Y,
-                                iniRp, alpha, N, iterations);
+                                iniRp, alpha, N, iterations, directionsAvailable);
     Wp(i,0) = wvec[0];
     Wp(i,1) = wvec[1];
   }
@@ -139,7 +148,7 @@ NumericMatrix interpolateWindFieldPoints(NumericVector Xp, NumericVector Yp, Num
     }
     wvec = interpolateWindPoint(Xp[i], Yp[i], wsp, wdp,
                                 X,Y,
-                                iniRp, alpha, N, iterations);
+                                iniRp, alpha, N, iterations, true);
     Wp(i,0) = wvec[0];
     Wp(i,1) = wvec[1];
   }
@@ -199,11 +208,12 @@ List interpolateWindStationSeriesPoints(NumericVector Xp, NumericVector Yp, Nume
   NumericMatrix WDp(npoints,nDays);
   LogicalVector missing(nstations);
   for(int d = 0;d<nDays;d++) {
-    //    Rcout<<"Day: "<<d<<"\n";
-    int nmis = 0;
+       // Rcout<<"Day: "<<d<<"\n";
+    int nmis = 0, nmisdir = 0;
     for(int i=0;i<nstations;i++) {
       missing[i] = NumericVector::is_na(WS(i,d));
       if(missing[i]) nmis++;
+      if((!missing[i]) & (NumericVector::is_na(WD(i,d)))) nmisdir++;
     }
     if(nstations> nmis) {
       NumericVector Xday(nstations-nmis);
@@ -220,9 +230,11 @@ List interpolateWindStationSeriesPoints(NumericVector Xp, NumericVector Yp, Nume
           c++;
         }
       }
+      bool directionsAvailable = (nmisdir==0);
       NumericMatrix Wday = interpolateWindStationPoints(Xp, Yp, WSday, WDday,
                                                         Xday, Yday,
-                                                        iniRp, alpha, N, iterations);
+                                                        iniRp, alpha, N, iterations, directionsAvailable);
+      // Rcout<< directionsAvailable<< " "<< Wday<<"\n";
       for(int p=0;p<npoints;p++) {
         WSp(p,d) = Wday(p,0);
         WDp(p,d) = Wday(p,1);

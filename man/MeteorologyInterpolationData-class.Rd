@@ -3,7 +3,6 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{MeteorologyInterpolationData-class}
-
 \title{Class \code{"MeteorologyInterpolationData"}}
 \description{
 An S4 class to interpolate meteorology over a landscape.
@@ -41,16 +40,15 @@ Class \code{"\linkS4class{Spatial}"}, by class "MeteorologyProcedureData", dista
 }
 \section{Methods}{
   \describe{
-    \item{meteogrid}{\code{signature(object = "MeteorologyInterpolationData")}: Generates \code{\link{SpatialGridDataFrame}} objects with raster maps of meteorological variables for an input set of days. }
-    \item{meteopoints}{\code{signature(object = "MeteorologyInterpolationData")}: Generates data.frame objects with time series of meteorological variables for a given set of points. }
+    \item{subsample}{\code{signature(object = "MeteorologyInterpolationData")}: Generates a \code{\link{MeteorologyInterpolationData}} object for a smaller area and a subset of dates. }
 	 }
 }
 
 \author{
-Miquel De \enc{Cáceres}{Caceres} Ainsa, Biodiversity and Landscape Ecology Laboratory, Centre Tecnologic Forestal de Catalunya
+Miquel De \enc{Cáceres}{Caceres} Ainsa, Centre Tecnologic Forestal de Catalunya
 }
 \seealso{
-\code{\link{MeteorologyInterpolationData}}, \code{\link{MeteorologyProcedureData-class}}
+\code{\link{MeteorologyInterpolationData}}, \code{\link{MeteorologyProcedureData-class}}, \code{\link{subsample}}
 }
 \examples{
 #Structure of the S4 object

@@ -33,7 +33,7 @@ If \code{export = FALSE}, function \code{interpolationgrid} returns an object of
 \author{
 Miquel De \enc{Cáceres}{Caceres} Ainsa, Biodiversity and Landscape Ecology Laboratory, Centre Tecnologic Forestal de Catalunya
 }
-\seealso{\code{\link{SpatialGridTopography}}, \code{\link{MeteorologyInterpolationData}}}
+\seealso{\code{\link{penman}}, \code{\link{SpatialGridTopography}}, \code{\link{MeteorologyInterpolationData}}}
 
 \examples{
 data(examplegridtopography)
