@@ -39,13 +39,13 @@ showClass("MeteorologyInterpolationData")
 
 
 ###################################################
-### code chunk number 7: Meteorology.Rnw:140-141
+### code chunk number 7: Meteorology.Rnw:142-143
 ###################################################
 showClass("MeteorologyUncorrectedData")
 
 
 ###################################################
-### code chunk number 8: Meteorology.Rnw:161-170
+### code chunk number 8: Meteorology.Rnw:165-174
 ###################################################
 r = 0:1000
 R_p = 500
@@ -59,14 +59,14 @@ legend("topright", legend = c("alpha = 3", "alpha = 6.25"), lty=c(1,2), bty="n")
 
 
 ###################################################
-### code chunk number 9: Meteorology.Rnw:300-302
+### code chunk number 9: Meteorology.Rnw:303-305
 ###################################################
 options(width=67)
 library(meteoland)
 
 
 ###################################################
-### code chunk number 10: Meteorology.Rnw:311-343
+### code chunk number 10: Meteorology.Rnw:314-346
 ###################################################
 par(mar=c(3,4,1,3), mfrow=c(1,2))
 dates = seq(as.Date("2012-01-01"), as.Date("2012-12-31"), by="day")[1:365]
@@ -103,7 +103,7 @@ legend("top", legend = paste0(c(3012,2012,1012,12), " AD"), col=c("brown","black
 
 
 ###################################################
-### code chunk number 11: Meteorology.Rnw:355-391
+### code chunk number 11: Meteorology.Rnw:358-394
 ###################################################
 par(mfrow=c(1,3))
 latrad1 = 40*(pi/180)
@@ -144,7 +144,7 @@ legend("topright", legend = c("40N","0 (equator)","40S"), cex=0.8, lty=1:3, bty=
 
 
 ###################################################
-### code chunk number 12: Meteorology.Rnw:422-472
+### code chunk number 12: Meteorology.Rnw:425-475
 ###################################################
 par(mfrow=c(1,3))
 slorad = 30*(pi/180)
@@ -199,7 +199,7 @@ legend("bottom",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(
 
 
 ###################################################
-### code chunk number 13: Meteorology.Rnw:477-510
+### code chunk number 13: Meteorology.Rnw:480-513
 ###################################################
 par(mfrow=c(1,3))
 for(i in 1:length(delta)) {
@@ -237,7 +237,7 @@ legend("top",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1
 
 
 ###################################################
-### code chunk number 14: Meteorology.Rnw:515-548
+### code chunk number 14: Meteorology.Rnw:518-551
 ###################################################
 par(mfrow=c(1,3))
 for(i in 1:length(delta)) {
@@ -275,7 +275,7 @@ legend("bottomright",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), l
 
 
 ###################################################
-### code chunk number 15: Meteorology.Rnw:572-627
+### code chunk number 15: Meteorology.Rnw:575-630
 ###################################################
 par(mfrow=c(2,2))
 inl1 = rep(NA, length(delta))
@@ -335,7 +335,7 @@ legend("bottomright",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), l
 
 
 ###################################################
-### code chunk number 16: Meteorology.Rnw:674-720
+### code chunk number 16: Meteorology.Rnw:677-723
 ###################################################
 library(meteoland)
 data(examplegridtopography)
@@ -386,7 +386,7 @@ legend("topleft", col=c("black","blue","red"), legend = c("Solar radiation", "Ou
 
 
 ###################################################
-### code chunk number 17: Meteorology.Rnw:763-782
+### code chunk number 17: Meteorology.Rnw:766-785
 ###################################################
 par(mar=c(4,4,1,1), mfrow=c(2,2))
 latrad = 0.73
@@ -410,7 +410,7 @@ legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
 
 
 ###################################################
-### code chunk number 18: Meteorology.Rnw:786-790
+### code chunk number 18: Meteorology.Rnw:789-793
 ###################################################
 data(exampleinterpolationdata)
 #Downscaling of future predictions (RCM models, year 2023)
@@ -419,7 +419,7 @@ predicted = correctionpoints(examplecorrectiondata, mp, spt@data, dates = bc_dat
 
 
 ###################################################
-### code chunk number 19: Meteorology.Rnw:799-810
+### code chunk number 19: Meteorology.Rnw:825-836
 ###################################################
 par(mfrow=c(1,2), mar=c(5,5,1,1))
 meteoplot(predicted, 1, "Precipitation", ylab="Precipitation (mm)", xlab="",ylim=c(0,80))
@@ -435,9 +435,9 @@ abline(a=0,b=1,col="gray")
 
 
 ###################################################
-### code chunk number 20: Meteorology.Rnw:844-875
+### code chunk number 20: Meteorology.Rnw:843-855
 ###################################################
-par(mfrow=c(3,2), mar=c(5,5,1,1))
+par(mfrow=c(1,2), mar=c(5,5,1,1))
 #Plot predicted mean temperature for point 1
 meteoplot(predicted, 1, "MeanTemperature", ylab="Mean temperature (Celsius)", xlab="",ylim=c(-5,40))
 #Add uncorrected mean temperature data (cell #5)
@@ -450,6 +450,11 @@ plot(examplecorrectiondata@projection_data[[3]][as.character(bc_dates),"MeanTemp
      ylab="Corrected mean temperature", xlab="Uncorrected mean temperature")
 abline(a=0,b=1,col="gray")
 
+
+###################################################
+### code chunk number 21: Meteorology.Rnw:863-882
+###################################################
+par(mfrow=c(2,2), mar=c(5,5,1,1))
 meteoplot(predicted, 1, "MinTemperature", ylab="Minimum temperature (Celsius)", xlab="",ylim=c(-10,25))
 lines(bc_dates,
       examplecorrectiondata@projection_data[[3]][as.character(bc_dates),"MinTemperature"],
@@ -471,7 +476,7 @@ abline(a=0,b=1,col="gray")
 
 
 ###################################################
-### code chunk number 21: Meteorology.Rnw:884-896
+### code chunk number 22: Meteorology.Rnw:888-900
 ###################################################
 par(mfrow=c(1,2), mar=c(5,5,1,1))
 meteoplot(predicted, 1, "Radiation", ylab="Radiation (MJ m-2)", xlab="",ylim=c(0,40))
