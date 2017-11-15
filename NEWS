@@ -1,0 +1,27 @@
+-------------------------------
+ NEWS for R Package "meteoland"
+-------------------------------
+
+__Version history__
+
+_Version 0.6.7, November 2017.
+
+1. Improvements in 'subsample' function
+2. New function 'radiation_skyLongwaveRadiation'
+
+_Version 0.6.6, October 2017.
+
+1. Export format txt/rds
+2. Changed description
+
+_Version 0.6.5, October 2017.
+
+1. Default correction method for wind switched to 'quantmap'.
+2. Unbias method for Tmin and Tmax applies bias from Tmean (if also unbiasing).
+3. Quantile mapping method for Tmin and Tmax is applied to (Tmin-Tmean) and (Tmax-Tmean).
+
+_Version 0.6.4, September 2017.
+
+1. Corrected a bug in the correction of relative humidity.
+2. New function 'correctionpoints.errors' to evaluate correction errors for the reference period.
+

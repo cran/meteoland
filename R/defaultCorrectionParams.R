@@ -2,12 +2,12 @@
 defaultCorrectionParams<-function() {
   return(list(
    varmethods = list(MeanTemperature = "unbias",
-                 MinTemperature = "scaling",
-                 MaxTemperature = "scaling",
+                 MinTemperature = "quantmap",
+                 MaxTemperature = "quantmap",
                  Precipitation = "quantmap",
                  MeanRelativeHumidity = "unbias",
                  Radiation = "unbias",
-                 WindSpeed = "scaling"),
+                 WindSpeed = "quantmap"),
    fill_wind = TRUE,
    wind_height = 10 #Wind height (in m)
   ))

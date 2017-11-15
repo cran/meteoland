@@ -1,5 +1,6 @@
 #Calculates biases or other correction parameters for a given data period
-.corrParam<-function(DatTemp, ModelTempHist, varmethods, varname, varnamemean = NULL, verbose=TRUE) {
+.corrParam<-function(DatTemp, ModelTempHist, varmethods, varname, varnamemean = NULL, wet.day = TRUE, verbose=TRUE) {
+  if(sum(!is.na(ModelTempHist))==0 || sum(!is.na(DatTemp))==0) return(NA)
   if(varmethods[varname]=="unbias") {
     corr<-mean(ModelTempHist[,varname]-DatTemp[,varname], na.rm=TRUE)
   } else if(varmethods[varname]=="scaling") {
@@ -12,7 +13,14 @@
     }
     corr<- as.numeric(lm(difDat~difHist-1)$coefficients) #slope of a regression through the origin
   } else if(varmethods[varname]=="quantmap") {
-    corr<-fitQmap(DatTemp[,varname],ModelTempHist[,varname],method=c("QUANT"))
+    if(!is.null(varnamemean)) {
+      difHist = (ModelTempHist[,varname]-ModelTempHist[,varnamemean])
+      difDat = (DatTemp[,varname]-DatTemp[,varnamemean])
+    } else {
+      difHist = ModelTempHist[,varname]
+      difDat = DatTemp[,varname]
+    }
+    corr<-fitQmap(difDat,difHist,method=c("QUANT"), wet.day = wet.day)
   } else if(varmethods[varname]=="none") {
     corr<-0
   } else {
@@ -21,13 +29,13 @@
   return(corr)
 }
 #Apply correction depending on the correction method
-.corrApply<-function(varuncor, varbias, varmethod) {
+.corrApply<-function(varuncor, varbias, varmethod, wet.day = TRUE) {
   if(varmethod=="unbias") {
     corrected <- (varuncor-varbias)
   } else if(varmethod=="scaling") {
     corrected <- (varuncor*varbias)
   } else if(varmethod=="quantmap") {
-    corrected<-doQmap(varuncor, varbias)
+    corrected<-doQmap(varuncor, varbias, wet.day = wet.day)
   } else if(varmethod=="none") {
     corrected<-varuncor
   } else {
@@ -66,12 +74,20 @@
     ModelTempHist<-MODHist[MODHist.months==m,]
 
     #Calculate correction params depending on the correction method
-    corrTmean[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "MeanTemperature")
-    corrTmin[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "MinTemperature", "MeanTemperature")
-    corrTmax[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "MaxTemperature", "MeanTemperature")
-    corrPrec[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "Precipitation")
-    corrRad[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "Radiation")
-    corrWS[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "WindSpeed")
+    corrTmean[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "MeanTemperature", wet.day = FALSE)
+    if(varmethods["MinTemperature"]=="unbias" && varmethods["MeanTemperature"]=="unbias") {#for unbias use tmean delta (to avoid tmin > tmean)
+      corrTmin[[m]] = corrTmean[[m]]
+    } else {
+      corrTmin[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "MinTemperature", "MeanTemperature", wet.day = FALSE)
+    }
+    if(varmethods["MaxTemperature"]=="unbias" && varmethods["MeanTemperature"]=="unbias") {#for unbias use tmean delta (to avoid tmax < tmean)
+      corrTmax[[m]] = corrTmean[[m]]
+    } else {
+      corrTmax[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "MaxTemperature", "MeanTemperature", wet.day = FALSE)
+    }
+    corrPrec[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "Precipitation", wet.day = TRUE)
+    corrRad[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "Radiation", wet.day = FALSE)
+    corrWS[[m]] = .corrParam(DatTemp, ModelTempHist, varmethods, "WindSpeed", wet.day = FALSE)
     HSData<-.HRHS(Tc=DatTemp[,"MeanTemperature"] ,HR=DatTemp[,"MeanRelativeHumidity"])
     HSmodelHist<-.HRHS(Tc=ModelTempHist[,"MeanTemperature"] ,HR=ModelTempHist[,"MeanRelativeHumidity"])
     if(varmethods["MeanRelativeHumidity"]=="unbias") {
@@ -79,7 +95,7 @@
     } else if(varmethods["MeanRelativeHumidity"]=="scaling") {
       corrHS[[m]]<- as.numeric(lm(HSData~HSmodelHist-1)$coefficients) #slope of a regression through the origin
     } else if(varmethods["MeanRelativeHumidity"]=="quantmap") {
-      corrHS[[m]]<-fitQmap(HSData,HSmodelHist,method=c("QUANT"))
+      corrHS[[m]]<-fitQmap(HSData,HSmodelHist,method=c("QUANT"), wet.day = FALSE)
     } else if(varmethods["MeanRelativeHumidity"]=="none"){
       corrHS[[m]]<-0
     } else {
@@ -123,44 +139,48 @@
     selFut <- (MODFut.months==m)
     ModelTempFut<-MODFut[selFut,]
 
-    
-
     #Correction Tmean
-    ModelTempFut.TM.cor <-.corrApply(ModelTempFut$MeanTemperature, mbias$corrTmean[[m]], mbias$varmethods["MeanTemperature"])
+    ModelTempFut.TM.cor <-.corrApply(ModelTempFut$MeanTemperature, mbias$corrTmean[[m]], mbias$varmethods["MeanTemperature"], wet.day = FALSE)
     
     #Correction Tmin
     if(mbias$varmethods["MinTemperature"]=="scaling") {
-      ModelTempFut.TN.cor<-ModelTempFut.TM.cor + ((ModelTempFut$MinTemperature-ModelTempFut$MeanTemperature)*mbias$corrTmin[[m]])
-    } else {
-      ModelTempFut.TN.cor<-.corrApply(ModelTempFut$MinTemperature, mbias$corrTmin[[m]], mbias$varmethods["MinTemperature"])
+      ModelTempFut.TN.cor<-ModelTempFut.TM.cor + (pmin(ModelTempFut$MinTemperature-ModelTempFut$MeanTemperature,0)*mbias$corrTmin[[m]])
+    } else if(mbias$varmethods["MinTemperature"]=="quantmap") {
+      ModelTempFut.TN.cor<-ModelTempFut.TM.cor + .corrApply(pmin(ModelTempFut$MinTemperature-ModelTempFut$MeanTemperature,0), 
+                                                            mbias$corrTmin[[m]], mbias$varmethods["MinTemperature"], wet.day = FALSE)
+    } else {#unbias/none
+      ModelTempFut.TN.cor<-.corrApply(ModelTempFut$MinTemperature, mbias$corrTmin[[m]], mbias$varmethods["MinTemperature"], wet.day = FALSE)
     }
     
     #Correction Tmax
-    if(mbias$varmethods["MinTemperature"]=="scaling") {
-      ModelTempFut.TX.cor<-ModelTempFut.TM.cor + ((ModelTempFut$MaxTemperature-ModelTempFut$MeanTemperature)*mbias$corrTmax[[m]])
-    } else {
-      ModelTempFut.TX.cor<-.corrApply(ModelTempFut$MaxTemperature, mbias$corrTmax[[m]], mbias$varmethods["MaxTemperature"])
+    if(mbias$varmethods["MaxTemperature"]=="scaling") {
+      ModelTempFut.TX.cor<-ModelTempFut.TM.cor + (pmax(ModelTempFut$MaxTemperature-ModelTempFut$MeanTemperature,0)*mbias$corrTmax[[m]])
+    } else if(mbias$varmethods["MaxTemperature"]=="quantmap") {
+      ModelTempFut.TX.cor<-ModelTempFut.TM.cor + .corrApply(pmax(ModelTempFut$MaxTemperature-ModelTempFut$MeanTemperature,0), 
+                                                            mbias$corrTmax[[m]], mbias$varmethods["MaxTemperature"], wet.day = FALSE)
+    } else { #unbias/none
+      ModelTempFut.TX.cor<-.corrApply(ModelTempFut$MaxTemperature, mbias$corrTmax[[m]], mbias$varmethods["MaxTemperature"], wet.day = FALSE)
     }
     
     #Correction Precipitation
-    ModelTempFut.rain.cor<-.corrApply(ModelTempFut$Precipitation, mbias$corrPrec[[m]], mbias$varmethods["Precipitation"])
+    ModelTempFut.rain.cor<-.corrApply(ModelTempFut$Precipitation, mbias$corrPrec[[m]], mbias$varmethods["Precipitation"], wet.day = TRUE)
 
     #Correction Rg
-    ModelTempFut.Rg.cor<-.corrApply(ModelTempFut$Radiation, mbias$corrRad[[m]], mbias$varmethods["Radiation"])
+    ModelTempFut.Rg.cor<-.corrApply(ModelTempFut$Radiation, mbias$corrRad[[m]], mbias$varmethods["Radiation"], wet.day = FALSE)
     ModelTempFut.Rg.cor[ModelTempFut.Rg.cor<0]<-0
 
     #Correction WS (if NA then use input WS)
-    if(!is.na(mbias$corrWS[[m]])) {
-      ModelTempFut.WS.cor<-.corrApply(ModelTempFut$WindSpeed, mbias$corrWS[[m]], mbias$varmethods["WindSpeed"])
+    if(!(is.na(mbias$corrWS[[m]])[1]))  {
+      ModelTempFut.WS.cor<-.corrApply(ModelTempFut$WindSpeed, mbias$corrWS[[m]], mbias$varmethods["WindSpeed"], wet.day = FALSE)
     }
     else if(fill_wind) ModelTempFut.WS.cor<-ModelTempFut$WindSpeed
-    ModelTempFut.WS.cor[ModelTempFut.WS.cor<0]<-0
-    
+    ModelTempFut.WS.cor[ModelTempFut.WS.cor<0]<-0 #Truncate to minimum value
+
     #Correction RH
     #First transform RH into specific humidity
     HSmodelFut<-.HRHS(Tc=ModelTempFut[,"MeanTemperature"] ,HR=ModelTempFut[,"MeanRelativeHumidity"])
     #Second compute and apply the bias to specific humidity
-    HSmodelFut.cor<-.corrApply(HSmodelFut, mbias$corrHS[[m]], mbias$varmethods["MeanRelativeHumidity"])
+    HSmodelFut.cor<-.corrApply(HSmodelFut, mbias$corrHS[[m]], mbias$varmethods["MeanRelativeHumidity"], wet.day = FALSE)
     #Back transform to relative humidity (mean, max, min)
     ModelTempFut.RHM.cor<-.HSHR(Tc=ModelTempFut.TM.cor ,HS=HSmodelFut.cor)
     ModelTempFut.RHM.cor[ModelTempFut.RHM.cor<0]<-0
@@ -193,7 +213,7 @@
 }
 
 correctionpoints<-function(object, points, topodata = NULL, dates = NULL, export = FALSE,
-                            exportDir = getwd(), exportFormat = "meteoland",
+                            exportDir = getwd(), exportFormat = "meteoland/txt",
                             metadatafile = "MP.txt", corrOut = FALSE, verbose=TRUE) {
 
   #Check input classes
@@ -237,9 +257,14 @@ correctionpoints<-function(object, points, topodata = NULL, dates = NULL, export
     if(!is.null(rownames(points@data))) ids = rownames(points@data)
     else ids = 1:npoints
   }
-  dfout = data.frame(dir = rep(exportDir, npoints), filename=paste(ids,".txt",sep=""))
+  
+  if(exportFormat %in% c("meteoland/txt","castanea/txt")) formatType = "txt"
+  else if (exportFormat %in% c("meteoland/rds","castanea/rds")) formatType = "rds"
+  
+  dfout = data.frame(dir = rep(exportDir, npoints), filename=paste0(ids,".", formatType))
   dfout$dir = as.character(dfout$dir)
   dfout$filename = as.character(dfout$filename)
+  dfout$format = exportFormat
   rownames(dfout) = ids
   spdf = SpatialPointsDataFrame(as(points,"SpatialPoints"), dfout)
   colnames(spdf@coords)<-c("x","y")
@@ -255,7 +280,11 @@ correctionpoints<-function(object, points, topodata = NULL, dates = NULL, export
     } else {
       f = paste(points@data$dir[i], points@data$filename[i],sep="/")
       if(!file.exists(f)) stop(paste("Observed file '", f,"' does not exist!", sep=""))
-      obs = readmeteorologypoint(f)
+      if("format" %in% names(points@data)) { ##Format specified
+        obs = readmeteorologypoint(f, format=points@data$format[i])
+      } else {
+        obs = readmeteorologypoint(f)
+      }
     }
     #Find closest predicted climatic cell for reference/projection periods (ideally the same)
     d = sqrt(rowSums(sweep(xypred@coords,2,xy,"-")^2))
@@ -268,7 +297,11 @@ correctionpoints<-function(object, points, topodata = NULL, dates = NULL, export
       if(("dir" %in% names(object@reference_data))&&("filename" %in% names(object@reference_data))) {
         f = paste(object@reference_data$dir[ipred], object@reference_data$filename[ipred],sep="/")
         if(!file.exists(f)) stop(paste("Reference meteorology file '", f,"' does not exist!", sep=""))
-        rcmhist = readmeteorologypoint(f)
+        if("format" %in% names(object@reference_data)) { ##Format specified
+          rcmhist = readmeteorologypoint(f, format=object@reference_data$format[ipred])
+        } else {
+          rcmhist = readmeteorologypoint(f)
+        }
       } else if(nrow(object@coords)==1) {
         rcmhist = object@reference_data
       } else {
@@ -281,7 +314,11 @@ correctionpoints<-function(object, points, topodata = NULL, dates = NULL, export
       if(("dir" %in% names(object@projection_data))&&("filename" %in% names(object@projection_data))) {
         f = paste(object@projection_data$dir[ipred], object@projection_data$filename[ipred],sep="/")
         if(!file.exists(f)) stop(paste("Projection meteorology file '", f,"' does not exist!",sep=""))
-        rcmfut = readmeteorologypoint(f)
+        if("format" %in% names(object@projection_data)) { ##Format specified
+          rcmfut = readmeteorologypoint(f, format=object@projection_data$format[ipred])
+        } else {
+          rcmfut = readmeteorologypoint(f)
+        }
       } else if(nrow(object@coords)==1) {
         rcmfut = object@projection_data
       } else {
@@ -314,7 +351,7 @@ correctionpoints<-function(object, points, topodata = NULL, dates = NULL, export
     } else {
       if(dfout$dir[i]!="") f = paste(dfout$dir[i],dfout$filename[i], sep="/")
       else f = dfout$filename[i]
-      writemeteorologypoint(df, f, exportFormat)
+      writemeteorologypoint(df, f, dfout$format[i])
       if(verbose) cat(paste(" written to ",f, sep=""))
       if(exportDir!="") f = paste(exportDir,metadatafile, sep="/")
       else f = metadatafile
