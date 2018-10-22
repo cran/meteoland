@@ -1,4 +1,4 @@
-SpatialPointsTopography<-function(points, elevation, slope, aspect, proj4string = CRS(as.character(NA))) {
+SpatialPointsTopography<-function(points, elevation, slope = NULL, aspect = NULL, proj4string = CRS(as.character(NA))) {
   if(!(inherits(points,"SpatialPoints")|| inherits(points,"matrix"))) stop("'points' has to be of class 'matrix' or 'SpatialPoints'.")
   if(inherits(points,"SpatialPoints")) {
     npoints = nrow(points@coords)
@@ -11,8 +11,14 @@ SpatialPointsTopography<-function(points, elevation, slope, aspect, proj4string 
     bbox = bbox(SpatialPoints(coords))
   }
   if(length(elevation)!=npoints) stop("'elevation' has to be of length equal to the number of points")
-  if(length(slope)!=npoints) stop("'slope' has to be of length equal to the number of points")
-  if(length(aspect)!=npoints) stop("'aspect' has to be of length equal to the number of points")
+  if(is.null(slope)) 
+    slope = rep(NA, length(elevation))
+  else if(length(slope)!=npoints) 
+    stop("'slope' has to be of length equal to the number of points")
+  if(is.null(aspect)) 
+    aspect = rep(NA, length(elevation))
+  else if(length(aspect)!=npoints) 
+    stop("'aspect' has to be of length equal to the number of points")
   data = data.frame(elevation = elevation, slope = slope, aspect = aspect)
   lt = new("SpatialPointsTopography",
           coords = coords,
@@ -29,7 +35,7 @@ setMethod("[", signature("SpatialPointsTopography"),definition =
                 warning("j index ignored")
               if (missing.i) i = TRUE
               if (is.matrix(i)) 
-                stop("matrix argument not supported in SpatialPointsDataFrame selection")
+                stop("matrix argument not supported in SpatialPointsTopography selection")
               if (is(i, "Spatial")) 
                 i = !is.na(over(x, geometry(i)))
               if (is.character(i)) 
@@ -52,6 +58,7 @@ print.SpatialPointsTopography = function(x, ..., digits = getOption("digits")) {
   row.names(df) = row.names(x@data)
   print(df, ..., digits = digits)
 }
+setMethod("print", "SpatialPointsTopography", function(x, ..., digits = getOption("digits")) print.SpatialPointsTopography(x, ..., digits))
 setMethod("show", "SpatialPointsTopography", function(object) print.SpatialPointsTopography(object))
 
 head.SpatialPointsTopography <- function(x, n=6L, ...) {
@@ -59,9 +66,42 @@ head.SpatialPointsTopography <- function(x, n=6L, ...) {
   ix <- sign(n)*seq(abs(n))
   x[ ix , , drop=FALSE]
 }
+setMethod("head", "SpatialPointsTopography", function(x, n=6L, ...) head.SpatialPointsTopography(x,n,...))
 
 tail.SpatialPointsTopography <- function(x, n=6L, ...) {
   n <- min(n, length(x))
   ix <- sign(n)*rev(seq(nrow(x), by=-1L, len=abs(n)))
   x[ ix , , drop=FALSE]
 }
+setMethod("tail", "SpatialPointsTopography", function(x, n=6L, ...) tail.SpatialPointsTopography(x,n,...))
+
+
+setMethod("spTransform", signature("SpatialPointsTopography", "CRS"),
+      function(x, CRSobj, ...) {
+            sp = spTransform(as(x,"SpatialPoints"), CRSobj) # calls the rgdal methods
+            new("SpatialPointsTopography",
+                coords = sp@coords,
+                bbox = sp@bbox,
+                proj4string = sp@proj4string,
+                data = x@data)
+      }
+)
+
+as.SpPtsTop.SpPixTop = function(from) { 
+  spdf = as(from, "SpatialPixelsDataFrame")
+  new("SpatialPixelsTopography",
+      coords = spdf@coords,
+      coords.nrs = spdf@coords.nrs,
+      bbox = spdf@bbox,
+      grid = spdf@grid,
+      grid.index = spdf@grid.index,
+      proj4string = spdf@proj4string,
+      data = spdf@data)
+  
+}
+setAs("SpatialPointsTopography", "SpatialPixelsTopography", as.SpPtsTop.SpPixTop)
+
+as.SpPtsTop.SpGrdTop = function(from) { 
+  as.SpPixTop.SpGrdTop(as.SpPtsTop.SpPixTop(from))
+}
+setAs("SpatialPointsTopography", "SpatialGridTopography", as.SpPtsTop.SpGrdTop)

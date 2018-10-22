@@ -4,11 +4,11 @@ import(spdep)
 import(ncdf4)
 import(ncdf4.helpers)
 import(rgdal)
-import(qmap)
 import(methods)
 import(utils)
 useDynLib(meteoland, .registration = TRUE)
 export(correctionpoints, correctionpoints.errors, 
+       correction_series,
        defaultCorrectionParams, defaultInterpolationParams,
        downloadAEMETcurrentday,downloadAEMEThistorical, downloadAEMEThistoricalstationlist,
        extractgridpoints, extractNetCDF, extractpointdates, extractSpatialData,
@@ -39,16 +39,17 @@ export(correctionpoints, correctionpoints.errors,
        writemeteorologygrid, writemeteorologygridfiles,
        writemeteorologypoint, writemeteorologypointfiles)
 exportClasses(MeteorologyProcedureData, MeteorologyInterpolationData, MeteorologyUncorrectedData)
-exportClasses(SpatialPointsMeteorology,SpatialPointsTopography,SpatialGridMeteorology,SpatialGridTopography)
+exportClasses(SpatialPointsMeteorology,SpatialPointsTopography,
+              SpatialGridMeteorology,SpatialGridTopography,
+              SpatialPixelsMeteorology,SpatialPixelsTopography)
 exportMethods(subsample, spplot, "[", show)
 importFrom(Rcpp, evalCpp)
 importFrom(jsonlite,fromJSON)
-importFrom(qmap,fitQmap,doQmap,fitQmapQUANT)
 importFrom(grDevices, colorRampPalette, topo.colors)
 importFrom(graphics, abline, hist, lines, par)
 importFrom(utils, read.table, setTxtProgressBar,
              txtProgressBar, write.table)
-importFrom(stats, cor, var, lm, aggregate)
+importFrom(stats, cor, var, lm, aggregate, approx, na.omit, quantile)
 
 S3method(summary, interpolation.cv)
 
