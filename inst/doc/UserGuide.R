@@ -54,11 +54,25 @@ class(interpolator)
 ## ------------------------------------------------------------------------
 spatial_coverage <- interpolation.coverage(interpolator, type = 'spatial')
 head(spatial_coverage)
+
+## ------------------------------------------------------------------------
 temporal_coverage <- interpolation.coverage(interpolator, type = 'temporal')
 head(temporal_coverage)
 
 ## ------------------------------------------------------------------------
 names(interpolator@params)
+
+## ---- echo = FALSE, fig = TRUE, fig.width=6, fig.height=4----------------
+r = 0:1000
+R_p = 500
+gf1 = exp(-3.0*((r/R_p)^2.0)) - exp(-3.0)
+gf2 = exp(-6.25*((r/R_p)^2.0)) - exp(-6.25)
+gf1[r>R_p] = 0
+gf2[r>R_p] = 0
+plot(r, gf1, type="l", ylab = "W(r)", xlab ="r")
+lines(r, gf2, lty=2)
+legend("topright", legend = c("alpha = 3", "alpha = 6.25"), lty=c(1,2), bty="n")
+
 
 ## ------------------------------------------------------------------------
 interpolator@params$initial_Rp

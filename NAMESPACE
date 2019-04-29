@@ -7,9 +7,10 @@ import(rgdal)
 import(methods)
 import(utils)
 useDynLib(meteoland, .registration = TRUE)
-export(correctionpoints, correctionpoints.errors, 
+export(correctionpoint, correctionpoints, correctionpoints.errors, 
        correction_series,
        defaultCorrectionParams, defaultInterpolationParams,
+       downloadSMCstationlist, downloadSMCvarmetadata,downloadSMCcurrentday, downloadSMChistorical,
        downloadAEMETcurrentday,downloadAEMEThistorical, downloadAEMEThistoricalstationlist,
        extractgridpoints, extractNetCDF, extractpointdates, extractSpatialData,
        interpolation_dewtemperature, interpolation_precipitation, interpolation_temperature, interpolation_wind,
@@ -27,6 +28,7 @@ export(correctionpoints, correctionpoints.errors,
        readmeteorologypoint,readmeteorologypointfiles, 
        readmeteorologygrid, readmeteorologygridfiles, readmeteorologygridcells, 
        readWindNinjaWindFields,
+       reshapeweathercan, reshapeworldmet,
        SpatialPointsTopography, SpatialGridTopography, SpatialPixelsTopography, 
        SpatialGridMeteorology, SpatialPointsMeteorology, SpatialPixelsMeteorology,
        subsample,summary.interpolation.cv, 
@@ -49,7 +51,7 @@ importFrom(grDevices, colorRampPalette, topo.colors)
 importFrom(graphics, abline, hist, lines, par)
 importFrom(utils, read.table, setTxtProgressBar,
              txtProgressBar, write.table)
-importFrom(stats, cor, var, lm, aggregate, approx, na.omit, quantile)
+importFrom(stats, cor, var, lm, aggregate, approx, na.omit, quantile, dist)
 
 S3method(summary, interpolation.cv)
 
