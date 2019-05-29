@@ -267,14 +267,16 @@ double RDay(double solarConstant, double latrad, double elevation, double slorad
  * Spitters, C.J.T., Toussaint, H.A.J.M. & Goudriaan, J. (1986). Separating the diffuse and direct components of global radiation and its implications for modeling canopy photosynthesis. I. Components of incoming radiation. 
  * Agricultural and Forest Meteoroloogy, 38, 231–242.
  */
-// [[Rcpp::export("radiation_directDiffuseInstant")]]
-NumericVector directDiffuseInstant(double solarConstant, double latrad, double delta, 
-                                   double hrad, double R_p, double R_s, bool clearday) {
-  //Instantaneous potential radiation (not accounting for topography)
-  double Rpotinst = std::max(0.0,RpotInstant(solarConstant, latrad, 0.0, 0.0, delta, hrad));//kW
+NumericVector directDiffuseInstant(double solarConstant, double latrad, double slorad, double asprad, double delta, 
+                                   double hrad, double R_s, 
+                                   double R_p_flat, double Rpotinst_flat, double R_p_topo, double Rpotinst_topo,
+                                   bool clearday) {
+  // Rcout<< slorad<<" "<<R_p_topo<<"\n";
   //Solar elevation (for corrections)
   double beta = solarElevation(latrad, delta, hrad);
-  double SgSoday = R_s/R_p;
+  
+  //Estimation of SgSo ratio (transmittance) assuming flat surface.
+  double SgSoday = R_s/R_p_flat; 
   double SdfSgday = NA_REAL;
   if(SgSoday<0.07){
     SdfSgday = 1.0;
@@ -293,22 +295,28 @@ NumericVector directDiffuseInstant(double solarConstant, double latrad, double d
   
   double PARday = R_s*0.5; //Daily PAR radiation (MJ)
   double SdfSdPAR = (1.0+0.3*(1.0-pow(SdfSgday,2.0)))*SdfSgday2;
-  double Sdfday = SdfSgday2*R_s; //MJ
-  double Sginst = (R_s*1000.0)*(Rpotinst/(R_p*1000.0));//kW
-  double Sdfinst = std::min((Sdfday*1000.0)*(Rpotinst/(R_p*1000.0)), Sginst);//kW
-  if(R_p==0.0) {
-    Sginst = 0.0;
+  double Sdfday = SdfSgday2*R_s; //MJ Diffuse daily radiation
+  double Sdrday = R_s - Sdfday; //MJ Direct daily radiation
+  double Sdrinst = (Sdrday*1000.0)*(Rpotinst_topo/(R_p_topo*1000.0));//kW Direct light is affected by topography
+  double Sdfinst = (Sdfday*1000.0)*(Rpotinst_flat/(R_p_flat*1000.0));//kW Diffuse light not affected by topography
+  if(R_p_topo==0.0) {
+    Sdrinst = 0.0;
+  }
+  if(R_p_flat==0.0) {
     Sdfinst = 0.0;
   }
-  double Sdrinst = Sginst-Sdfinst;
+  double Sginst = Sdfinst + Sdrinst;
   double SdfdayPAR = SdfSdPAR*PARday;
   double SginstPAR = Sginst*0.5;
-  double SdfinstPAR = std::min((SdfdayPAR*1000.0)*(Rpotinst/(R_p*1000.0)), SginstPAR);//kW
-  if(R_p == 0.0) SdfinstPAR = 0.0;
+  double SdfinstPAR = std::min((SdfdayPAR*1000.0)*(Rpotinst_flat/(R_p_flat*1000.0)), SginstPAR);//kW
+  if(R_p_flat==0.0) {
+    SdfinstPAR = 0.0;
+  }
   double SdrinstPAR = SginstPAR-SdfinstPAR;
-    
+  
   NumericVector res = NumericVector::create(Named("SolarElevation") = beta,
-                                            Named("Rpot") = Rpotinst,
+                                            Named("Rpot") = Rpotinst_topo,
+                                            Named("Rpot_flat") = Rpotinst_flat,
                                             Named("Rg") = Sginst,
                                             Named("SWR_direct") = Sdrinst,
                                             Named("SWR_diffuse") = Sdfinst,
@@ -316,36 +324,66 @@ NumericVector directDiffuseInstant(double solarConstant, double latrad, double d
                                             Named("PAR_diffuse") = SdfinstPAR);
   return(res);
 }
+// [[Rcpp::export("radiation_directDiffuseInstant")]]
+NumericVector directDiffuseInstant(double solarConstant, double latrad, double slorad, double asprad, double delta, 
+                                   double hrad, double R_s, bool clearday) {
+  //Instantaneous potential radiation NOT accounting for topography
+  double R_p_flat = RpotDay(solarConstant, latrad, 0.0, 0.0, delta);
+  double Rpotinst_flat = std::max(0.0,RpotInstant(solarConstant, latrad, 0.0, 0.0, delta, hrad));//kW
+  //Instantaneous potential radiation accounting for topography
+  double R_p_topo = R_p_flat;
+  double Rpotinst_topo = Rpotinst_flat;
+  if(slorad>0.0) {
+    NumericVector srs = sunRiseSet(latrad, slorad, asprad, delta);
+    R_p_topo = RpotDay(solarConstant, latrad, slorad, asprad, delta);
+    if(hrad >= srs[0] && hrad< srs[1]) Rpotinst_topo = std::max(0.0,RpotInstant(solarConstant, latrad, slorad, asprad, delta, hrad));//kW 
+    else Rpotinst_topo = 0.0;
+  }
+  return(directDiffuseInstant(solarConstant, latrad, slorad, asprad, delta, hrad, R_s, R_p_flat, Rpotinst_flat, 
+                              R_p_topo, Rpotinst_topo, clearday));
+}
 
 
 
 /**
- * Calculates daily variation of direct and diffuse radiation (in kW) from daily global radiation
- * 
- *  solarConstant - Solar constant (in kW/m2)
- *  latrad - Latitude (in radians)
- *  slorad - Zenith angle of the vector normal to the slope (= slope?) in radians
- *  asprad - Azimuth of slope, in radians from north
- *  delta - Solar declination (in radians)
- *  R_s - Global daily solar radiation (MJ·m-2)
- *  clearday - Boolean to indicate that is a clearsky (TRUE) vs overcast (FALSE)
- *  nsteps - Number of steps to divide the day
- *  
- * Spitters, C.J.T., Toussaint, H.A.J.M. & Goudriaan, J. (1986). Separating the diffuse and direct components of global radiation and its implications for modeling canopy photosynthesis. I. Components of incoming radiation. 
- * Agricultural and Forest Meteoroloogy, 38, 231–242.
- */
+* Calculates daily variation of direct and diffuse radiation (in kW) from daily global radiation
+* 
+*  solarConstant - Solar constant (in kW/m2)
+*  latrad - Latitude (in radians)
+*  slorad - Zenith angle of the vector normal to the slope (= slope?) in radians
+*  asprad - Azimuth of slope, in radians from north
+*  delta - Solar declination (in radians)
+*  R_s - Global daily solar radiation (MJ·m-2)
+*  clearday - Boolean to indicate that is a clearsky (TRUE) vs overcast (FALSE)
+*  nsteps - Number of steps to divide the day
+*  
+* Spitters, C.J.T., Toussaint, H.A.J.M. & Goudriaan, J. (1986). Separating the diffuse and direct components of global radiation and its implications for modeling canopy photosynthesis. I. Components of incoming radiation. 
+* Agricultural and Forest Meteoroloogy, 38, 231–242.
+*/
 // [[Rcpp::export("radiation_directDiffuseDay")]]
-DataFrame directDiffuseDay(double solarConstant, double latrad, double delta, 
+DataFrame directDiffuseDay(double solarConstant, double latrad, double slorad, double asprad, double delta, 
                            double R_s, bool clearday, int nsteps = 24) {
-  double rpotday = RpotDay(solarConstant, latrad, 0.0, 0.0, delta); //Potential radiation not accounting for topography
-  NumericVector Rpot(nsteps), Rg(nsteps), SWR_direct(nsteps), SWR_diffuse(nsteps), PAR_direct(nsteps), PAR_diffuse(nsteps);
+  NumericVector Rpot(nsteps),Rpot_flat(nsteps), Rg(nsteps), SWR_direct(nsteps), SWR_diffuse(nsteps), PAR_direct(nsteps), PAR_diffuse(nsteps);
   NumericVector Hrad(nsteps), beta(nsteps);
+  double R_p_flat = RpotDay(solarConstant, latrad, 0.0, 0.0, delta);
+  double R_p_topo = R_p_flat;
+  if(slorad>0.0) {
+    R_p_topo = RpotDay(solarConstant, latrad, slorad, asprad, delta);
+  }
+  NumericVector srs = sunRiseSet(latrad, slorad, asprad, delta);
   for(int i=0;i<nsteps;i++) {
     Hrad[i] = -M_PI + (((double)i)+0.5)*(2.0*M_PI/((double)nsteps));
-    NumericVector ddi = directDiffuseInstant(solarConstant, latrad, delta, Hrad[i], 
-                                             rpotday, R_s, clearday);
+    double Rpotinst_flat = std::max(0.0,RpotInstant(solarConstant, latrad, 0.0, 0.0, delta, Hrad[i]));//kW
+    double Rpotinst_topo = Rpotinst_flat;
+    if(slorad>0.0) {
+      Rpotinst_topo = 0.0;
+      if(Hrad[i] >= srs[0] && Hrad[i]< srs[1]) Rpotinst_topo = std::max(0.0,RpotInstant(solarConstant, latrad, slorad, asprad, delta, Hrad[i]));//kW 
+    }
+    NumericVector ddi = directDiffuseInstant(solarConstant, latrad, slorad, asprad, delta, 
+                                             Hrad[i], R_s, R_p_flat, Rpotinst_flat, R_p_topo, Rpotinst_topo, clearday);
     beta[i] = ddi["SolarElevation"];
-    Rpot[i] = ddi["Rpot"];
+    Rpot[i] = Rpotinst_topo;
+    Rpot_flat[i] = Rpotinst_flat;
     Rg[i] = ddi["Rg"];
     SWR_direct[i] = ddi["SWR_direct"];
     SWR_diffuse[i] = ddi["SWR_diffuse"];
@@ -356,6 +394,7 @@ DataFrame directDiffuseDay(double solarConstant, double latrad, double delta,
   DataFrame res = DataFrame::create(Named("SolarHour") = Hrad,
                                     Named("SolarElevation") = beta,
                                     Named("Rpot") = Rpot,
+                                    Named("Rpot_flat") = Rpot_flat,
                                     Named("Rg") = Rg,
                                     Named("SWR_direct") = SWR_direct,
                                     Named("SWR_diffuse") = SWR_diffuse,

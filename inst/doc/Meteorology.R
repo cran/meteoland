@@ -190,24 +190,24 @@ for(i in 1:length(delta)) {
   ss3[i]=radiation_sunRiseSet(latrad1, slorad, asprad3, delta[i])[2]*12.0/pi
   ss4[i]=radiation_sunRiseSet(latrad1, slorad, asprad4, delta[i])[2]*12.0/pi
 }
-plot(dates, srl1, type="l", xlab="", ylab="Sunrise (solar hour)", ylim=c(-7.5,0))
-lines(dates, sr1, lty=1, col="gray")
-lines(dates, sr2, lty=2, col="gray")
-lines(dates, sr3, lty=3, col="gray")
-lines(dates, sr4, lty=4, col="gray")
-legend("top",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
-plot(dates, ssl1, type="l", xlab="", ylab="Sunset (solar hour)", ylim=c(0,7.5))
-lines(dates, ss1, lty=1, col="gray")
-lines(dates, ss2, lty=2, col="gray")
-lines(dates, ss3, lty=3, col="gray")
-lines(dates, ss4, lty=4, col="gray")
-legend("bottom",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
-plot(dates, dll1, type="l", xlab="", ylab="Hours of direct sunlight", ylim=c(0,15))
-lines(dates, dl1, lty=1, col="gray")
-lines(dates, dl2, lty=2, col="gray")
-lines(dates, dl3, lty=3, col="gray")
-lines(dates, dl4, lty=4, col="gray")
-legend("bottom",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
+plot(dates, srl1, type="l", xlab="", ylab="Sunrise (solar hour)", ylim=c(-7.5,0), col="red", lwd=2)
+lines(dates, sr1, lty=1, col="black")
+lines(dates, sr2, lty=2, col="black")
+lines(dates, sr3, lty=3, col="black")
+lines(dates, sr4, lty=4, col="black")
+legend("top",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
+plot(dates, ssl1, type="l", xlab="", ylab="Sunset (solar hour)", ylim=c(0,7.5), col="red", lwd=2)
+lines(dates, ss1, lty=1, col="black")
+lines(dates, ss2, lty=2, col="black")
+lines(dates, ss3, lty=3, col="black")
+lines(dates, ss4, lty=4, col="black")
+legend("bottom",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
+plot(dates, dll1, type="l", xlab="", ylab="Hours of direct sunlight", ylim=c(0,15), col="red", lwd=2)
+lines(dates, dl1, lty=1, col="black")
+lines(dates, dl2, lty=2, col="black")
+lines(dates, dl3, lty=3, col="black")
+lines(dates, dl4, lty=4, col="black")
+legend("bottom",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
 
 
 ###################################################
@@ -228,24 +228,24 @@ for(i in 1:length(delta)) {
   ss3[i]=radiation_sunRiseSet(latrad2, slorad, asprad3, delta[i])[2]*12.0/pi
   ss4[i]=radiation_sunRiseSet(latrad2, slorad, asprad4, delta[i])[2]*12.0/pi
 }
-plot(dates, srl2, type="l", xlab="", ylab="Sunrise (solar hour)")
-lines(dates, sr1, lty=1, col="gray")
-lines(dates, sr2, lty=2, col="gray")
-lines(dates, sr3, lty=3, col="gray")
-lines(dates, sr4, lty=4, col="gray")
-legend("bottom",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
-plot(dates, ssl2, type="l", xlab="", ylab="Sunset (solar hour)")
-lines(dates, ss1, lty=1, col="gray")
-lines(dates, ss2, lty=2, col="gray")
-lines(dates, ss3, lty=3, col="gray")
-lines(dates, ss4, lty=4, col="gray")
-legend("top",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
-plot(dates, dll2, type="l", xlab="", ylab="Hours of direct sunlight")
-lines(dates, dl1, lty=1, col="gray")
-lines(dates, dl2, lty=2, col="gray")
-lines(dates, dl3, lty=3, col="gray")
-lines(dates, dl4, lty=4, col="gray")
-legend("top",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
+plot(dates, srl2, type="l", xlab="", ylab="Sunrise (solar hour)", col="red", lwd=2)
+lines(dates, sr1, lty=1, col="black")
+lines(dates, sr2, lty=2, col="black")
+lines(dates, sr3, lty=3, col="black")
+lines(dates, sr4, lty=4, col="black")
+legend("bottom",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
+plot(dates, ssl2, type="l", xlab="", ylab="Sunset (solar hour)", col="red", lwd=2)
+lines(dates, ss1, lty=1, col="black")
+lines(dates, ss2, lty=2, col="black")
+lines(dates, ss3, lty=3, col="black")
+lines(dates, ss4, lty=4, col="black")
+legend("top",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
+plot(dates, dll2, type="l", xlab="", ylab="Hours of direct sunlight", col="red", lwd=2)
+lines(dates, dl1, lty=1, col="black")
+lines(dates, dl2, lty=2, col="black")
+lines(dates, dl3, lty=3, col="black")
+lines(dates, dl4, lty=4, col="black")
+legend("top",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
 
 
 ###################################################
@@ -266,24 +266,24 @@ for(i in 1:length(delta)) {
   ss3[i]=radiation_sunRiseSet(latrad3, slorad, asprad3, delta[i])[2]*12.0/pi
   ss4[i]=radiation_sunRiseSet(latrad3, slorad, asprad4, delta[i])[2]*12.0/pi
 }
-plot(dates, srl3, type="l", xlab="", ylab="Sunrise (solar hour)", ylim=c(-7.5,0))
-lines(dates, sr1, lty=1, col="gray")
-lines(dates, sr2, lty=2, col="gray")
-lines(dates, sr3, lty=3, col="gray")
-lines(dates, sr4, lty=4, col="gray")
-legend("topright",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
-plot(dates, ssl3, type="l", xlab="", ylab="Sunset (solar hour)", ylim=c(0,7.5))
-lines(dates, ss1, lty=1, col="gray")
-lines(dates, ss2, lty=2, col="gray")
-lines(dates, ss3, lty=3, col="gray")
-lines(dates, ss4, lty=4, col="gray")
-legend("bottomright",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
-plot(dates, dll3, type="l", xlab="", ylab="Hours of direct sunlight", ylim=c(0,15))
-lines(dates, dl1, lty=1, col="gray")
-lines(dates, dl2, lty=2, col="gray")
-lines(dates, dl3, lty=3, col="gray")
-lines(dates, dl4, lty=4, col="gray")
-legend("bottomright",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
+plot(dates, srl3, type="l", xlab="", ylab="Sunrise (solar hour)", ylim=c(-7.5,0), col="red", lwd=2)
+lines(dates, sr1, lty=1, col="black", lwd=1)
+lines(dates, sr2, lty=2, col="black", lwd=1)
+lines(dates, sr3, lty=3, col="black", lwd=1)
+lines(dates, sr4, lty=4, col="black", lwd=1)
+legend("topright",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
+plot(dates, ssl3, type="l", xlab="", ylab="Sunset (solar hour)", ylim=c(0,7.5), col="red", lwd=2)
+lines(dates, ss1, lty=1, col="black", lwd=1)
+lines(dates, ss2, lty=2, col="black", lwd=1)
+lines(dates, ss3, lty=3, col="black", lwd=1)
+lines(dates, ss4, lty=4, col="black", lwd=1)
+legend("bottomright",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
+plot(dates, dll3, type="l", xlab="", ylab="Hours of direct sunlight", lwd=2, ylim=c(0,15), col="red")
+lines(dates, dl1, lty=1, col="black", lwd=1)
+lines(dates, dl2, lty=2, col="black", lwd=1)
+lines(dates, dl3, lty=3, col="black", lwd=1)
+lines(dates, dl4, lty=4, col="black", lwd=1)
+legend("bottomright",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lwd=1, lty=c(1,1:4), bty="n")
 
 
 ###################################################
@@ -313,24 +313,24 @@ for(i in 1:length(delta)) {
   in4[i]=radiation_potentialRadiation(sc[i],latrad1, slorad, asprad4, delta[i])
 }
 plot(dates, inl1, type="l", xlab="", ylab="Potential radiation (MJ m-2 d-1)",
-     main = "Slopes at 40North", ylim=c(0,45))
-lines(dates, in1, lty=1, col="gray")
-lines(dates, in2, lty=2, col="gray")
-lines(dates, in3, lty=3, col="gray")
-lines(dates, in4, lty=4, col="gray")
-legend("bottom",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
+     main = "Slopes at 40North", ylim=c(0,45), col="red", lwd=2)
+lines(dates, in1, lty=1, col="black")
+lines(dates, in2, lty=2, col="black")
+lines(dates, in3, lty=3, col="black")
+lines(dates, in4, lty=4, col="black")
+legend("bottom",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
 for(i in 1:length(delta)) {
   in1[i]=radiation_potentialRadiation(sc[i],latrad2, slorad, asprad1, delta[i])
   in2[i]=radiation_potentialRadiation(sc[i],latrad2, slorad, asprad2, delta[i])
   in3[i]=radiation_potentialRadiation(sc[i],latrad2, slorad, asprad3, delta[i])
   in4[i]=radiation_potentialRadiation(sc[i],latrad2, slorad, asprad4, delta[i])
 }
-plot(dates, inl2, type="l", xlab="", main = "Slopes at the Equator", ylab="Potential radiation (MJ m-2 d-1)", ylim=c(0,45))
-lines(dates, in1, lty=1, col="gray")
-lines(dates, in2, lty=2, col="gray")
-lines(dates, in3, lty=3, col="gray")
-lines(dates, in4, lty=4, col="gray")
-legend("bottom",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
+plot(dates, inl2, type="l", xlab="", main = "Slopes at the Equator", ylab="Potential radiation (MJ m-2 d-1)", ylim=c(0,45), col="red", lwd=2)
+lines(dates, in1, lty=1, col="black")
+lines(dates, in2, lty=2, col="black")
+lines(dates, in3, lty=3, col="black")
+lines(dates, in4, lty=4, col="black")
+legend("bottom",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
 for(i in 1:length(delta)) {
   in1[i]=radiation_potentialRadiation(sc[i],latrad3, slorad, asprad1, delta[i])
   in2[i]=radiation_potentialRadiation(sc[i],latrad3, slorad, asprad2, delta[i])
@@ -338,12 +338,12 @@ for(i in 1:length(delta)) {
   in4[i]=radiation_potentialRadiation(sc[i],latrad3, slorad, asprad4, delta[i])
 }
 plot(dates, inl3, type="l", xlab="", ylab="Potential radiation (MJ m-2 d-1)", 
-     main = "Slopes at 40South", ylim=c(0,45))
-lines(dates, in1, lty=1, col="gray")
-lines(dates, in2, lty=2, col="gray")
-lines(dates, in3, lty=3, col="gray")
-lines(dates, in4, lty=4, col="gray")
-legend("bottomright",c("flat", "N","E","S","W"), col=c("black",rep("gray",4)), lty=c(1,1:4), bty="n")
+     main = "Slopes at 40South", ylim=c(0,45), col="red", lwd=2)
+lines(dates, in1, lty=1, col="black")
+lines(dates, in2, lty=2, col="black")
+lines(dates, in3, lty=3, col="black")
+lines(dates, in4, lty=4, col="black")
+legend("bottomright",c("flat", "N","E","S","W"), col=c("red",rep("black",4)), lty=c(1,1:4), bty="n")
 
 
 ###################################################
@@ -398,31 +398,177 @@ legend("topleft", col=c("black","blue","red"), legend = c("Solar radiation", "Ou
 
 
 ###################################################
-### code chunk number 19: Meteorology.Rnw:798-817
+### code chunk number 19: Meteorology.Rnw:798-830
 ###################################################
 par(mar=c(4,4,1,1), mfrow=c(2,2))
 latrad = 0.73
+slorad = 0
+asprad = 0
 elevation = 100
-J = radiation_julianDay(2001,6,1)
-gsc = radiation_solarConstant(J)
-delta = radiation_solarDeclination(J)
-a=radiation_directDiffuseDay(gsc, latrad,delta, 30, TRUE, 100)
+steps = 300
+clearday = TRUE
+J = meteoland::radiation_julianDay(2001,1,15)
+gsc = meteoland::radiation_solarConstant(J)
+delta = meteoland::radiation_solarDeclination(J)
+diffTemp = 10
+diffTempMonth = diffTemp
+vpa = meteoland::utils_averageDailyVP(5,15,70,90)
+precipitation = 0
+ptrad = meteoland::radiation_potentialRadiation(gsc, latrad, slorad, asprad, delta)
+rad = meteoland::radiation_solarRadiation(gsc, latrad, elevation, slorad, asprad,
+                                          delta, diffTemp, diffTempMonth, vpa,
+                                          precipitation)
+a=meteoland::radiation_directDiffuseDay(gsc, latrad, slorad, asprad, delta, rad, clearday, steps)
 se = a$SolarElevation*(180/pi)
 se[a$Rpot==0]=NA
-plot(a$SolarHour*12/pi, se, type="l", ylim=c(0,70), ylab="Solar elevation (degrees)", xlab="Solar hour")
-plot(a$SolarHour*12/pi, a$Rpot, type="l", ylab="Radiation (W m-2)", xlab="Solar hour")
-lines(a$SolarHour*12/pi, a$Rg,  lty=2)
-legend("topleft", legend=c("Potential", "Global"), lty=c(1,2), bty="n")
-plot(a$SolarHour*12/pi, a$SWR_direct, type="l", ylab="SWR radiation (W m-2)", xlab="Solar hour")
+plot(a$SolarHour*12/pi, se, type="l", ylim=c(0,70), ylab="Solar elevation angle (º)", xlab="Solar hour")
+plot(a$SolarHour*12/pi, a$Rpot, type="l", ylab="Radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.8))
+lines(a$SolarHour*12/pi, a$Rpot_flat,  lty=2)
+lines(a$SolarHour*12/pi, a$Rg,  lty=3)
+legend("topleft", legend=c("Potential", "Extraterrestrial", "Global"), lty=c(1,2,3), bty="n")
+plot(a$SolarHour*12/pi, a$SWR_direct, type="l", ylab="SWR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.2))
 lines(a$SolarHour*12/pi, a$SWR_diffuse,  lty=2)
 legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
-plot(a$SolarHour*12/pi, a$PAR_direct, type="l", ylab="PAR radiation (W m-2)", xlab="Solar hour")
+plot(a$SolarHour*12/pi, a$PAR_direct, type="l", ylab="PAR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.1))
 lines(a$SolarHour*12/pi, a$PAR_diffuse,  lty=2)
 legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
 
 
 ###################################################
-### code chunk number 20: Meteorology.Rnw:821-825
+### code chunk number 20: Meteorology.Rnw:835-856
+###################################################
+par(mar=c(4,4,1,1), mfrow=c(2,2))
+slorad = pi*10/180
+asprad = 0
+ptrad = meteoland::radiation_potentialRadiation(gsc, latrad, slorad, asprad, delta)
+rad = meteoland::radiation_solarRadiation(gsc, latrad, elevation, slorad, asprad,
+                                          delta, diffTemp, diffTempMonth, vpa,
+                                          precipitation)
+a=meteoland::radiation_directDiffuseDay(gsc, latrad,slorad, asprad, delta, rad, clearday, steps)
+se = a$SolarElevation*(180/pi)
+se[a$Rpot_flat==0]=NA
+plot(a$SolarHour*12/pi, se, type="l", ylim=c(0,70), ylab="Solar elevation angle (º)", xlab="Solar hour")
+plot(a$SolarHour*12/pi, a$Rpot, type="l", ylab="Radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.8))
+lines(a$SolarHour*12/pi, a$Rpot_flat,  lty=2)
+lines(a$SolarHour*12/pi, a$Rg,  lty=3)
+legend("topleft", legend=c("Potential", "Extraterrestrial", "Global"), lty=c(1,2,3), bty="n")
+plot(a$SolarHour*12/pi, a$SWR_direct, type="l", ylab="SWR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.2))
+lines(a$SolarHour*12/pi, a$SWR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+plot(a$SolarHour*12/pi, a$PAR_direct, type="l", ylab="PAR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.1))
+lines(a$SolarHour*12/pi, a$PAR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+
+
+###################################################
+### code chunk number 21: Meteorology.Rnw:861-882
+###################################################
+par(mar=c(4,4,1,1), mfrow=c(2,2))
+slorad = pi*30/180
+asprad = 0
+ptrad = meteoland::radiation_potentialRadiation(gsc, latrad, slorad, asprad, delta)
+rad = meteoland::radiation_solarRadiation(gsc, latrad, elevation, slorad, asprad,
+                                          delta, diffTemp, diffTempMonth, vpa,
+                                          precipitation)
+a=meteoland::radiation_directDiffuseDay(gsc, latrad,slorad, asprad, delta, rad, clearday, steps)
+se = a$SolarElevation*(180/pi)
+se[a$Rpot_flat==0]=NA
+plot(a$SolarHour*12/pi, se, type="l", ylim=c(0,70), ylab="Solar elevation angle (º)", xlab="Solar hour")
+plot(a$SolarHour*12/pi, a$Rpot, type="l", ylab="Radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.8))
+lines(a$SolarHour*12/pi, a$Rpot_flat,  lty=2)
+lines(a$SolarHour*12/pi, a$Rg,  lty=3)
+legend("topleft", legend=c("Potential", "Extraterrestrial", "Global"), lty=c(1,2,3), bty="n")
+plot(a$SolarHour*12/pi, a$SWR_direct, type="l", ylab="SWR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.2))
+lines(a$SolarHour*12/pi, a$SWR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+plot(a$SolarHour*12/pi, a$PAR_direct, type="l", ylab="PAR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.1))
+lines(a$SolarHour*12/pi, a$PAR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+
+
+###################################################
+### code chunk number 22: Meteorology.Rnw:889-913
+###################################################
+par(mar=c(4,4,1,1), mfrow=c(2,2))
+slorad = 0
+asprad = 0
+J = meteoland::radiation_julianDay(2001,6,15)
+gsc = meteoland::radiation_solarConstant(J)
+delta = meteoland::radiation_solarDeclination(J)
+ptrad = meteoland::radiation_potentialRadiation(gsc, latrad, slorad, asprad, delta)
+rad = meteoland::radiation_solarRadiation(gsc, latrad, elevation, slorad, asprad,
+                                          delta, diffTemp, diffTempMonth, vpa,
+                                          precipitation)
+a=meteoland::radiation_directDiffuseDay(gsc, latrad, slorad, asprad, delta, rad, clearday, steps)
+se = a$SolarElevation*(180/pi)
+se[a$Rpot==0]=NA
+plot(a$SolarHour*12/pi, se, type="l", ylim=c(0,70), ylab="Solar elevation angle (º)", xlab="Solar hour")
+plot(a$SolarHour*12/pi, a$Rpot, type="l", ylab="Radiation (W·m-2)", xlab="Solar hour", ylim=c(0,2))
+lines(a$SolarHour*12/pi, a$Rpot_flat,  lty=2)
+lines(a$SolarHour*12/pi, a$Rg,  lty=3)
+legend("topleft", legend=c("Potential", "Extraterrestrial", "Global"), lty=c(1,2,3), bty="n")
+plot(a$SolarHour*12/pi, a$SWR_direct, type="l", ylab="SWR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.6))
+lines(a$SolarHour*12/pi, a$SWR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+plot(a$SolarHour*12/pi, a$PAR_direct, type="l", ylab="PAR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.3))
+lines(a$SolarHour*12/pi, a$PAR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+
+
+###################################################
+### code chunk number 23: Meteorology.Rnw:918-939
+###################################################
+par(mar=c(4,4,1,1), mfrow=c(2,2))
+slorad = pi*10/180
+asprad = 0
+ptrad = meteoland::radiation_potentialRadiation(gsc, latrad, slorad, asprad, delta)
+rad = meteoland::radiation_solarRadiation(gsc, latrad, elevation, slorad, asprad,
+                                          delta, diffTemp, diffTempMonth, vpa,
+                                          precipitation)
+a=meteoland::radiation_directDiffuseDay(gsc, latrad,slorad, asprad, delta, rad, clearday, steps)
+se = a$SolarElevation*(180/pi)
+se[a$Rpot_flat==0]=NA
+plot(a$SolarHour*12/pi, se, type="l", ylim=c(0,70), ylab="Solar elevation angle (º)", xlab="Solar hour")
+plot(a$SolarHour*12/pi, a$Rpot, type="l", ylab="Radiation (W·m-2)", xlab="Solar hour", ylim=c(0,2))
+lines(a$SolarHour*12/pi, a$Rpot_flat,  lty=2)
+lines(a$SolarHour*12/pi, a$Rg,  lty=3)
+legend("topleft", legend=c("Potential", "Extraterrestrial", "Global"), lty=c(1,2,3), bty="n")
+plot(a$SolarHour*12/pi, a$SWR_direct, type="l", ylab="SWR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.6))
+lines(a$SolarHour*12/pi, a$SWR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+plot(a$SolarHour*12/pi, a$PAR_direct, type="l", ylab="PAR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.3))
+lines(a$SolarHour*12/pi, a$PAR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+
+
+###################################################
+### code chunk number 24: Meteorology.Rnw:944-965
+###################################################
+par(mar=c(4,4,1,1), mfrow=c(2,2))
+slorad = pi*30/180
+asprad = 0
+ptrad = meteoland::radiation_potentialRadiation(gsc, latrad, slorad, asprad, delta)
+rad = meteoland::radiation_solarRadiation(gsc, latrad, elevation, slorad, asprad,
+                                          delta, diffTemp, diffTempMonth, vpa,
+                                          precipitation)
+a=meteoland::radiation_directDiffuseDay(gsc, latrad,slorad, asprad, delta, rad, clearday, steps)
+se = a$SolarElevation*(180/pi)
+se[a$Rpot_flat==0]=NA
+plot(a$SolarHour*12/pi, se, type="l", ylim=c(0,70), ylab="Solar elevation angle (º)", xlab="Solar hour")
+plot(a$SolarHour*12/pi, a$Rpot, type="l", ylab="Radiation (W·m-2)", xlab="Solar hour", ylim=c(0,2))
+lines(a$SolarHour*12/pi, a$Rpot_flat,  lty=2)
+lines(a$SolarHour*12/pi, a$Rg,  lty=3)
+legend("topleft", legend=c("Potential", "Extraterrestrial", "Global"), lty=c(1,2,3), bty="n")
+plot(a$SolarHour*12/pi, a$SWR_direct, type="l", ylab="SWR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.6))
+lines(a$SolarHour*12/pi, a$SWR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+plot(a$SolarHour*12/pi, a$PAR_direct, type="l", ylab="PAR radiation (W·m-2)", xlab="Solar hour", ylim=c(0,0.3))
+lines(a$SolarHour*12/pi, a$PAR_diffuse,  lty=2)
+legend("topleft", legend=c("Direct", "Diffuse"), lty=c(1,2), bty="n")
+
+
+###################################################
+### code chunk number 25: Meteorology.Rnw:970-974
 ###################################################
 data(exampleinterpolationdata)
 #Downscaling of future predictions (RCM models, year 2023)
@@ -431,7 +577,7 @@ predicted = correctionpoints(examplecorrectiondata, mp, spt@data, dates = bc_dat
 
 
 ###################################################
-### code chunk number 21: Meteorology.Rnw:857-868
+### code chunk number 26: Meteorology.Rnw:1006-1017
 ###################################################
 par(mfrow=c(1,2), mar=c(5,5,1,1))
 meteoplot(predicted, 1, "Precipitation", ylab="Precipitation (mm)", xlab="",ylim=c(0,80))
@@ -447,7 +593,7 @@ abline(a=0,b=1,col="gray")
 
 
 ###################################################
-### code chunk number 22: Meteorology.Rnw:875-887
+### code chunk number 27: Meteorology.Rnw:1024-1036
 ###################################################
 par(mfrow=c(1,2), mar=c(5,5,1,1))
 #Plot predicted mean temperature for point 1
@@ -464,7 +610,7 @@ abline(a=0,b=1,col="gray")
 
 
 ###################################################
-### code chunk number 23: Meteorology.Rnw:895-914
+### code chunk number 28: Meteorology.Rnw:1044-1063
 ###################################################
 par(mfrow=c(2,2), mar=c(5,5,1,1))
 meteoplot(predicted, 1, "MinTemperature", ylab="Minimum temperature (Celsius)", xlab="",ylim=c(-10,25))
@@ -488,7 +634,7 @@ abline(a=0,b=1,col="gray")
 
 
 ###################################################
-### code chunk number 24: Meteorology.Rnw:920-932
+### code chunk number 29: Meteorology.Rnw:1069-1081
 ###################################################
 par(mfrow=c(1,2), mar=c(5,5,1,1))
 meteoplot(predicted, 1, "Radiation", ylab="Radiation (MJ m-2)", xlab="",ylim=c(0,40))

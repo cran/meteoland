@@ -27,9 +27,9 @@ Set of functions used in the calculation of incoming solar radiation and net rad
 radiation_dateStringToJulianDays(dateStrings)
 radiation_daylength(latrad, slorad, asprad, delta)
 radiation_daylengthseconds(latrad, slorad, asprad, delta)
-radiation_directDiffuseInstant(solarConstant, latrad, delta,
-                               hrad, R_p, R_s, clearday)
-radiation_directDiffuseDay(solarConstant, latrad, delta,
+radiation_directDiffuseInstant(solarConstant, latrad, slorad, asprad, delta,
+                               hrad, R_s, clearday)
+radiation_directDiffuseDay(solarConstant, latrad, slorad, asprad, delta,
                            R_s, clearday, nsteps = 24)
 radiation_potentialRadiation(solarConstant, latrad, slorad, asprad, delta)
 radiation_julianDay(year, month, day)
@@ -55,7 +55,6 @@ radiation_sunRiseSet(latrad, slorad, asprad, delta)
   \item{delta}{Solar declination (in radians).}
   \item{solarConstant}{Solar constant (in kW·m-2).}
   \item{hrad}{Solar hour (in radians).}
-  \item{R_p}{Daily potential solar radiation (MJ·m-2).}
   \item{R_s}{Daily incident solar radiation (MJ·m-2).}
   \item{clearday}{Boolean flag to indicate a clearsky day (vs. overcast).}
   \item{nsteps}{Number of daily substeps.}

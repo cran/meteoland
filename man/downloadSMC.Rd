@@ -9,7 +9,7 @@
 Download data from SMC
 }
 \description{
-Download data from the Catalan weather station network (XEMA from Servei Meteorològic de Catalunya) 
+Download data from the Catalan automatic weather station network (XEMA from Servei \enc{Meteorològic}{Meteorologic} de Catalunya) 
 }
 \usage{
 downloadSMCvarmetadata(api, type = "current")
@@ -22,7 +22,7 @@ downloadSMChistorical(api, dates, station_id=NULL, variable_code=NULL, export = 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{api}{String with the SMC API key (see https://apidocs.meteocat.gencat.cat/.)}
+  \item{api}{String with the SMC API key (the procedure to apply for an api key is explained in https://apidocs.meteocat.gencat.cat/ ).}
   \item{type}{Either 'current' or 'historical' for current day variable metadata or historical variable metadata, respectively.}
   \item{daily_meteoland}{When \code{daily_meteoland = TRUE} all the usual variables in meteoland are downloaded and aggregated at the daily scale. When \code{daily_meteoland = FALSE}, the user can choose the desired variables using \code{variable_code}. }
   \item{variable_code}{A character vector with variable codes to be queried. If \code{NULL} in \code{downloadSMChistorical} all the usual variables for meteoland are downloaded. Otherwise, the results are returned as a dara frame.}
