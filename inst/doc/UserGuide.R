@@ -11,7 +11,8 @@ library(meteoland)
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  library(devtools)
-#  install_github("miquelcaceres/meteoland", build_vignettes = TRUE)
+#  install_github("vegmod/meteoland",
+#                 build_opts = c("--no-resave-data", "--no-manual"))
 #  library(meteoland)
 
 ## ---- echo = FALSE, include= FALSE---------------------------------------
