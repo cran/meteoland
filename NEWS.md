@@ -2,6 +2,48 @@
  NEWS for R Package "meteoland"
 -------------------------------
 
+# Version 0.9.2
+- Clean version
+
+# Version 0.9.0
+- New functions 'extractdates' and 'extractvars' replacing and generalizing 'extractpointdates'.
+- Function 'summarypoints' can summarize all variables at once.
+- Unlimited NetCDF time dimension for grids and station dimension for points.
+- Grids/pixels with no dates allowed
+- Time (unlimited) is written as last dimension in grids, but can be read as first or last dimension
+- New functions as() to transform grids/pixels meteorology into point meteorology
+- New function writeemptymeteorologygrid()
+
+# Version 0.8.9
+- New functions to download data from 'meteogalicia' (MG)
+- Improvements in function 'reshapeworldmet'
+- New (public) functions 'humidity_relative2specific' and 'humidity_specific2relative'
+
+# Version 0.8.8
+- New functions 'writemeteorologypoints' and 'readmeteorologypoints' for storing/reading point data as/from netCDF
+- Functions 'interpolationpoints' and 'correctionpoints' can now write their result to netCDF
+- Function 'summarypoints' can now produce summaries reading from netCDF
+- Function 'extractpointdates' can now extract data reading from netCDF
+
+# Version 0.8.7
+- New function 'readmeteorologygridpoints'
+- New function 'writemeteorologygridpixel'
+- New functions 'mergegrids' and 'mergepoints'
+- Reading multiple grid/pixels files
+
+# Version 0.8.6
+- New function 'averagearea'
+- New functions 'defaultGenerationParams' and 'weathergeneration' implementing a multisite and multivariate weather generator
+- Modification of readmeteorologygrid/pixels to facilitate reading data from netCDF not created by meteoland
+
+# Version 0.8.5
+- New functions to convert SpatialPointsMeteorology, SpatialPixelsMeteorology and SpatialGridMeteorology into objects of packages 'spacetime' and 'stars'
+- Functions to read/write NetCDF files reprogrammed and improved.
+- Functions extractgridindex and extractgridpoints reprogrammed
+
+# Version 0.8.4
+- New function to calculate rainfall erosivity 
+
 # Version 0.8.3
 - Remove dependencies of ncdf4.helpers
 

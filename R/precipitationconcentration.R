@@ -1,4 +1,4 @@
-precipitationconcentration<-function(p) {
+precipitation_concentration<-function(p) {
   p_max = ceiling(max(p, na.rm=TRUE))
   f = cut(p, breaks=c(0.1,1:p_max), include.lowest =TRUE, right=FALSE)
   #Frequency distribution per class
@@ -48,4 +48,31 @@ precipitationconcentration<-function(p) {
   S <- 5000 - A
   ci =2*S/10000
   return(ci)
+}
+precipitation_rainfallErosivity<-function(x, long, scale = "month", average = TRUE) {
+  scale = match.arg(scale, c("month", "year"))
+  b0 = 0.117
+  b1 = -0.015
+  a = 2
+  
+  if(scale == "month") {
+    p_m = summarypoint(x, "Precipitation", fun="sum", freq="months", na.rm=T)
+    d_m = summarypoint(x, "Precipitation", fun="max", freq= "months", na.rm=T)
+    if(average) {
+      months = substr(names(p_m),6,7)
+      p_m = tapply(p_m, months, FUN="mean", na.rm=T)
+      d_m = tapply(d_m, months, FUN="mean", na.rm=T)
+    }
+    R_m = b0*p_m*sqrt(d_m)*(a+b1*long)
+    return(R_m)
+  } else {
+    p_y = summarypoint(x, "Precipitation", fun="sum", freq="years", na.rm=T)
+    d_y = summarypoint(x, "Precipitation", fun="max", freq= "years", na.rm=T)
+    if(average) {
+      p_y = mean(p_y, na.rm=T)
+      d_y = mean(d_y, na.rm=T)
+    }
+    R_y = b0*p_y*sqrt(d_y)*(a+b1*long)
+    return(R_y)
+  }
 }

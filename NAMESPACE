@@ -6,26 +6,33 @@ import(rgdal)
 import(methods)
 import(utils)
 useDynLib(meteoland, .registration = TRUE)
-export(correctionpoint, correctionpoints, correctionpoints.errors, 
+export(averagearea,
+       correctionpoint, correctionpoints, correctionpoints.errors, 
        correction_series,
-       defaultCorrectionParams, defaultInterpolationParams,
+       defaultCorrectionParams, defaultGenerationParams, defaultInterpolationParams,
+       downloadMGstationlist, downloadMGcurrentday, downloadMGhistorical,
        downloadSMCstationlist, downloadSMCvarmetadata,downloadSMCcurrentday, downloadSMChistorical,
        downloadAEMETcurrentday,downloadAEMEThistorical, downloadAEMEThistoricalstationlist,
-       extractgridpoints, extractNetCDF, extractpointdates, extractSpatialData,
+       extractgridindex,
+       extractgridpoints, extractNetCDF,
+       extractdates, extractvars,
+       humidity_relative2specific, humidity_specific2relative,
        interpolation_dewtemperature, interpolation_precipitation, interpolation_temperature, interpolation_wind,
        interpolationpoints, interpolationgrid, interpolationpixels,
-       interpolation.calibration, interpolation.calibration.fmax, interpolation.coverage, interpolation.cv, 
+       interpolation.calibration, interpolation.calibration.fmax, interpolation.coverage, interpolation.cv,
+       mergegrids, mergepoints,
        meteocomplete, meteoplot, MeteorologyUncorrectedData, MeteorologyInterpolationData,
-       penman, penmanmonteith, precipitationconcentration,
+       penman, penmanmonteith, 
+       precipitation_concentration, precipitation_rainfallErosivity,
        plot.interpolation.cv,
        radiation_julianDay, radiation_solarDeclination, radiation_solarConstant, radiation_daylength,
        radiation_dateStringToJulianDays, radiation_sunRiseSet, radiation_daylengthseconds,
        radiation_potentialRadiation, radiation_solarElevation, radiation_solarRadiation, 
        radiation_directDiffuseInstant, radiation_directDiffuseDay, radiation_skyLongwaveRadiation,
        radiation_outgoingLongwaveRadiation,radiation_netRadiation,
-       readmeteorologypixels, readmeteorologypixelsfiles,
-       readmeteorologypoint,readmeteorologypointfiles, 
-       readmeteorologygrid, readmeteorologygridfiles, readmeteorologygridcells, 
+       readmeteorologygridpoints,
+       readmeteorologygrid, readmeteorologypixels,
+       readmeteorologypoint,readmeteorologypoints,readmeteorologypointfiles, 
        readWindNinjaWindFields,
        reshapeweathercan, reshapeworldmet,
        SpatialPointsTopography, SpatialGridTopography, SpatialPixelsTopography, 
@@ -36,9 +43,9 @@ export(correctionpoint, correctionpoints, correctionpoints.errors,
        utils_airDensity, utils_averageDaylightTemperature, utils_latentHeatVaporisation,
        utils_latentHeatVaporisationMol,utils_psychrometricConstant,
        utils_saturationVaporPressureCurveSlope,
-       writemeteorologypixels, writemeteorologypixelsfiles,
-       writemeteorologygrid, writemeteorologygridfiles,
-       writemeteorologypoint, writemeteorologypointfiles)
+       weathergeneration,
+       writemeteorologypixels, writeemptymeteorologygrid, writemeteorologygrid, writemeteorologygridpixel,
+       writemeteorologypoint, writemeteorologypoints, writemeteorologypointfiles)
 exportClasses(MeteorologyProcedureData, MeteorologyInterpolationData, MeteorologyUncorrectedData)
 exportClasses(SpatialPointsMeteorology,SpatialPointsTopography,
               SpatialGridMeteorology,SpatialGridTopography,
@@ -50,7 +57,11 @@ importFrom(grDevices, colorRampPalette, topo.colors)
 importFrom(graphics, abline, hist, lines, par)
 importFrom(utils, read.table, setTxtProgressBar,
              txtProgressBar, write.table)
-importFrom(stats, cor, var, lm, aggregate, approx, na.omit, quantile, dist)
+importFrom(stats, 
+           aggregate, approx, arima.sim, 
+           coef, cor, dist, 
+           var, rlnorm, sd,
+           lm, na.omit, quantile)
 
 S3method(summary, interpolation.cv)
 

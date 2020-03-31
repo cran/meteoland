@@ -14,8 +14,8 @@ Summarizes the meteorology of a single location, a set of spatial points, pixels
 \usage{
 summarypoint(x, var, fun = mean, freq = NULL, dates = NULL, months = NULL, ...)
 summarypoints(points, var, fun = mean, freq = NULL, dates = NULL, months = NULL, ...)
-summarygrid(griddata, dates = NULL)
-summarypixels(pixelsdata, dates = NULL)
+summarygrid(grid, var, fun = mean, freq = NULL, dates = NULL, months = NULL, ...)
+summarypixels(pixels, var, fun = mean, freq = NULL, dates = NULL, months = NULL, ...)
 summaryinterpolationdata(object, var, fun = mean, freq = NULL, dates = NULL, 
                          months = NULL, ...)
 }
@@ -23,7 +23,7 @@ summaryinterpolationdata(object, var, fun = mean, freq = NULL, dates = NULL,
 \arguments{
   \item{x}{A data frame with dates in rows and meteorological variables in columns.}
   \item{points}{
-    An object of class \code{\link{SpatialPointsMeteorology-class}} with the coordinates and meteorological data of the locations for which summaries are desired. Alternatively, an object of class \code{\link{SpatialPointsDataFrame-class}} containing the meta data (columns \code{dir},  \code{filename} and possibly \code{format}) of meteorological files that will be sequentially read from the disk.
+    An object of class \code{\link{SpatialPointsMeteorology-class}} with the coordinates and meteorological data of the locations for which summaries are desired. Alternatively, an object of class \code{\link{SpatialPointsDataFrame-class}} containing the meta data (columns \code{dir},  \code{filename} and possibly \code{format}) of meteorological files that will be sequentially read from the disk. Finally, \code{points} can also be a string pointing to a netCDF.
   }
   \item{var}{The name of the meteorological variable to be summarized.}
   \item{fun}{The function to be calculated on values of each point. If \code{freq} is specified, the function will be calculated by intervals.}
@@ -39,17 +39,24 @@ An object of class \code{\link{Date}} to define the period to be summarized. If 
   \item{\dots}{
 Additional parameters to \code{fun}.
   }
-  \item{griddata}{An object of class \code{\link{SpatialGridMeteorology-class}} with the meteorological data for a grid. Alternatively, a \code{\link{data.frame}} containing the meta data (columns \code{dir} and \code{filename}) of grid meteorological files that will be sequentially read from the disk.}
-  \item{pixelsdata}{An object of class \code{\link{SpatialPixelsMeteorology-class}} with the meteorological data for a set of grid cells. Alternatively, a \code{\link{data.frame}} containing the meta data (columns \code{dir} and \code{filename}) of grid meteorological files that will be sequentially read from the disk.}
+  \item{grid}{An object of class \code{\link{SpatialGridMeteorology-class}} with the meteorological data for a grid, or a string pointing to a NetCDF.}
+  \item{pixels}{An object of class \code{\link{SpatialPixelsMeteorology-class}} with the meteorological data for  grid pixels, or a string pointing to a NetCDF.}
   \item{object}{An object of class \code{\link{MeteorologyInterpolationData-class}}.}
 }
+\details{
+If \code{var="ALL"} then function \code{summarypoints} produces a summary of all variables with default statistics and returns an object of class \code{SpatialPointsMeteorology}.
+}
 \value{
-Function \code{summarypoint} returns a named vector of values with dates as names. Functions \code{summarypoints} and \code{summaryinterpolatoiondata} return an object of class \code{\link{SpatialPointsDataFrame}} containing summaries (either one variable or several if \code{freq} is specified). Functions \code{summarygrid} and \code{summarypixels} return an object of class \code{\link{SpatialGridDataFrame}} and \code{\link{SpatialPixelsDataFrame}}, respectively, containing the summary of all meteorogical variables (sums or precipitation and PET; means for the other variables) calculated over the specified period. 
+\itemize{
+\item{Function \code{summarypoint} returns a named vector of values with dates as names.}
+\item{Functions \code{summarypoints} and \code{summaryinterpolationdata} return an object of class \code{\link{SpatialPointsDataFrame}} containing summaries (either one variable or several if \code{freq} is specified).}
+\item{Functions \code{summarygrid} and \code{summarypixels} return an object of class \code{\link{SpatialGridDataFrame}} and \code{\link{SpatialPixelsDataFrame}}, respectively, containing the summaries analogously to \code{summarypoints}. }
+}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres} Ainsa, CTFC
 
-Antoine Cabon,CTFC
+Antoine Cabon, CTFC
 }
 \seealso{
 \code{\link{SpatialPointsMeteorology-class}}
@@ -66,7 +73,7 @@ spt = as(examplegridtopography, "SpatialPointsTopography")[p]
 mp = interpolationpoints(exampleinterpolationdata, spt)
 
 #PET sums by months
-mp.sum = summarypoints(mp, var="PET", freq="months")
+mp.sum = summarypoints(mp, var="PET", freq="months", fun=sum)
 
 mp.sum
 }

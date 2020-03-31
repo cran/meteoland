@@ -6,16 +6,18 @@ SpatialGridMeteorology<-function(grid, proj4string=CRS(as.character(NA)), data, 
   if(!inherits(proj4string, "CRS")) stop("'proj4string' has to be of class 'CRS'")
   if(!inherits(data, "list")) stop("'data' has to be a list of data frames")
   if(length(data)!=ndates) stop("Number of data frames must be equal to the number of dates")
-  for(i in 1:ndates) {
-    if(!inherits(data[[i]], "data.frame")) stop("'data' has to be a list of data frames")
-    if(nrow(data[[i]])!=nrow(cc)) stop("Number of rows in all data frames have to be equal to the number of grid cells")
-  }
-  nvar = ncol(data[[1]])
-  varnames = names(data[[1]])
-  if(ndates>1) {
-    for(i in 2:ndates) {
-      if(ncol(data[[i]])!=nvar) stop("Number of variables have to be the same for all data frames")
-      if(sum(names(data[[i]])==varnames)<nvar) stop("Variables need to be named equally in all data frames")
+  if(ndates>0) {
+    for(i in 1:ndates) {
+      if(!inherits(data[[i]], "data.frame")) stop("'data' has to be a list of data frames")
+      if(nrow(data[[i]])!=nrow(cc)) stop("Number of rows in all data frames have to be equal to the number of grid cells")
+    }
+    nvar = ncol(data[[1]])
+    varnames = names(data[[1]])
+    if(ndates>1) {
+      for(i in 2:ndates) {
+        if(ncol(data[[i]])!=nvar) stop("Number of variables have to be the same for all data frames")
+        if(sum(names(data[[i]])==varnames)<nvar) stop("Variables need to be named equally in all data frames")
+      }
     }
   }
   sg = SpatialGrid(grid, proj4string)
@@ -94,3 +96,43 @@ subs.SpatialGridMeteorology <- function(x, i, j, ..., drop = FALSE) {
   }
 }
 setMethod("[", "SpatialGridMeteorology", subs.SpatialGridMeteorology)
+
+
+as.SpGrdMet.STFDF = function(from) {
+
+  datavec = from@data
+  data = datavec[[1]]
+  if(length(datavec)>1) {
+    for(i in 2:length(datavec)) {
+       data = rbind(data, datavec[[i]]) 
+    }
+  }
+  time = as.POSIXct(as.Date(from@dates))
+  sp = as(from, "SpatialGrid")
+  spacetime::STFDF(sp, time, data)
+}
+setAs("SpatialGridMeteorology", "STFDF", as.SpGrdMet.STFDF)
+as.SpGrdMet.stars = function(from) {
+  stars::st_as_stars(as.SpGrdMet.STFDF(from))
+}
+setAs("SpatialGridMeteorology", "stars", as.SpGrdMet.stars)
+
+as.SpGrdMet.SpPtsMet = function(from) {
+  points = as(from, "SpatialPoints")
+  dates = from@dates
+  npoints = length(points)
+  ndates = length(dates)
+  data = vector("list",npoints)
+  rownames(points@coords) = 1:npoints
+  names(data) = 1:npoints
+  varnames = names(from@data[[1]])
+  for(i in 1:npoints) {
+    df = data.frame(matrix(NA, nrow = ndates, ncol=length(varnames)))
+    colnames(df)= varnames
+    rownames(df)=as.character(dates)
+    for(j in 1:ndates) df[j,] = from@data[[j]][i,]
+    data[[i]] = df
+  }
+  SpatialPointsMeteorology(points, data = data, dates = dates)
+}
+setAs("SpatialGridMeteorology", "SpatialPointsMeteorology", as.SpGrdMet.SpPtsMet)
