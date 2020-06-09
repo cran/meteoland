@@ -1,10 +1,11 @@
-f51222f5e6b62d1b10ffea231fd49cce *DESCRIPTION
-cadd58fa20e770af7fa84130984ad729 *NAMESPACE
-25314f4376b4680a79ae2d9d7de99b2b *NEWS.md
+9c3a90526c96e9afa59eb87f4beb9b71 *DESCRIPTION
+bca1332725abbc98d98fdd7df504d63a *NAMESPACE
+07fa2a36c8067ae31abc964dd0a908fd *NEWS.md
 edc1ffb0a5bba43a1c79f29b0f705d1b *R/DefineProcedureClasses.R
 9a1ab4b7bdb39bd0d5efaaef020543dc *R/DefineSpatialDataClasses.R
 6bb4dd15573a5bf36f5420944a603d14 *R/MeteorologyInterpolationData.R
 b8d27c54f796e77f531a955f9781e400 *R/MeteorologyUncorrectedData.R
+53bb65b7138558401e6f3e01cc105d8f *R/NetCDFutils.R
 a97c7494e6abd7a6efea5e7257cc1398 *R/RcppExports.R
 f41107df11aab41b2a118d9d8939f59e *R/SpatialGridMeteorology-methods.R
 8cb3249bb1f2f0ef168e2c40b87e2000 *R/SpatialGridTopography-methods.R
@@ -29,8 +30,8 @@ aac611b218cad5d3dd01495aa4f6ea84 *R/download_historical.R
 aa58b30effedcd1f6a886720a745df1a *R/interpolation.calibration.R
 b9a624cbf385fb7060b6a758e090c777 *R/interpolation.coverage.R
 094c680685e15db0aeba81e6b5c4573b *R/interpolation.cv.R
-c4a061fd0c1fdae2e87d0a3aa9c90d05 *R/interpolationgrid.R
-cd84f7506431e8a72d7bb9048a9bc4d2 *R/interpolationpixels.R
+3bd46683b65f86092002f32c7383ff85 *R/interpolationgrid.R
+aaf922a8e20ab5255bcb4a8dae35f612 *R/interpolationpixels.R
 eaeef333977afddf46ca2d66c4439659 *R/interpolationpoints.R
 40102939c788506eba86c89351260f67 *R/mergegrids.R
 4cabbcef58a335f0255f4f0ca0868ae2 *R/meteocomplete.R
@@ -40,7 +41,7 @@ eaeef333977afddf46ca2d66c4439659 *R/interpolationpoints.R
 71ffe60252ef017394b6c2295f99dffc *R/precipitationconcentration.R
 13de3c8d8fc1c51f431c368f0f818c10 *R/readWindNinjaOutput.R
 1ce5fa8d0ece85c4bc9e9f161e4f86fd *R/readmeteorologygrid.R
-fb441785d14a1c4f6f93d8d6f38f65f1 *R/readmeteorologypoints.R
+5a680ae62b37ac0209016f573f9abac5 *R/readmeteorologypoints.R
 c4ca0e1646dc4b95b692ea3f062d6507 *R/reshapeweathercan.R
 7d2f1c2ffce3f22d63161a6c81f6b3d8 *R/reshapeworldmet.R
 2f178e73875a64808442ff2d49c49519 *R/summary.interpolation.cv.R
@@ -58,8 +59,8 @@ a8d10d04b77782106f0427e7a5930f91 *R/writemeteorologygrid.R
 33217e87259ca9fce8730a1eea2fdd47 *data/exampleinterpolationdata.rda
 a6030e61785d2d5f171510b934ca6299 *inst/CITATION
 a6e200d626a76bf949b5f112a105651f *inst/doc/UserGuide.R
-0d8bba30ed82ecc320d246aae6e318f1 *inst/doc/UserGuide.Rmd
-e00aedb4698ef44eafa0f950745a0fd2 *inst/doc/UserGuide.html
+786f7e2487f61ff3c4d6d954df0bdaf9 *inst/doc/UserGuide.Rmd
+1e1bfe8da3e3c9106596a993778737c3 *inst/doc/UserGuide.html
 f5d438a278d67c3e9b6892c542acc184 *inst/include/meteoland.h
 a27f73c55efab89685fd8c5ab62a579a *inst/include/meteoland_RcppExports.h
 78d52822905741e18bcc1044bbcd6e47 *man/MeteorologyInterpolationData-class.Rd
@@ -67,6 +68,7 @@ a27f73c55efab89685fd8c5ab62a579a *inst/include/meteoland_RcppExports.h
 8fa25f80c874672aaecbfd26030f0575 *man/MeteorologyProcedureData-class.Rd
 1d1ce0243a1e2e68be6aec5a67c57503 *man/MeteorologyUncorrectedData-class.Rd
 9853eff95e8f43be969d7ed95285e5f2 *man/MeteorologyUncorrectedData.Rd
+1a2cb5c43d9cfa72b4a9c59c844df188 *man/NetCDFutils.Rd
 431a795daf47395a4524b88a4fefda90 *man/SpatialGridMeteorology-class.Rd
 241345131a3fb0230b8c86a335d39587 *man/SpatialGridMeteorology.Rd
 ce8cafa4f5f9107c155d943be83b04a7 *man/SpatialGridTopography-class.Rd
@@ -128,4 +130,4 @@ ae3a20f28013a9f09d67de51b9e91a1b *src/RcppExports.cpp
 27e40273d7f225ea11ae52a982d59e47 *src/utils.cpp
 711949fd035b6cc6739e8f21eaa774b4 *src/utils.h
 e03ac70cbe8d5ae4872ac54259861d03 *src/wind.cpp
-0d8bba30ed82ecc320d246aae6e318f1 *vignettes/UserGuide.Rmd
+786f7e2487f61ff3c4d6d954df0bdaf9 *vignettes/UserGuide.Rmd
