@@ -1,8 +1,8 @@
 Package: meteoland
 Type: Package
 Title: Landscape Meteorology Tools
-Version: 0.9.4
-Date: 2020-08-26
+Version: 0.9.7
+Date: 2020-10-27
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com'),
@@ -22,11 +22,11 @@ Encoding: UTF-8
 NeedsCompilation: yes
 VignetteBuilder: utils, knitr
 RoxygenNote: 6.1.1
-Packaged: 2020-08-27 07:49:00 UTC; miquel.decaceres
+Packaged: 2020-10-27 08:00:29 UTC; miquel
 Author: Miquel De Cáceres [aut, cre],
   Nicolas Martin [aut],
   Víctor Granda [aut],
   Antoine Cabon [aut]
 Maintainer: Miquel De Cáceres <miquelcaceres@gmail.com>
 Repository: CRAN
-Date/Publication: 2020-08-27 16:00:18 UTC
+Date/Publication: 2020-10-27 14:00:10 UTC

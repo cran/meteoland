@@ -2,6 +2,20 @@
  NEWS for R Package "meteoland"
 -------------------------------
 
+# Version 0.9.7
+- Bug correction in 'mergegrids'
+- Bug correction in '.putgridvardataday'
+- Flexible variable definition for 'writemeteorologygrid' and 'writemeteorologypoints'
+- MeteorologyUncorrectedData accepts filenames as input to avoid loading large files in memory when calling 'correctionpoints'
+
+# Version 0.9.6
+- Allow missing Precipitation when building MeteorologyInterpolationData
+- New functions for conversion between relative humidity and dew temperature 
+
+# Version 0.9.5
+- Update of reshapeworldmet to adapt to changes in package worldmet v.0.9.0
+- Update of function downloadSMCcurrentday
+
 # Version 0.9.4
 - Update of CRS in package data.
 - Modification of error handling in .get_data_aemet.
