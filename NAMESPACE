@@ -1,5 +1,6 @@
 import(sp)
 import(httr)
+import(xml2)
 import(spdep)
 import(ncdf4)
 import(rgdal)
@@ -11,8 +12,9 @@ export(averagearea,
        correction_series,
        defaultCorrectionParams, defaultGenerationParams, defaultInterpolationParams,
        downloadMGstationlist, downloadMGcurrentday, downloadMGhistorical,
-       downloadSMCstationlist, downloadSMCvarmetadata,downloadSMCcurrentday, downloadSMChistorical,
-       downloadAEMETcurrentday,downloadAEMEThistorical, downloadAEMEThistoricalstationlist,
+       downloadSMCstationlist,downloadSMCcurrentday, downloadSMChistorical,
+       downloadAEMETcurrentday,downloadAEMEThistorical, downloadAEMETstationlist,
+       downloadMETEOCLIMATICcurrentday, downloadMETEOCLIMATICstationlist,
        extractgridindex,
        extractgridpoints, extractNetCDF,
        extractdates, extractvars,
@@ -35,7 +37,7 @@ export(averagearea,
        readmeteorologygrid, readmeteorologypixels,
        readmeteorologypoint,readmeteorologypoints,readmeteorologypointfiles, 
        readWindNinjaWindFields,
-       reshapeweathercan, reshapeworldmet,
+       reshapemeteospain, reshapeweathercan, reshapeworldmet, 
        SpatialPointsTopography, SpatialGridTopography, SpatialPixelsTopography, 
        SpatialGridMeteorology, SpatialPointsMeteorology, SpatialPixelsMeteorology,
        subsample,summary.interpolation.cv, 
@@ -63,6 +65,13 @@ importFrom(stats,
            coef, cor, dist, 
            var, rlnorm, sd,
            lm, na.omit, quantile)
+importFrom(sf, 
+           as_Spatial, st_coordinates)
+importFrom(units,
+           drop_units)
+importFrom(meteospain, 
+           get_stations_info_from, get_meteo_from,
+           aemet_options, meteocat_options, meteogalicia_options, meteoclimatic_options)
 
 S3method(summary, interpolation.cv)
 

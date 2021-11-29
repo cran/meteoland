@@ -122,8 +122,10 @@
         #Define additional lon/lat variables
         varLon <- ncvar_def( "lon", "degrees_east", list(dimX,dimY), missval = NULL, longname = "longitude")
         varLat <- ncvar_def( "lat", "degrees_north", list(dimX,dimY), missval =NULL, longname = "latitude")
-        nc <- nc_create(file, varlist, force_v4 = T)
-        spt_lonlat = spTransform(SpatialPoints(coordinates(grid), CRS(proj4string)), CRS("+proj=longlat +datum=WGS84"))
+        varlist2 = list("varX" = varLon, "varY" = varLat)
+        for(i in 1:length(varlist)) varlist2[[names(varlist)[i]]] = varlist[[i]]
+        nc <- nc_create(file, varlist2, force_v4 = T)
+        spt_lonlat = spTransform(SpatialPoints(coordinates(grid), CRS(proj4string)), CRS(SRS_string = "EPSG:4326"))
         lonlat = coordinates(spt_lonlat)
         .putgridvardata(nc, varLon, lonlat[,1])
         .putgridvardata(nc, varLat, lonlat[,2])
@@ -188,7 +190,7 @@
     nc <- nc_create(file, varlist2, force_v4 = T)
     ncvar_put(nc, varid=varX, vals=coords[,1], start=c(1), count=c(np))
     ncvar_put(nc, varid=varY, vals=coords[,2], start=c(1), count=c(np))
-    spt_lonlat = spTransform(SpatialPoints(coords, CRS(proj4string)), CRS("+proj=longlat +datum=WGS84"))
+    spt_lonlat = spTransform(SpatialPoints(coords, CRS(proj4string)), CRS(SRS_string = "EPSG:4326"))
     lonlat = coordinates(spt_lonlat)
     ncvar_put(nc, varid=varLon, vals=lonlat[,1], start=c(1), count=c(np))
     ncvar_put(nc, varid=varLat, vals=lonlat[,2], start=c(1), count=c(np))
@@ -237,7 +239,7 @@
   if(crs@projargs != proj4string(object)) stop("Point data does not have the same CRS as the netCDF")
   data <- object@data
   coords <- object@coords
-  spt_lonlat = spTransform(SpatialPoints(coords, crs), CRS("+proj=longlat +datum=WGS84"))
+  spt_lonlat = spTransform(SpatialPoints(coords, crs), CRS(SRS_string = "EPSG:4326"))
   lonlat = coordinates(spt_lonlat)
   IDs <- ncvar_get(nc, "station_name")
   cnt = length(IDs)
@@ -447,10 +449,10 @@
     if(proj4string!="NA") crs = CRS(proj4string)
   }
   if(("lon" %in% names(ncin$dim)) && ("lat" %in% names(ncin$dim))) {
-    crs = CRS("+proj=longlat")
+    crs = CRS(SRS_string = "EPSG:4326")
   }
   if(("rlon" %in% names(ncin$dim)) && ("rlat" %in% names(ncin$dim))) {
-    crs = CRS("+proj=longlat")
+    crs = CRS(SRS_string = "EPSG:4326")
   }
   return(crs)
 }

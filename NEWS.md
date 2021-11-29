@@ -2,6 +2,22 @@
  NEWS for R Package "meteoland"
 -------------------------------
 
+# Version 1.0.1
+- New function 'reshapemeteospain' to reshape weather data obtained using package 'meteospain'
+- Functions 'downloadXXXstation', 'downloadXXXcurrentday' and 'downloadXXXhistorical' now call functions from package 'meteospain'
+
+# Version 1.0.0
+- 'debug' option in interpolation params to force additional output
+- Download functions DEPRECATED. User is advised to use package 'meteospain'
+- CRS specification changed to SRS_string
+
+# Version 0.9.9
+- New functions 'downloadMETEOCLIMATICcurrentday' and 'downloadMETEOCLIMATICstationlist' by MalditoBarbudo, inspired by lemuscanovas
+- Bug correction in 'downloadAEMEThistorical'
+
+# Version 0.9.8
+- Bug correction in '.openwritegridNetCDF'
+
 # Version 0.9.7
 - Bug correction in 'mergegrids'
 - Bug correction in '.putgridvardataday'

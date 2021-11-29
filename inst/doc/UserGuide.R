@@ -11,8 +11,9 @@ library(meteoland)
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  library(devtools)
-#  install_github("vegmod/meteoland",
-#                 build_opts = c("--no-resave-data", "--no-manual"))
+#  install_github("emf-creaf/meteoland",
+#                 build_opts = c("--no-resave-data", "--no-manual"),
+#                 build_vignettes = TRUE)
 #  library(meteoland)
 
 ## ---- echo = FALSE, include= FALSE--------------------------------------------
@@ -41,7 +42,7 @@ tmax[1:6,1:6]
 
 ## -----------------------------------------------------------------------------
 sp = SpatialPoints(st_data[,c("X_UTM", "Y_UTM")],
-                   proj4string = CRS("+proj=utm +zone=31 +ellps=WGS84 +datum=WGS84 +units=m +towgs84=0,0,0"))
+                   proj4string = CRS(SRS_string = "EPSG:32631"))
 head(sp)
 
 ## -----------------------------------------------------------------------------
@@ -146,7 +147,7 @@ points_df
 ## -----------------------------------------------------------------------------
 spt = SpatialPointsTopography(as.matrix(points_df[,c("X_UTM", "Y_UTM")]),
                               elevation = points_df$elevation,
-                              proj4string = CRS("+proj=utm +zone=31 +ellps=WGS84 +datum=WGS84 +units=m +towgs84=0,0,0"))
+                              proj4string = CRS(SRS_string = "EPSG:32631"))
 spt
 
 ## -----------------------------------------------------------------------------
@@ -187,7 +188,7 @@ head(proj_data[[1]])
 proj_dates = seq(as.Date("2023-01-01"), as.Date("2023-12-31"), by="day")
 
 ## -----------------------------------------------------------------------------
-sp = SpatialPoints(pt_coords, CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+sp = SpatialPoints(pt_coords, CRS(SRS_string = "EPSG:4326"))
 sp
 
 ## -----------------------------------------------------------------------------

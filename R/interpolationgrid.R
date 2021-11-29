@@ -6,7 +6,8 @@
   cc = sp@coords
   z = grid@data$elevation
   mPar = object@params
-
+  if(!("debug" %in% names(mPar))) mPar$debug = FALSE
+  
   tmin = .interpolateTemperatureSeriesPoints(Xp= cc[,1], Yp =cc[,2], Zp = z,
                                              X = object@coords[,1],
                                              Y = object@coords[,2],
@@ -15,7 +16,8 @@
                                              iniRp = mPar$initial_Rp,
                                              alpha = mPar$alpha_MinTemperature,
                                              N = mPar$N_MinTemperature,
-                                             iterations = mPar$iterations)
+                                             iterations = mPar$iterations,
+                                             debug = mPar$debug)
   tmax = .interpolateTemperatureSeriesPoints(Xp= cc[,1], Yp =cc[,2], Zp = z,
                                              X = object@coords[,1],
                                              Y = object@coords[,2],
@@ -24,7 +26,8 @@
                                              iniRp = mPar$initial_Rp,
                                              alpha = mPar$alpha_MaxTemperature,
                                              N = mPar$N_MaxTemperature,
-                                             iterations = mPar$iterations)
+                                             iterations = mPar$iterations,
+                                             debug = mPar$debug)
   tmean = 0.606*tmax+0.394*tmin
   prec = .interpolatePrecipitationSeriesPoints(Xp= cc[,1], Yp =cc[,2], Zp = z,
                                                X = object@coords[,1],
@@ -39,7 +42,8 @@
                                                N_amount = mPar$N_PrecipitationAmount,
                                                iterations = mPar$iterations,
                                                popcrit = mPar$pop_crit,
-                                               fmax = mPar$f_max)
+                                               fmax = mPar$f_max,
+                                               debug = mPar$debug)
   #relative humidity
   if(is.null(object@RelativeHumidity)) { #Estimate VP assuming that dew-point temperature is equal to Tmin
     rhmean = .relativeHumidityFromMinMaxTemp(tmin, tmax)
@@ -50,14 +54,15 @@
     TdewM = .dewpointTemperatureFromRH(0.606*as.matrix(object@MaxTemperature[,i,drop=FALSE])+0.394*as.matrix(object@MinTemperature[,i,drop=FALSE]),
                                        as.matrix(object@RelativeHumidity))
     tdew = .interpolateTdewSeriesPoints(Xp= cc[,1], Yp =cc[,2], Zp = z,
-                                               X = object@coords[,1],
-                                               Y = object@coords[,2],
-                                               Z = object@elevation,
-                                               T = TdewM,
-                                               iniRp = mPar$initial_Rp,
-                                               alpha = mPar$alpha_DewTemperature,
-                                               N = mPar$N_DewTemperature,
-                                               iterations = mPar$iterations)
+                                        X = object@coords[,1],
+                                        Y = object@coords[,2],
+                                        Z = object@elevation,
+                                        T = TdewM,
+                                        iniRp = mPar$initial_Rp,
+                                        alpha = mPar$alpha_DewTemperature,
+                                        N = mPar$N_DewTemperature,
+                                        iterations = mPar$iterations,
+                                        debug = mPar$debug)
     rhmean = .relativeHumidityFromDewpointTemp(tmean, tdew)
     VP = .temp2SVP(tdew) #kPa
     rhmin = pmax(0,.relativeHumidityFromDewpointTemp(tmax, tdew))
@@ -76,7 +81,8 @@
                                                       iniRp = mPar$initial_Rp,
                                                       alpha = mPar$alpha_MinTemperature,
                                                       N = mPar$N_MinTemperature,
-                                                      iterations = mPar$iterations)
+                                                      iterations = mPar$iterations,
+                                                      debug = mPar$debug)
 
   latrad = latitude * (pi/180)
   asprad = grid$aspect * (pi/180)
@@ -156,7 +162,7 @@ interpolationgrid<-function(object, grid, dates = NULL,
   }
   insidebox = (gbbox[1,1]>=bbox[1,1]) && (gbbox[1,2]<=bbox[1,2]) && (gbbox[2,1]>=bbox[2,1]) && (gbbox[2,2]<=bbox[2,2])
   if(!insidebox) warning("Boundary box of target grid is not within boundary box of interpolation data object.")
-  longlat = spTransform(as(grid,"SpatialPoints"),CRS("+proj=longlat"))
+  longlat = spTransform(as(grid,"SpatialPoints"),CRS(SRS_string = "EPSG:4326"))
   latitude = longlat@coords[,2]
   ndates = length(dates)
   #Is export?
