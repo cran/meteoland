@@ -2,6 +2,10 @@
  NEWS for R Package "meteoland"
 -------------------------------
 
+# Version 1.0.2
+- Remove non-necessary dependencies (xml2, httr, jsonlite)
+- Documentation bug
+
 # Version 1.0.1
 - New function 'reshapemeteospain' to reshape weather data obtained using package 'meteospain'
 - Functions 'downloadXXXstation', 'downloadXXXcurrentday' and 'downloadXXXhistorical' now call functions from package 'meteospain'
