@@ -82,6 +82,8 @@ double interpolatePrecipitationEventPoint(double xp, double yp, double zp, Numer
   return(0.0);
 }
 
+//' @describeIn interpolation_temperature Precipitation 
+//' @export
 // [[Rcpp::export("interpolation_precipitation")]]
 NumericVector interpolatePrecipitationPoints(NumericVector Xp, NumericVector Yp, NumericVector Zp, NumericVector X, NumericVector Y, NumericVector Z, NumericVector P, NumericVector Psmooth,
                                              double iniRp = 140000, double alpha_event = 6.25, double alpha_amount = 6.25,
@@ -136,27 +138,34 @@ NumericMatrix interpolatePrecipitationSeriesPoints(NumericVector Xp, NumericVect
       missing[i] = (NumericVector::is_na(P(i,d)) || NumericVector::is_na(X[i]) || NumericVector::is_na(Y[i]) || NumericVector::is_na(Z[i]));
       if(missing[i]) nmis++;
     }
-    if(debug) Rcout << "Day "<< d << " nexcluded = " << nmis;
-    NumericVector Pday(nstations-nmis);
-    NumericVector Psmoothday(nstations-nmis);
-    NumericVector Xday(nstations-nmis);
-    NumericVector Yday(nstations-nmis);
-    NumericVector Zday(nstations-nmis);
-    int c = 0;
-    for(int i=0;i<nstations;i++) {
-      if(!missing[i]) {
-        Pday[c] = P(i,d);
-        Psmoothday[c] = Psmooth(i,d);
-        Xday[c] = X[i];
-        Yday[c] = Y[i];
-        Zday[c] = Z[i];
-        c++;
+    if(nmis == nstations) {
+      for(int p=0;p<npoints;p++) {
+        Pp(p,d) = NA_REAL;
       }
-    }
-    NumericVector Ppday = interpolatePrecipitationPoints(Xp, Yp,Zp, Xday, Yday, Zday, Pday,Psmoothday, iniRp, alpha_event, alpha_amount,
-                                                         N_event, N_amount, iterations, popcrit, fmax, debug);
-    for(int p=0;p<npoints;p++) {
-      Pp(p,d) = Ppday[p];
+    } else {
+      // nmis != nstations
+      if(debug) Rcout << "Day "<< d << " nexcluded = " << nmis;
+      NumericVector Pday(nstations-nmis);
+      NumericVector Psmoothday(nstations-nmis);
+      NumericVector Xday(nstations-nmis);
+      NumericVector Yday(nstations-nmis);
+      NumericVector Zday(nstations-nmis);
+      int c = 0;
+      for(int i=0;i<nstations;i++) {
+        if(!missing[i]) {
+          Pday[c] = P(i,d);
+          Psmoothday[c] = Psmooth(i,d);
+          Xday[c] = X[i];
+          Yday[c] = Y[i];
+          Zday[c] = Z[i];
+          c++;
+        }
+      }
+      NumericVector Ppday = interpolatePrecipitationPoints(Xp, Yp,Zp, Xday, Yday, Zday, Pday,Psmoothday, iniRp, alpha_event, alpha_amount,
+                                                           N_event, N_amount, iterations, popcrit, fmax, debug);
+      for(int p=0;p<npoints;p++) {
+        Pp(p,d) = Ppday[p];
+      }
     }
   }
   return(Pp);

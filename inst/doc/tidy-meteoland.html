@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Victor Granda" />
+
+
+<title>Tidy meteoland</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Tidy meteoland</h1>
+<h4 class="author">Victor Granda</h4>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(meteoland)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<div id="a-new-way-of-working-with-meteoland" class="section level2">
+<h2>A new way of working with <code>meteoland</code></h2>
+<p>With the <a href="https://r-spatial.org/r/2022/04/12/evolution.html">retirement</a>
+of <code>rgdal</code>, <code>rgeos</code> and <code>maptools</code> R
+packages, a complete update of <code>meteoland</code> was necessary to
+remove the hard dependency <code>meteoland</code> has with
+<code>sp</code> and <code>raster</code> R packages. Starting with
+version 2.0.0 of <code>meteoland</code>, any hard dependency on retired
+packages as well as <code>sp</code> and <code>raster</code> has been
+removed, and now <code>sf</code> and <code>stars</code> packages are
+internally used for working with simple features and raster data.</p>
+<p>By June 2023, <code>sp</code> and <code>raster</code> packages will
+be completely removed from the dependency list.</p>
+<p>As fundamental changes were required (<code>meteoland</code>
+meteorology classes were based on <code>sp</code> ones), a decision to
+improve and make meteorological interpolation process simpler was taken.
+In this vignette, we provide insights on the new ways of working with
+<code>meteoland</code>.</p>
+<p>If you are interested in the equivalences between older and newer
+functions of <code>meteoland</code>, please see the <a href="#appendix">appendix</a> at the end of the vignette.</p>
+</div>
+<div id="example-datasets" class="section level2">
+<h2>Example datasets</h2>
+<p><code>meteoland</code> now ships with new example objects, based on
+the <code>sf</code> and <code>stars</code> packages. The following table
+describes the new data examples:</p>
+<table>
+<colgroup>
+<col width="29%" />
+<col width="70%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>meteoland_interpolator_example</td>
+<td>A <code>meteoland</code> interpolator object, with daily
+meteorological data in Catalonia (Spain) for April 2022.</td>
+</tr>
+<tr class="even">
+<td>meteoland_meteo_example</td>
+<td>Data from meteorological stations in Catalonia (Spain) for April
+2022.</td>
+</tr>
+<tr class="odd">
+<td>meteoland_meteo_no_topo_example</td>
+<td>Data from meteorological stations in Catalonia (Spain) for April
+2022, without topographical information.</td>
+</tr>
+<tr class="even">
+<td>meteoland_topo_example</td>
+<td>Topographical information for meteorological stations in Catalonia
+(Spain).</td>
+</tr>
+<tr class="odd">
+<td>points_to_interpolate_example</td>
+<td>Topographical information for 15 plots located in Catalonia
+(Spain).</td>
+</tr>
+<tr class="even">
+<td>raster_to_interpolate_example</td>
+<td>Topographical information for a 0.01 degree grid (10x10 cells)
+raster located in central Catalonia (Spain)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="the-new-interpolation-process" class="section level2">
+<h2>The new interpolation process</h2>
+<p>The interpolation of meteorological information requires two kinds of
+information:</p>
+<ol style="list-style-type: decimal">
+<li><p>The <strong>topographical information</strong> of the target
+locations to interpolate. This includes elevation, aspect and slope.
+Elevation is the only mandatory topography variable, but interpolation
+results improve when also aspect and slope are provided in mountain
+areas.</p></li>
+<li><p>The reference <strong>meteorological information</strong> that we
+will use to build the interpolator object. This information can come
+from meteorological stations in the area we are interested on or,
+alternatively, can be extracted from available rasters with
+meteorological variables.</p></li>
+</ol>
+<div id="topographical-information" class="section level3">
+<h3>Topographical information</h3>
+<p>In order to interpolate, we need our locations in a format that
+<code>meteoland</code> can understand. For point locations, this is a
+<code>sf</code> object including the <code>elevation</code> (in
+m.a.s.l.), <code>slope</code> (in degrees) and <code>aspect</code> (in
+degrees) variables, such as:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>points_to_interpolate_example</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 15 features and 4 fields</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 5</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258)</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968)</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791)</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226)</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612)</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838)</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591)</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875)</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541)</span></span></code></pre></div>
+<p>For spatially-continuous data (i.e. a raster), we need a
+<code>stars</code> object including <code>elevation</code> (in
+m.a.s.l.), <code>slope</code> (in degrees) and <code>aspect</code> (in
+degrees) as attributes, such as:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>raster_to_interpolate_example</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; stars object with 2 dimensions and 3 attributes</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attribute(s):</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  Min.    1st Qu.    Median      Mean   3rd Qu.     Max.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; elevation  240.000000 370.000000 447.00000 460.32231 525.00000 786.0000</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; slope        1.432096   5.720433  11.34812  13.07343  19.75851  31.0719</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; aspect       5.194427  74.744881 174.36932 181.67923 291.03751 360.0000</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dimension(s):</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   from  to    offset      delta refsys x/y</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; x  155 165 0.0364777  0.0105789 WGS 84 [x]</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; y  110 120   42.9208 -0.0105789 WGS 84 [y]</span></span></code></pre></div>
+<p>Both, <code>sf</code> and <code>stars</code> R packages have the
+necessary functions to read most spatial formats, the only thing to
+consider is ensuring that the topographical variables are included, have
+the proper units and mandatory names (<code>elevation</code>,
+<code>aspect</code>, <code>slope</code>).</p>
+</div>
+<div id="meteorological-information" class="section level3">
+<h3>Meteorological information</h3>
+<p>For interpolating the meteorological variables in our locations (see
+above), we need a reference meteorological data. This is a
+<code>sf</code> object with the reference locations, and daily values of
+the weather variables needed to perform the interpolation, for
+example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>meteoland_meteo_example</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 5652 features and 18 fields</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.30565 ymin: 40.55786 xmax: 3.18165 ymax: 42.77011</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5,652 × 19</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               service  statio…¹ stati…² stati…³ eleva…⁴ MeanT…⁵ MinTe…⁶</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;dttm&gt;              &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00 meteocat C6       Castel… Lleida     264      7.3     1.4</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-01 00:00:00 meteocat C7       Tàrrega Lleida     427      6.2     0.3</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-01 00:00:00 meteocat C8       Cervera Lleida     554      4.8    -0.7</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-01 00:00:00 meteocat C9       Mas de… Tarrag…    240      7.7     5  </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-01 00:00:00 meteocat CC       Orís    Barcel…    626      4.6    -1  </span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-01 00:00:00 meteocat CD       la Seu… Lleida     849      2.4    -2.2</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-01 00:00:00 meteocat CE       els Ho… Barcel…    316      8.2     2.3</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-01 00:00:00 meteocat CG       Molló … Girona    1405     -2.5    -5.9</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-01 00:00:00 meteocat CI       Sant P… Girona     852      2.6    -2.2</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-01 00:00:00 meteocat CJ       Organyà Lleida     566.     4.8     1.1</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 5,642 more rows, 11 more variables: MaxTemperature &lt;dbl&gt;,</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MeanRelativeHumidity &lt;dbl&gt;, MinRelativeHumidity &lt;dbl&gt;,</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MaxRelativeHumidity &lt;dbl&gt;, Precipitation &lt;dbl&gt;, WindDirection &lt;dbl&gt;,</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WindSpeed &lt;dbl&gt;, Radiation &lt;dbl&gt;, geom &lt;POINT [°]&gt;, aspect &lt;dbl&gt;,</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   slope &lt;dbl&gt;, and abbreviated variable names ¹​stationID, ²​station_name,</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​station_province, ⁴​elevation, ⁵​MeanTemperature, ⁶​MinTemperature</span></span></code></pre></div>
+<p><code>meteoland</code> expects variable names to be as indicated in
+the example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(meteoland_meteo_example)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;dates&quot;                &quot;service&quot;              &quot;stationID&quot;           </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] &quot;station_name&quot;         &quot;station_province&quot;     &quot;elevation&quot;           </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;MeanTemperature&quot;      &quot;MinTemperature&quot;       &quot;MaxTemperature&quot;      </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] &quot;MeanRelativeHumidity&quot; &quot;MinRelativeHumidity&quot;  &quot;MaxRelativeHumidity&quot; </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;Precipitation&quot;        &quot;WindDirection&quot;        &quot;WindSpeed&quot;           </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] &quot;Radiation&quot;            &quot;geom&quot;                 &quot;aspect&quot;              </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [19] &quot;slope&quot;</span></span></code></pre></div>
+<p>The only mandatory variables are <code>MinTemperature</code> and
+<code>MaxTemperature</code>. Other variables
+(<code>Precipitation</code>, <code>WindSpeed</code>…), when present,
+allow for a more complete weather interpolation.</p>
+<p>For more information on preparing meteorological data for
+<code>meteoland</code>, see
+<code>vignette(&quot;reshaping-meteo&quot;, package = &quot;meteoland&quot;)</code></p>
+</div>
+<div id="quick-interpolation-if-everything-is-ok" class="section level3">
+<h3>Quick interpolation (if everything is ok)</h3>
+<p>With the necessary data in the correct format we can perform the
+interpolation right away:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creating the interpolator object</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>interpolator <span class="ot">&lt;-</span> <span class="fu">with_meteo</span>(meteoland_meteo_example) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">create_meteo_interpolator</span>()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Checking meteorology object...</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ meteorology object ok</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Creating interpolator...</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: No interpolation parameters provided, using defaults</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Set the `params` argument to modify parameter default values</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Calculating smoothed variables...</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Updating intial_Rp parameter with the actual stations mean distance...</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Interpolator created.</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># performing the interpolation</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>points_interpolated <span class="ot">&lt;-</span> points_to_interpolate_example <span class="sc">|&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interpolate_data</span>(interpolator)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Starting interpolation...</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Temperature interpolation is needed also...</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating temperature...</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Precipitation interpolation is needed also...</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating precipitation...</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Relative humidity interpolation is needed also...</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating relative humidity...</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Radiation calculation is needed also...</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Calculating radiation...</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Wind interpolation is needed also...</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating wind...</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Calculating PET...</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Interpolation done...</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>points_interpolated</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 15 features and 5 fields</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 6</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_data </span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;            </span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble [30 × 13]&gt;</span></span></code></pre></div>
+<p>Let’s see this step by step.</p>
+<ul>
+<li><code>with_meteo(...)</code> ensures that the provided
+meteorological information is in the correct format for using it with
+<code>meteoland</code>. It performs several checks and informs of any
+error found. For example, if the meteorological information doesn’t have
+the mandatory variables, an informative error is shown:</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>meteo_without_temp <span class="ot">&lt;-</span> meteoland_meteo_example</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>meteo_without_temp[[<span class="st">&quot;MinTemperature&quot;</span>]] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>meteo_without_temp[[<span class="st">&quot;MaxTemperature&quot;</span>]] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">with_meteo</span>(meteo_without_temp)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Checking meteorology object...</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: Names found in meteo don&#39;t comply with the required names:</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; meteo should have the following meteorology variables:</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - MinTemperature ***</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - MaxTemperature ***</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Precipitation</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - RelativeHumidity</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Radiation</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - WindSpeed</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - WindDirection</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  ***: mandatory variables</span></span></code></pre></div>
+<ul>
+<li><code>create_meteo_interpolator(...)</code> creates the interpolator
+object from the meteorological information. This object stores not only
+the meteorological information, but also the parameters that will be
+used in the interpolation process. These parameters can be supplied as a
+list in the <code>params</code> argument from
+<code>create_meteo_interpolator()</code> function. If not supplied, a
+default set of parameters is used. At any point, we can display the
+interpolation parameters using
+<code>get_interpolation_params()</code>:</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_interpolation_params</span>(interpolator)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $initial_Rp</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1.136444</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $iterations</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_MinTemperature</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_MaxTemperature</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_DewTemperature</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_PrecipitationEvent</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_PrecipitationAmount</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_Wind</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_MinTemperature</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_MaxTemperature</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_DewTemperature</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_PrecipitationEvent</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_PrecipitationAmount</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 20</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_Wind</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $St_Precipitation</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $St_TemperatureRange</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 15</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $pop_crit</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.5</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $f_max</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.6</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $wind_height</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $debug</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<ul>
+<li><code>interpolate_data(...)</code> performs the interpolation using
+the topography provided and the interpolator object. If the
+topographical information is in an <code>sf</code> object, as in the
+example above, <code>interpolate_data</code> returns the same
+<code>sf</code> object with an additional column called
+<code>interpolated_data</code>:</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interpolated meteo for the first location</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>points_interpolated[[<span class="st">&quot;interpolated_data&quot;</span>]][<span class="dv">1</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 30 × 13</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates                 DOY MeanTempe…¹ MinTe…² MaxTe…³ Preci…⁴ MeanR…⁵ MinRe…⁶</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;              &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00    91        3.24   -2.53    6.99   0        45.0    34.6</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00    92        2.99   -4.20    7.67   0        45.0    32.5</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00    93        2.39   -5.61    7.59   2.79     61.2    42.6</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00    94        4.02   -3.93    9.20   0        61.5    43.1</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00    95        7.38   -3.29   14.3    0        50.0    31.5</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00    96        8.78    1.31   13.6    0        64.4    46.6</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00    97       12.1     2.44   18.4    0        58.4    39.0</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00    98       12.9     3.32   19.1    0        57.0    38.3</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00    99       10.0     3.83   14.1    0        70.0    53.7</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00   100       11.4     4.85   15.6    0.130    67.6    51.3</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 20 more rows, 5 more variables: MaxRelativeHumidity &lt;dbl&gt;,</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation &lt;dbl&gt;, WindSpeed &lt;dbl&gt;, WindDirection &lt;dbl&gt;, PET &lt;dbl&gt;, and</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   abbreviated variable names ¹​MeanTemperature, ²​MinTemperature,</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​MaxTemperature, ⁴​Precipitation, ⁵​MeanRelativeHumidity,</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁶​MinRelativeHumidity</span></span></code></pre></div>
+<p>We can “unnest” the results to get the data in a <em>long</em> format
+(each combination of location and date in a different row):</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tidyr<span class="sc">::</span><span class="fu">unnest</span>(points_interpolated, <span class="at">cols =</span> <span class="st">&quot;interpolated_data&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 450 features and 17 fields</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 450 × 18</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect            geometry dates              </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;POINT [°]&gt; &lt;dttm&gt;             </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-01 00:00:00</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-02 00:00:00</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-03 00:00:00</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-04 00:00:00</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-05 00:00:00</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-06 00:00:00</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-07 00:00:00</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-08 00:00:00</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-09 00:00:00</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-10 00:00:00</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 440 more rows, and 12 more variables: DOY &lt;dbl&gt;,</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MeanTemperature &lt;dbl&gt;, MinTemperature &lt;dbl&gt;, MaxTemperature &lt;dbl&gt;,</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Precipitation &lt;dbl&gt;, MeanRelativeHumidity &lt;dbl&gt;, MinRelativeHumidity &lt;dbl&gt;,</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MaxRelativeHumidity &lt;dbl&gt;, Radiation &lt;dbl&gt;, WindSpeed &lt;dbl&gt;,</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WindDirection &lt;dbl&gt;, PET &lt;dbl&gt;</span></span></code></pre></div>
+</div>
+</div>
+<div id="interpolator-object" class="section level2">
+<h2>Interpolator object</h2>
+<p>In older versions of meteoland, the interpolator object inherited the
+<code>MeteorologyInterpolationData</code> class (based on
+<code>sp</code> classes). Starting on <code>meteoland v2.0.0</code>,
+<code>MeteorologyInterpolationData</code> class is deprecated, and the
+interpolator object created by <code>create_meteo_interpolator()</code>
+inherits directly from <code>stars</code> class.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(interpolator)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;stars&quot;</span></span></code></pre></div>
+<p>This object is a data cube, with reference weather locations and
+dates as dimensions, and meteorological and topographical variables as
+attributes.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>interpolator</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; stars object with 2 dimensions and 13 attributes</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attribute(s):</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                 Min.    1st Qu.    Median       Mean   3rd Qu.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Temperature               -14.200000   8.800000  12.60000  11.324991  14.80000</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinTemperature            -15.900000   3.300000   6.90000   5.883189   9.40000</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxTemperature            -13.000000  13.900000  18.30000  17.364292  21.80000</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; RelativeHumidity           18.000000  57.000000  67.00000  67.720000  78.00000</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Precipitation               0.000000   0.000000   0.00000   1.925434   0.10000</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Radiation                   7.707484  17.717235  22.04597  20.762628  23.61352</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindDirection               0.000000 116.000000 217.00000 196.861908 275.00000</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindSpeed                   0.200000   0.900000   1.30000   1.603907   2.00000</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; elevation                   0.000000 147.000000 317.00000 515.629630 668.00000</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; aspect                      0.000000   0.000000   0.00000   0.000000   0.00000</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; slope                       0.000000   0.000000   0.00000   0.000000   0.00000</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SmoothedPrecipitation       0.100000   1.862500   5.55000   6.197496   9.07500</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SmoothedTemperatureRange    4.695000   9.863542  11.66307  11.400932  13.26868</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                 Max. NA&#39;s</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Temperature                 23.40000  148</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinTemperature              20.10000  138</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxTemperature              29.90000  139</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; RelativeHumidity           100.00000  145</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Precipitation              160.90000   79</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Radiation                   28.10878  139</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindDirection              359.00000 4171</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindSpeed                    6.90000 4160</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; elevation                 2535.00000    0</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; aspect                       0.00000    0</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; slope                        0.00000    0</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SmoothedPrecipitation       65.10000  818</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SmoothedTemperatureRange    17.72778  124</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dimension(s):</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         from  to         offset  delta  refsys point</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; date       1  30 2022-04-01 UTC 1 days POSIXct FALSE</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; station    1 189             NA     NA  WGS 84  TRUE</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                       values</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; date                                                    NULL</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; station POINT (0.95172 41.6566),...,POINT (1.89716 42.32211)</span></span></code></pre></div>
+<p>The object also contains the interpolation parameters as an
+attribute, that can be accessed with
+<code>get_interpolation_params()</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_interpolation_params</span>(interpolator)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $initial_Rp</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1.136444</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $iterations</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_MinTemperature</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_MaxTemperature</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_DewTemperature</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_PrecipitationEvent</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_PrecipitationAmount</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha_Wind</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_MinTemperature</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_MaxTemperature</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_DewTemperature</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_PrecipitationEvent</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_PrecipitationAmount</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 20</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $N_Wind</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $St_Precipitation</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $St_TemperatureRange</span></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 15</span></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $pop_crit</span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.5</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $f_max</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.6</span></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $wind_height</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $debug</span></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<p>Interpolation parameters can also be changed with
+<code>set_interpolation_params()</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wind_height parameter</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_interpolation_params</span>(interpolator)<span class="sc">$</span>wind_height</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set a new wind_height parameter and check</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>interpolator <span class="ot">&lt;-</span> <span class="fu">set_interpolation_params</span>(interpolator, <span class="at">params =</span> <span class="fu">list</span>(<span class="at">wind_height =</span> <span class="dv">5</span>))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Some interpolation parameters are missing, using default values for those</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">get_interpolation_params</span>(interpolator)<span class="sc">$</span>wind_height</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span></code></pre></div>
+<div id="writing-and-reading-interpolator-objects" class="section level3">
+<h3>Writing and reading interpolator objects</h3>
+<p>Interpolator objects can be reused for different interpolations
+exercises within the area covered by the interpolator. To allow
+interpolator objects to be shared between sessions,
+<code>meteoland</code> offers functions to write and read these objects.
+The interpolator is saved in NetCDF-CF format (<a href="https://cfconventions.org/cf-conventions/cf-conventions.html" class="uri">https://cfconventions.org/cf-conventions/cf-conventions.html</a>)
+and can be also opened with any GIS software that supports
+NetCDF-CF.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>temporal_folder <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_interpolator</span>(interpolator, <span class="fu">file.path</span>(temporal_folder, <span class="st">&quot;interpolator.nc&quot;</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Creating nc file following the NetCDF-CF conventions &lt;]8;;https://cfconventions.org/cf-conventions/cf-conventions.htmlhttps://cfconventions.org/cf-conventions/cf-conventions.html]8;;&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Adding spatial info to nc file</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Done</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># file should exists now</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">file.exists</span>(<span class="fu">file.path</span>(temporal_folder, <span class="st">&quot;interpolator.nc&quot;</span>))</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>To load the interpolator in your session again, you can use the
+<code>read_interpolator()</code> function.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>file_interpolator <span class="ot">&lt;-</span> <span class="fu">read_interpolator</span>(<span class="fu">file.path</span>(temporal_folder, <span class="st">&quot;interpolator.nc&quot;</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the read interpolator should be identical to the one we have already</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(file_interpolator, interpolator)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+<div id="interpolator-calibration" class="section level3">
+<h3>Interpolator calibration</h3>
+<p>Interpolation parameters can be calibrated for individual variables
+before performing the interpolation process. In fact, <strong>it’s
+recommended</strong> to calibrate the interpolator object before using
+it, as the default interpolation parameters can be not adequate for the
+studied area. <code>meteoland</code> offers a calibration process with
+the <code>interpolator_calibration()</code> function.</p>
+<pre><code>**Important!** Calibration process for one variable can take a long time to finish,
+as it performs a *leave-one-out* interpolation for all stations present in the
+interpolator and all combinations of N and alpha sequences provided. In this example
+we reduce the N and alpha test values for the process to be faster, but is recommended
+to explore a wider range of these values.</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># min temperature N and alpha before calibration</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_interpolation_params</span>(interpolator)<span class="sc">$</span>N_MinTemperature</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">get_interpolation_params</span>(interpolator)<span class="sc">$</span>alpha_MinTemperature</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># calibration</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>interpolator <span class="ot">&lt;-</span> <span class="fu">interpolator_calibration</span>(</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  interpolator,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="st">&quot;MinTemperature&quot;</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">N_seq =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>),</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha_seq =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">update_interpolation_params =</span> <span class="cn">TRUE</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Total number of stations: 189</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of stations with available data: 185</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of stations used for MAE calculation: 185</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of parameters combinations to test: 4</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Starting evaluation of parameter combinations for &quot;MinTemperature&quot;...</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 5, alpha: 1...</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 5, alpha: 10...</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 1...</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 10...</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Calibration done: Minimum MAE: 1.18956628899488; N: 20; alpha: 10</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters after calibration</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="fu">get_interpolation_params</span>(interpolator)<span class="sc">$</span>N_MinTemperature</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 20</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="fu">get_interpolation_params</span>(interpolator)<span class="sc">$</span>alpha_MinTemperature</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 10</span></span></code></pre></div>
+<p>One advantage of the new data flows in <code>meteoland</code> is that
+we can <em>pipe</em> the creation and the calibration of the
+interpolator, as well as the writing:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>interpolator <span class="ot">&lt;-</span> <span class="fu">with_meteo</span>(meteoland_meteo_example) <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">create_meteo_interpolator</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interpolator_calibration</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">variable =</span> <span class="st">&quot;MinTemperature&quot;</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_seq =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha_seq =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">update_interpolation_params =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interpolator_calibration</span>(</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">variable =</span> <span class="st">&quot;MaxTemperature&quot;</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_seq =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha_seq =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">update_interpolation_params =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interpolator_calibration</span>(</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">variable =</span> <span class="st">&quot;DewTemperature&quot;</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_seq =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>),</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha_seq =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>),</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">update_interpolation_params =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_interpolator</span>(</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename =</span> <span class="fu">file.path</span>(temporal_folder, <span class="st">&quot;interpolator.nc&quot;</span>),</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">.overwrite =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Checking meteorology object...</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ meteorology object ok</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Creating interpolator...</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: No interpolation parameters provided, using defaults</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Set the `params` argument to modify parameter default values</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Calculating smoothed variables...</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Updating intial_Rp parameter with the actual stations mean distance...</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Interpolator created.</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Total number of stations: 189</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of stations with available data: 185</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of stations used for MAE calculation: 185</span></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of parameters combinations to test: 4</span></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Starting evaluation of parameter combinations for &quot;MinTemperature&quot;...</span></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 5, alpha: 1...</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 5, alpha: 10...</span></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 1...</span></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 10...</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Calibration done: Minimum MAE: 1.18956628899488; N: 20; alpha: 10</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Total number of stations: 189</span></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of stations with available data: 185</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of stations used for MAE calculation: 185</span></span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of parameters combinations to test: 4</span></span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Starting evaluation of parameter combinations for &quot;MaxTemperature&quot;...</span></span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 5, alpha: 1...</span></span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 5, alpha: 10...</span></span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 1...</span></span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 10...</span></span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Calibration done: Minimum MAE: 0.849019890784243; N: 20; alpha: 10</span></span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Total number of stations: 189</span></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of stations with available data: 185</span></span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of stations used for MAE calculation: 185</span></span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Number of parameters combinations to test: 4</span></span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Starting evaluation of parameter combinations for &quot;DewTemperature&quot;...</span></span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 5, alpha: 1...</span></span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 5, alpha: 10...</span></span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 1...</span></span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 10...</span></span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Calibration done: Minimum MAE: 1.37971537117584; N: 20; alpha: 10</span></span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Creating nc file following the NetCDF-CF conventions &lt;]8;;https://cfconventions.org/cf-conventions/cf-conventions.htmlhttps://cfconventions.org/cf-conventions/cf-conventions.html]8;;&gt;</span></span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Adding spatial info to nc file</span></span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Done</span></span></code></pre></div>
+<p>This way we can create and calibrate the interpolator once, and using
+it in future sessions, avoiding the time consuming step of calibrating
+every time.</p>
+</div>
+</div>
+<div id="interpolation-validation" class="section level2">
+<h2>Interpolation validation</h2>
+<p>The interpolation process can be cross validated.
+<code>meteoland</code> offers the possibility with the
+<code>interpolation_cross_validation()</code> function. This function
+takes an interpolator object and calculates different error
+measures.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cross_validation <span class="ot">&lt;-</span> <span class="fu">interpolation_cross_validation</span>(interpolator, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cross_validation<span class="sc">$</span>errors</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5,670 × 21</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               station stationID MinTe…¹ MaxTe…² Range…³ Relat…⁴ Radia…⁵</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;                &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00       1 C6         0.125   -0.783 -0.908   0.620  -1.65  </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00       1 C6         0.0598  -0.588 -0.648   1.80   -0.638 </span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00       1 C6         0.145   -1.08  -1.23    0.924  -0.186 </span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00       1 C6        -0.306   -0.400 -0.0946  0.642  -0.152 </span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00       1 C6        -0.0977  -1.42  -1.32    3.83   -0.0750</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00       1 C6        -0.248   -0.797 -0.549   2.43   -0.136 </span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00       1 C6        -0.457   -1.10  -0.644   1.35    0.0621</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00       1 C6         1.24    -0.848 -2.09   -0.0186 -0.515 </span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00       1 C6        -0.546   -1.12  -0.571   1.46   -0.0995</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00       1 C6         0.601   -0.267 -0.868   1.39   -0.440 </span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 5,660 more rows, 13 more variables: Precipitation_error &lt;dbl&gt;,</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinTemperature_predicted &lt;dbl&gt;, MaxTemperature_predicted &lt;dbl&gt;,</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RangeTemperature_predicted &lt;dbl&gt;, RelativeHumidity_predicted &lt;dbl&gt;,</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation_predicted &lt;dbl&gt;, Precipitation_predicted &lt;dbl&gt;,</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinTemperature_observed &lt;dbl&gt;, MaxTemperature_observed &lt;dbl&gt;,</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RangeTemperature_observed &lt;dbl&gt;, RelativeHumidity_observed &lt;dbl&gt;,</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation_observed &lt;dbl&gt;, Precipitation_observed &lt;dbl&gt;, and abbreviated …</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>cross_validation<span class="sc">$</span>station_stats</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 189 × 20</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    station stationID MinTemp…¹ MaxTem…² Range…³ Relat…⁴ Radiat…⁵ MinTe…⁶ MaxTe…⁷</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       1 C6          -0.109  -0.606   -0.497    1.98  -1.18      0.343   0.625</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       2 C7          -1.03   -0.582    0.452    4.13  -0.363     1.04    0.646</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       3 C8           0.0180  0.0356   0.0176  -1.08  -0.297     0.491   0.254</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       4 C9          -0.316   0.657    0.973   -0.983  0.0691    0.616   0.709</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       5 CC          -0.0373 -0.483   -0.445    3.12  -1.98      0.426   0.609</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       6 CD           0.508  -1.03    -1.53   -12.4   -0.705     0.880   1.14 </span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       7 CE          -1.62   -0.779    0.837    0.288 -0.334     1.68    0.922</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       8 CG          -1.51   -0.379    1.13     6.50   0.00762   2.03    1.14 </span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       9 CI           0.888   0.509   -0.379   -7.61  -0.436     1.32    0.711</span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      10 CJ           0.572   0.00525 -0.567   -9.84  -0.303     1.07    0.453</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 179 more rows, 11 more variables: RangeTemperature_station_mae &lt;dbl&gt;,</span></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RelativeHumidity_station_mae &lt;dbl&gt;, Radiation_station_mae &lt;dbl&gt;,</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_observed &lt;dbl&gt;,</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_predicted &lt;dbl&gt;,</span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_bias &lt;dbl&gt;,</span></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_relative_bias &lt;dbl&gt;,</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   DaysPrecipitation_station_bias &lt;int&gt;, …</span></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>cross_validation<span class="sc">$</span>dates_stats</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 30 × 19</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               MinTemp…¹ MaxTe…² Range…³ Relat…⁴ Radia…⁵ MinTe…⁶ MaxTe…⁷</span></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;                  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00    0.0125  0.0405  0.0280   0.509 -1.32     0.692   0.587</span></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00    0.0329  0.0972  0.0643   0.300 -0.333    0.787   0.743</span></span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00   -0.116   0.0325  0.148    0.925 -0.496    1.34    0.838</span></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00   -0.142   0.0400  0.182    0.996  0.0523   1.10    0.708</span></span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00   -0.185   0.0786  0.263    0.666  0.589    1.50    0.989</span></span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00   -0.0303  0.0688  0.0991   0.288  0.131    1.22    0.810</span></span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00   -0.156   0.107   0.262    0.376  0.522    1.75    0.948</span></span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00   -0.0582  0.0600  0.118    0.284  0.219    1.87    0.946</span></span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00    0.0801  0.0474 -0.0327   0.400 -1.04     1.05    0.724</span></span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00   -0.101   0.0761  0.177    0.368 -0.817    1.37    0.977</span></span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 20 more rows, 11 more variables: RangeTemperature_date_mae &lt;dbl&gt;,</span></span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RelativeHumidity_date_mae &lt;dbl&gt;, Radiation_date_mae &lt;dbl&gt;,</span></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_observed &lt;dbl&gt;,</span></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_predicted &lt;dbl&gt;,</span></span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_bias &lt;dbl&gt;,</span></span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_relative_bias &lt;dbl&gt;,</span></span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   StationsPrecipitation_date_bias &lt;int&gt;, …</span></span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>cross_validation<span class="sc">$</span>r2</span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $MinTemperature</span></span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9388959</span></span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $MaxTemperature</span></span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9788855</span></span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $RangeTemperature</span></span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8835377</span></span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $RelativeHumidity</span></span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8096727</span></span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $Radiation</span></span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8911309</span></span></code></pre></div>
+</div>
+<div id="interpolation-utils" class="section level2">
+<h2>Interpolation utils</h2>
+<p><code>meteoland</code> also offers some utilities to work with the
+interpolated data.</p>
+<div id="temporal-summary-of-interpolated-data" class="section level3">
+<h3>Temporal summary of interpolated data</h3>
+<p><code>meteoland</code> works at the daily scale. But sometimes the
+data needs to be aggregated into bigger temporal scales (monthly,
+quarterly, yearly…). This can be done with the
+<code>summarise_interpolated_data()</code> function. This function takes
+the result of <code>interpolate_data</code> and creates summaries in the
+desired frequency.<br />
+The function returns the same interpolated data given as input, but with
+the weekly summary in an additional column.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_interpolated_data</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  points_interpolated,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">frequency =</span> <span class="st">&quot;week&quot;</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 15 features and 6 fields</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 7</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_d…¹ weekly…²</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;           &lt;list&gt;  </span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable names ¹​interpolated_data, ²​weekly_mean</span></span></code></pre></div>
+</div>
+<div id="calculating-rainfall-erosivity" class="section level3">
+<h3>Calculating rainfall erosivity</h3>
+<p><code>meteoland</code> also offers the possibility of calculating the
+rainfall erosivity value, with the
+<code>precipitation_rainfall_erosivity()</code> function. This can be
+used for individual locations:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precipitation_rainfall_erosivity</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  points_interpolated<span class="sc">$</span>interpolated_data[[<span class="dv">1</span>]],</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">longitude =</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(points_interpolated<span class="sc">$</span>geometry[[<span class="dv">1</span>]])[,<span class="dv">1</span>],</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="st">&#39;month&#39;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        4 </span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 48.02896</span></span></code></pre></div>
+<p>But also for all locations in the results obtained from the call to
+<code>interpolate_data()</code>:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>points_interpolated <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">erosivity =</span> <span class="fu">precipitation_rainfall_erosivity</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    interpolated_data,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">longitude =</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(geometry)[,<span class="dv">1</span>],</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="st">&#39;month&#39;</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 15 features and 6 fields</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 7</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_data erosi…¹</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;            &lt;list&gt; </span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable name ¹​erosivity</span></span></code></pre></div>
+</div>
+<div id="piping-all-together" class="section level3">
+<h3>Piping all together</h3>
+<p><code>meteoland</code> new data flows also allows for piping all
+processes:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>points_interpolated <span class="ot">&lt;-</span> points_to_interpolate_example <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interpolate_data</span>(interpolator) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_interpolated_data</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">frequency =</span> <span class="st">&quot;week&quot;</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_interpolated_data</span>(</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun =</span> <span class="st">&quot;max&quot;</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">frequency =</span> <span class="st">&quot;month&quot;</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">monthly_erosivity =</span> <span class="fu">precipitation_rainfall_erosivity</span>(</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>      interpolated_data,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">longitude =</span> sf<span class="sc">::</span><span class="fu">st_coordinates</span>(geometry)[,<span class="dv">1</span>],</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">scale =</span> <span class="st">&#39;month&#39;</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Starting interpolation...</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Temperature interpolation is needed also...</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating temperature...</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Precipitation interpolation is needed also...</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating precipitation...</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Relative humidity interpolation is needed also...</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating relative humidity...</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Radiation calculation is needed also...</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Calculating radiation...</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Wind interpolation is needed also...</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating wind...</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Calculating PET...</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Interpolation done...</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>points_interpolated</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 15 features and 8 fields</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 9</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_d…¹ weekly…²</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;           &lt;list&gt;  </span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 2 more variables: monthly_max &lt;list&gt;, monthly_erosivity &lt;list&gt;, and</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   abbreviated variable names ¹​interpolated_data, ²​weekly_mean</span></span></code></pre></div>
+</div>
+</div>
+<div id="interpolation-on-raster-data" class="section level2">
+<h2>Interpolation on raster data</h2>
+<p>We can use the <code>interpolate_data()</code> function in a raster
+type of data. All we need in this case is the topography information in
+a <code>stars</code> object, with <code>elevation</code>,
+<code>aspect</code> and <code>slope</code> variables as raster
+attributes:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>raster_to_interpolate_example</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; stars object with 2 dimensions and 3 attributes</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attribute(s):</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  Min.    1st Qu.    Median      Mean   3rd Qu.     Max.</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; elevation  240.000000 370.000000 447.00000 460.32231 525.00000 786.0000</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; slope        1.432096   5.720433  11.34812  13.07343  19.75851  31.0719</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; aspect       5.194427  74.744881 174.36932 181.67923 291.03751 360.0000</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dimension(s):</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   from  to    offset      delta refsys x/y</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; x  155 165 0.0364777  0.0105789 WGS 84 [x]</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; y  110 120   42.9208 -0.0105789 WGS 84 [y]</span></span></code></pre></div>
+<p>In this case, the raster is a 0.01 degree grid (10x10 cells) in
+central Catalonia. As the raster is inside the area covered by the
+interpolator object we created before, we will use it.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>raster_interpolated <span class="ot">&lt;-</span> raster_to_interpolate_example <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interpolate_data</span>(interpolator)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Starting interpolation...</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Temperature interpolation is needed also...</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating temperature...</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Precipitation interpolation is needed also...</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating precipitation...</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Relative humidity interpolation is needed also...</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating relative humidity...</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Radiation calculation is needed also...</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Calculating radiation...</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Wind interpolation is needed also...</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating wind...</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Calculating PET...</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Interpolation done...</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Binding together interpolation results</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Interpolation process finished</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>raster_interpolated</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; stars object with 3 dimensions and 14 attributes</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attribute(s):</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               Min.     1st Qu.     Median       Mean</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MeanTemperature         3.28710017  11.4127317  13.905175  13.419200</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinTemperature         -4.21944950   3.9207208   6.575382   5.306937</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxTemperature          6.96679206  14.9159502  19.225056  18.693510</span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Precipitation           0.00000000   0.0000000   0.000000   1.217155</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MeanRelativeHumidity   32.89385498  58.0844689  64.649229  65.957527</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinRelativeHumidity    25.19625829  38.4317461  44.433889  47.943580</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxRelativeHumidity    49.75939189 100.0000000 100.000000  97.027820</span></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Radiation               7.38449673  16.1504318  20.815039  19.742938</span></span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindSpeed               0.02164994   0.9119314   1.252240   1.385929</span></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindDirection           0.18621266  71.4293342 198.955399 181.615512</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PET                     1.09428184   2.4611166   3.196850   3.110504</span></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; elevation             240.00000000 370.0000000 447.000000 460.322314</span></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; slope                   1.43209624   5.7204332  11.348120  13.073426</span></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; aspect                  5.19442749  74.7448807 174.369324 181.679232</span></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           3rd Qu.       Max. NA&#39;s</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MeanTemperature        16.0215966  20.225457    0</span></span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinTemperature          7.6128811  11.721902    0</span></span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxTemperature         22.3273620  29.104431    0</span></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Precipitation           0.2922964  21.000409    0</span></span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MeanRelativeHumidity   75.6627580 100.000000    0</span></span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinRelativeHumidity    55.1586632  91.663163    0</span></span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxRelativeHumidity   100.0000000 100.000000    0</span></span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Radiation              23.8148915  28.126824    0</span></span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindSpeed               1.7444530   5.811866   30</span></span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindDirection         264.0404014 359.908196 1350</span></span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PET                     3.7822172   5.598250    0</span></span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; elevation             525.0000000 786.000000    0</span></span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; slope                  19.7585106  31.071896    0</span></span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; aspect                291.0375061 360.000000    0</span></span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dimension(s):</span></span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      from to         offset      delta  refsys point x/y</span></span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; x       1 11        1.67091  0.0105789  WGS 84 FALSE [x]</span></span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; y       1 11        41.7624 -0.0105789  WGS 84 FALSE [y]</span></span>
+<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; date    1 30 2022-04-01 UTC     1 days POSIXct FALSE</span></span></code></pre></div>
+<p>As we can see, the returned object is the same <code>stars</code>
+raster provided to the function, with the interpolated meteorological
+variables as new attributes. Dimensions now include the date, besides
+the input’s latitude and longitude.</p>
+<div id="temporal-aggregation-in-raster" class="section level3">
+<h3>Temporal aggregation in raster</h3>
+<p>Like with the point location example, interpolated data in raster
+format can also be aggregated temporally.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_interpolated_data</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  raster_interpolated,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fun =</span> <span class="st">&quot;mean&quot;</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">frequency =</span> <span class="st">&quot;week&quot;</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; stars object with 3 dimensions and 11 attributes</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attribute(s):</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              Min.      1st Qu.     Median       Mean</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MeanTemperature         3.8085157  11.46543487  13.276586  12.702695</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinTemperature         -2.1490631   2.77153554   6.299540   4.640385</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxTemperature          7.6274425  16.18746065  18.457836  17.944528</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Precipitation           0.0000000   0.04039901   0.372891   1.068806</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MeanRelativeHumidity   42.9062182  60.53136706  64.595298  63.904152</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinRelativeHumidity    29.2592761  40.80836041  45.249846  46.333339</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxRelativeHumidity    75.1187263  96.67327485  99.376895  95.009647</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Radiation              11.7245475  17.90842114  19.929736  19.765548</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindSpeed               0.6861051   0.87245304   1.343451   1.515442</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindDirection         122.7681189 152.95041467 168.597605 184.990642</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PET                     1.6176152   2.74501755   3.084015   3.091572</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                           3rd Qu.       Max. NA&#39;s</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MeanTemperature        15.8981470  17.107689    0</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinTemperature          7.0401778   8.721007    0</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxTemperature         21.3502767  24.825805    0</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Precipitation           0.9568111   4.916280    0</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MeanRelativeHumidity   69.2639299  88.634437    0</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MinRelativeHumidity    52.5994550  72.780577    0</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MaxRelativeHumidity   100.0000000 100.000000    0</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Radiation              21.8800875  25.287348    0</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindSpeed               1.8527502   4.348124    5</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WindDirection         234.5482210 246.486142  365</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PET                     3.4728443   5.069591    0</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dimension(s):</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      from to          offset      delta  refsys point x/y</span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; time    1  5 2022-03-28 CEST     7 days POSIXct    NA    </span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; x       1 11         1.67091  0.0105789  WGS 84 FALSE [x]</span></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; y       1 11         41.7624 -0.0105789  WGS 84 FALSE [y]</span></span></code></pre></div>
+<p>In this case the result is the aggregated variables as attributes,
+and the time dimension is aggregated in the desired frequency.</p>
+</div>
+<div id="piping-raster-interpolation" class="section level3">
+<h3>Piping raster interpolation</h3>
+<p>As with points, raster interpolation and utilities can also be piped.
+This way, if we are only interested in the mean monthly temperature in
+our study area, we can do:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>monthly_mean_temperature <span class="ot">&lt;-</span> raster_to_interpolate_example <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interpolate_data</span>(interpolator, <span class="at">variables =</span> <span class="st">&quot;Temperature&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_interpolated_data</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun =</span> <span class="st">&quot;max&quot;</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">frequency =</span> <span class="st">&quot;month&quot;</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">variable =</span> <span class="st">&quot;MeanTemperature&quot;</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Starting interpolation...</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Interpolating temperature...</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Interpolation done...</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Binding together interpolation results</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Interpolation process finished</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(monthly_mean_temperature)</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAACmlBMVEUAAAABAQECAgIDAwMEBAQFBQUGBgYHBwcICAgJCQkKCgoLCwsMDAwNDQ0ODg4PDw8QEBARERESEhITExMUFBQVFRUWFhYXFxcYGBgZGRkaGhobGxscHBwdHR0eHh4fHx8gICAhISEiIiIkJCQlJSUmJiYnJycoKCgpKSkqKiorKyssLCwtLS0uLi4wMDAxMTEyMjIzMzM0NDQ1NTU2NjY3Nzc4ODg5OTk6Ojo7Ozs8PDw9PT0+Pj5BQUFCQkJDQ0NERERFRUVGRkZHR0dISEhKSkpLS0tMTExNTU1OTk5PT09RUVFSUlJTU1NUVFRVVVVWVlZXV1dYWFhaWlpbW1tcXFxdXV1eXl5iYmJjY2NkZGRmZmZoaGhpaWlqampra2tsbGxtbW1vb29wcHBxcXFzc3N0dHR3d3d5eXl6enp7e3t8fHx9fX1+fn5/f3+AgICBgYGCgoKDg4OEhISHh4eIiIiJiYmKioqLi4uMjIyNjY2Ojo6Pj4+QkJCRkZGSkpKUlJSWlpaXl5eYmJiZmZmbm5ucnJydnZ2enp6fn5+goKCioqKjo6OkpKSlpaWmpqanp6eoqKipqamqqqqrq6utra2urq6wsLCxsbGysrKzs7O0tLS1tbW2tra3t7e4uLi5ubm6urq7u7u8vLy9vb2+vr7AwMDCwsLDw8PExMTFxcXHx8fIyMjJycnLy8vMzMzNzc3Ozs7Pz8/R0dHS0tLT09PU1NTV1dXW1tbX19fY2Nja2trb29vc3Nzd3d3f39/g4ODh4eHi4uLj4+Pl5eXm5ubn5+fo6Ojp6enr6+vs7Ozt7e3u7u7v7+/w8PDx8fHy8vLz8/P09PT19fX29vb39/f4+Pj5+fn6+vr7+/v8/Pz9/f3+/v7///95bV7IAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAIMklEQVR4nO3d+X8MZxwH8K8QkkiCOkJEHBuJViIRBD1cRUoPRQVxVoi66ibqlqBEJeooQVSqqDbVoipUtFRTqq04IpE8/0ufZ7KbPmOe3Z3XZrNh5/P5YTx2v8+zz7xfmZmNsc8SQ1yGGnsCz3sA5CZOgYYR0buiMY83OrodR5Tbs9IrEzuXkVHilYHqGZdAmsugxgHKJjrhlYHqGZdAdIOxJ0GmgAqys7NTiSbxP37wysReBKCOtJexYmrXVAO6NsEWmrilirdq8gd3CI6ZcZM3kynqzsSo9mOviy5LiXYwXaWN+hTYQvpms7yBoXFb+QNRlFyS+lLSx0/0dXyYisnhZdLIH3Ynipsq6vnTR7WBHUVSPx/EFdA7NIuxjTSmmQA6FaodP6l8XmtqDyXbfTHpNi+LdvfHrA5IqrRRSIBoj20itnkCqGsX0exfqavj+z6LqEwaWfsBTnkWSCuS+jUy0CeUyNh4Wi2AquIorvgGn+AWVhVCPU6eGUdUICZNPXNWRxJ9UQckVXIgGrLnAxLbiURvCSBql5Pbg2iPri6ZmlFy6j155NpDTA9UWyT1a2Sgb6npfRZNZwRQIdFBxp52oj7sdnr6EcZ2EW0Sk27Cz1ObiNbVAUmVAug3Vtma6FdWEU7xGtBJxkqa0FBdHXfezgeQR1YBaUVyv0YGuh5LX92mwEcCaANRQkpKShgFVDP21775o4KJNopJi9NTce2lqxZIrrRRDBNMNr7tRr3FDrcTgydSF11dMrWo0V71/5FVQFqRbiYNH5dAU2j5QerPBFBm3VX8b7a5OVFAjB0oiteel4HkSptAsW/tQKLJRlOgri6ZOmsvKo2sAtKK5H4+iEugnTQykzI0oI1E1+zPXAqgfoUPip0BSZUqoPbi8b78Z0quqx1GN7IDKIk/XuA4SYsiuZ8P4hLoKrUaSPs1oONEh/ijO9btYNu0ZrYzIKlSBUSn+HU6gMbo6uz7Lo/Mt4WM9aDgh4ytkoHkfj6ISyDWjprQLQ2oykZdT5cuIFrIconePJvfgWiDEkiqVAJFfJrPz91f6+rs+y6PvJ1oWTkbTjQmb0mwDCT380FcA40himYaEDserB33bzxkZW1EI5ZohhJIqlQBRUeKJ9P0dfZ9l0c+q70POqCVDJSB5H4+iGugtUTj7UDsp7e7hiVtruCt4sGh8SvKmlFAuRJIqlQAJV8e2SYpq0Zf59h3aWS2KCLkfcZ29m6ZtF53DpL7+SA+/ueO2qvSixQAuUkt0DDPMt6QxW4STp0WbzCTXEOOmsjVhgKK8CwJhqS5SbdOsWmZZpJliJHMmB9feCARAAEIQAACEIAABCAAAQhAAAIQgAAEIAABCEAAAhCAAAQgAD33QCMMaUCgLw1pgP84BCAAAQhAAAIQgAAEIAABCEAAAhCAAAQgAAEIQAACEIAABCA/AjKzp6biUw4AeQVo7XxV9gDIkaYLFikyFUB1QL+XKTIfQAACEIAABCAAAcj/gS5cVCQDQAACEIAABKAXAahQVTkdQK6BIl53rDO2BECqytY5RfaUAkhV2faiaxcAAagOaLdxrNzcNgACkC+BPLtpquAwA2TUMPVpQiOH8e3fHwACkPeB1iheMKs1gAAEIAABCEAA8gOgecYpZGaGAwhAAAIQgADkn0DV18usBDRJNa0wNVD6ab7JCieKPgAgVShbfPXb5ENHpgUUAsgJUPw00Zo9GEBOgEIOi9bRcAA5AUrcLFrLewFIBdRh6LQRbUtZzd4OGQBS5NC6mSN7Nt/HztOARwByluon7M8ix9cA1wvIDJkpIGOMHL4D0lLxAEAuM4EA5DI56QAyFQAZ8uCm/B3AFgAarppoqBOgS2n8N1UKG7TtH4sDtZji+PzzZ3JxccsR62c3n7d+Ytgrd60NFDRntT0FcvGQSXyT27WalSVOtjaQk0Os1TG++ZeuMJYfBSBFYjfxzc9UytjWTgBSZGnrz8uKB/SqKZ8bMhdAilSm8WtYtwvscuicxwBS5kpeEX8bVFnp+DuA3ARAAAKQF4EOS/O0DFC8cV8SEkLUQEX9KchmD4BUefraq/oHAPRMtgDINdCt4wByCfRsAAQgfwDy7DYhgAAEIAABCEAAAhCAAAQgAAEIQAACEIAABCAAAei5AArK2m/P9wBSAQWOGGfPOgDhEAMQgPwBSBEzQGY0POQwfltGuQrIuHM8wQACEIAABCAAAQhAAAIQgAAEIAABCEAAAhCATAJ5tlSpJYDqs1SpJYDqs1SpZYA8XarUMkCeLlVqGSBPlyq1BpDppUqNMWp4eJvQQyAjRwMAmV+q1KJAWkwtVWplIC3uliq1PJC7pUotD+RuqVLLAzkCIFWqf3G7RJe/AwUdK7Xnnq766Hupu1hOWwpaWWNtoBbRPeyZIRfvp36jAmeGrihcFLjT2kCJ6mMrkXNto1W89VEigBQJOcbYHfqGtwpbAkiRmDWMfUe7eWtTHIAUWRWUsaxzv8iTdw+3XQggRaoWRbafXplORKMfAsh5SnKLHU0AuQmAAAQgLwKZX6rUokDmlyq1KJD5pUqtCmR6qVLLApldqtSyQM8GQB4CGW+jGjU85DBqeHgfFUAAAhCAAAQgfwdqFqRKDIAcObFflXMA8lIABCAAAQhAAAIQgAAEIAABCEAAAhCA/BLIyGEKyDMOMxqmOAAEIAABCEAAAhCAAAQgAAEIQAACEIAABCAAAQhAAAIQgAAEIAA1MJDx44XG26ge3kf1GgeAAAQgAAEIQAACEIAABCAAAQhAAAIQgAAEIAABCEAAAhCAAGQ2/wGrqrZSV1IYOAAAAABJRU5ErkJggg==" /><!-- --></p>
+</div>
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<div id="equivalence-table" class="section level2">
+<h2>Equivalence table</h2>
+<table>
+<colgroup>
+<col width="32%" />
+<col width="37%" />
+<col width="30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function (&lt; 2.0.0)</th>
+<th>Equivalence (&gt;= 2.0.0)</th>
+<th>deprecated</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>averagearea</code></td>
+<td>No equivalence, aggregating by area can be done with the
+<code>sf</code> package</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>correctionpoint</code>, <code>correctionpoints</code>,
+<code>correctionpoints.errors</code>, <code>correction_series</code>,
+<code>defaultCorrectionParams</code></td>
+<td>No equivalence, better bias correction methods are provided by other
+packages (see package <code>MBC</code> for example)</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>defaultInterpolationParams</code></td>
+<td>No change</td>
+<td><code>FALSE</code></td>
+</tr>
+<tr class="even">
+<td><code>download_*</code> functions</td>
+<td>No equivalence, weather download functions are now provided by
+<code>meteospain</code> package</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>extractdates</code>, <code>extractgridindex</code>,
+<code>extractgridpoints</code>, <code>extractNetCDF</code>,
+<code>extractvars</code></td>
+<td>No equivalence, not needed as the meteo objects are now
+<code>sf</code> objects</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>humidity_*</code> conversion tools</td>
+<td>No change</td>
+<td><code>FALSE</code></td>
+</tr>
+<tr class="odd">
+<td><code>interpolation.calibration</code></td>
+<td><code>interpolator_calibration</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>interpolation.calibration.fmax</code></td>
+<td><code>interpolator_calibration</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>interpolation.coverage</code></td>
+<td>No equivalence</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>interpolation.cv</code></td>
+<td><code>interpolation_cross_validation</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>interpolationgrid</code>, <code>interpolationpixels</code>,
+<code>interpolationpoints</code></td>
+<td><code>interpolate_data</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>mergegrid</code>, <code>mergepoints</code></td>
+<td>No equivalence, meteorological objects are now <code>sf</code>
+objects and can be merged, joined or filtered as any data.frame</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>meteocomplete</code></td>
+<td><code>complete_meteo</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>meteoplot</code></td>
+<td>No equivalence, meteo objects are now sf objects and can be plotted
+as any other data.frame</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>Meteorology_*_Data</code></td>
+<td>No equivalence, spatial classes based on <code>sp</code> are now
+deprecated in <code>meteoland</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>penman</code>, <code>penmanmonteith</code></td>
+<td>No changes</td>
+<td><code>FALSE</code></td>
+</tr>
+<tr class="odd">
+<td><code>plot.interpolation.cv</code></td>
+<td>No equivalence</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>precipitation_concentration</code></td>
+<td>No equivalence, precipitation_concentration utility is deprecated
+and will be removed in future versions</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>precipitation_rainfallErosivity</code></td>
+<td><code>precipitation_rainfall_erosivity</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>radiation_*</code> utility functions</td>
+<td>No change</td>
+<td><code>FALSE</code></td>
+</tr>
+<tr class="odd">
+<td><code>readmeteorology*</code></td>
+<td>No equivalence, spatial classes based on <code>sp</code> are now
+deprecated in <code>meteoland</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>readNetCDF*</code></td>
+<td>No equivalence, NetCDF files can be managed with more recent and up
+to date R packages (ncmeta, stars…)</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>readWindNinjaWindFields</code></td>
+<td>No equivalence</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>reshapemeteospain</code></td>
+<td><code>meteospain2meteoland</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>reshapeworldmet</code></td>
+<td><code>worldmet2meteoland</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>reshapeweathercan</code></td>
+<td>No equivalence, <code>weathercan</code> package was removed from
+CRAN and the functions are deprecated</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>Spatial**Meteorology</code>,
+<code>Spatial**Topography</code></td>
+<td>No equivalence, spatial classes based on <code>sp</code> are now
+deprecated in <code>meteoland</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>summary*</code></td>
+<td><code>summarise_interpolate_data</code>,
+<code>summarise_interpolator</code></td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>utils_*</code></td>
+<td>No change</td>
+<td><code>FALSE</code></td>
+</tr>
+<tr class="even">
+<td><code>weathergeneration</code>,
+<code>defaultGenerationParams</code></td>
+<td>No equivalence, current weather generation methods are currently
+deprecated because they operate with classes that are deprecated
+themselves, but for future versions, we plan to keep the functionality
+in new functions.</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>writemeteorology*</code></td>
+<td>No equivalence, spatial classes based on <code>sp</code> are now
+deprecated in <code>meteoland</code></td>
+<td><code>TRUE</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
