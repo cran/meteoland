@@ -9,7 +9,7 @@ readWindNinjaWindFields(
   resolution = "100m",
   directionClasses = c(0, 45, 90, 135, 180, 225, 270, 315),
   speedClasses = c(5, 15, 25),
-  proj4string = CRS(as.character(NA))
+  proj4string = as.character(NA)
 )
 }
 \arguments{
@@ -32,10 +32,10 @@ A list with the following items: \itemize{
 \item\code{speedClasses}: The vector of wind speed classes.
 \item\code{indexTable}: A numeric matrix indicating the raster index of each
 combination of domain-level wind directions and wind speed classes.
-\item\code{windSpeed}: An object of class \code{\link{SpatialGridDataFrame}}
+\item\code{windSpeed}: An object of class \code{SpatialGridDataFrame}
 containing wind speed rasters (in m/s) for each combination of domain-level
 wind direction and wind speed.  \item\code{windDirection}: An object of
-class \code{\link{SpatialGridDataFrame}} containing wind direction rasters
+class \code{SpatialGridDataFrame} containing wind direction rasters
 (in degrees from North) for each combination of domain-level wind direction
 and wind speed. }
 }

@@ -1,8 +1,8 @@
 Package: meteoland
 Type: Package
 Title: Landscape Meteorology Tools
-Version: 2.0.0
-Date: 2023-02-10
+Version: 2.0.1
+Date: 2023-05-29
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com', comment = c(ORCID = "0000-0001-7132-2080")),
@@ -13,12 +13,12 @@ Description: Functions to estimate weather variables at any position of a landsc
 License: GPL (>= 2)
 URL: https://emf-creaf.github.io/meteoland/index.html
 LazyData: TRUE
-Depends: R (>= 3.5.0), sp, sf, stars
-Imports: ncdf4, methods, stats, meteospain, Rcpp, units, lifecycle,
-        cli, dplyr, tidyr, rlang, assertthat, purrr, ncdfgeom, ncmeta,
-        lubridate, cubelyr, grDevices
-Suggests: knitr, forecast, spacetime, rmarkdown, testthat (>= 3.0.0),
-        worldmet, rgdal, keyring, tibble
+Depends: R (>= 3.5.0)
+Imports: methods, sf, stars, stats, Rcpp, units, lifecycle, cli, dplyr,
+        tidyr, rlang, assertthat, purrr, ncdfgeom, ncmeta, lubridate,
+        cubelyr
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0), meteospain, worldmet,
+        tibble
 LinkingTo: Rcpp
 Encoding: UTF-8
 NeedsCompilation: yes
@@ -26,11 +26,11 @@ VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Packaged: 2023-02-17 17:17:17 UTC; miquel
+Packaged: 2023-05-29 16:53:13 UTC; miquel
 Author: Miquel De Cáceres [aut, cre] (<https://orcid.org/0000-0001-7132-2080>),
   Víctor Granda [aut] (<https://orcid.org/0000-0002-0469-1991>),
   Nicolas Martin [aut] (<https://orcid.org/0000-0001-7574-0108>),
   Antoine Cabon [aut] (<https://orcid.org/0000-0001-6426-1726>)
 Maintainer: Miquel De Cáceres <miquelcaceres@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-02-17 22:20:02 UTC
+Date/Publication: 2023-05-29 17:30:02 UTC

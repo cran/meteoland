@@ -498,24 +498,24 @@ example:</p>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.30565 ymin: 40.55786 xmax: 3.18165 ymax: 42.77011</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5,652 × 19</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               service  statio…¹ stati…² stati…³ eleva…⁴ MeanT…⁵ MinTe…⁶</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;dttm&gt;              &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00 meteocat C6       Castel… Lleida     264      7.3     1.4</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-01 00:00:00 meteocat C7       Tàrrega Lleida     427      6.2     0.3</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-01 00:00:00 meteocat C8       Cervera Lleida     554      4.8    -0.7</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-01 00:00:00 meteocat C9       Mas de… Tarrag…    240      7.7     5  </span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-01 00:00:00 meteocat CC       Orís    Barcel…    626      4.6    -1  </span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-01 00:00:00 meteocat CD       la Seu… Lleida     849      2.4    -2.2</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-01 00:00:00 meteocat CE       els Ho… Barcel…    316      8.2     2.3</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-01 00:00:00 meteocat CG       Molló … Girona    1405     -2.5    -5.9</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-01 00:00:00 meteocat CI       Sant P… Girona     852      2.6    -2.2</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-01 00:00:00 meteocat CJ       Organyà Lleida     566.     4.8     1.1</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 5,642 more rows, 11 more variables: MaxTemperature &lt;dbl&gt;,</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MeanRelativeHumidity &lt;dbl&gt;, MinRelativeHumidity &lt;dbl&gt;,</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MaxRelativeHumidity &lt;dbl&gt;, Precipitation &lt;dbl&gt;, WindDirection &lt;dbl&gt;,</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WindSpeed &lt;dbl&gt;, Radiation &lt;dbl&gt;, geom &lt;POINT [°]&gt;, aspect &lt;dbl&gt;,</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   slope &lt;dbl&gt;, and abbreviated variable names ¹​stationID, ²​station_name,</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​station_province, ⁴​elevation, ⁵​MeanTemperature, ⁶​MinTemperature</span></span></code></pre></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               service stationID station_name station_province elevation</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;dttm&gt;              &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;                &lt;dbl&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00 meteoc… C6        Castellnou … Lleida                264 </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-01 00:00:00 meteoc… C7        Tàrrega      Lleida                427 </span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-01 00:00:00 meteoc… C8        Cervera      Lleida                554 </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-01 00:00:00 meteoc… C9        Mas de Barb… Tarragona             240 </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-01 00:00:00 meteoc… CC        Orís         Barcelona             626 </span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-01 00:00:00 meteoc… CD        la Seu d&#39;Ur… Lleida                849 </span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-01 00:00:00 meteoc… CE        els Hostale… Barcelona             316 </span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-01 00:00:00 meteoc… CG        Molló - Fab… Girona               1405 </span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-01 00:00:00 meteoc… CI        Sant Pau de… Girona                852 </span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-01 00:00:00 meteoc… CJ        Organyà      Lleida                566.</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 5,642 more rows</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 13 more variables: MeanTemperature &lt;dbl&gt;, MinTemperature &lt;dbl&gt;,</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MaxTemperature &lt;dbl&gt;, MeanRelativeHumidity &lt;dbl&gt;,</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinRelativeHumidity &lt;dbl&gt;, MaxRelativeHumidity &lt;dbl&gt;, Precipitation &lt;dbl&gt;,</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WindDirection &lt;dbl&gt;, WindSpeed &lt;dbl&gt;, Radiation &lt;dbl&gt;, geom &lt;POINT [°]&gt;,</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   aspect &lt;dbl&gt;, slope &lt;dbl&gt;</span></span></code></pre></div>
 <p><code>meteoland</code> expects variable names to be as indicated in
 the example:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(meteoland_meteo_example)</span>
@@ -698,23 +698,22 @@ example above, <code>interpolate_data</code> returns the same
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>points_interpolated[[<span class="st">&quot;interpolated_data&quot;</span>]][<span class="dv">1</span>]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 30 × 13</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates                 DOY MeanTempe…¹ MinTe…² MaxTe…³ Preci…⁴ MeanR…⁵ MinRe…⁶</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;              &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00    91        3.24   -2.53    6.99   0        45.0    34.6</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00    92        2.99   -4.20    7.67   0        45.0    32.5</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00    93        2.39   -5.61    7.59   2.79     61.2    42.6</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00    94        4.02   -3.93    9.20   0        61.5    43.1</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00    95        7.38   -3.29   14.3    0        50.0    31.5</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00    96        8.78    1.31   13.6    0        64.4    46.6</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00    97       12.1     2.44   18.4    0        58.4    39.0</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00    98       12.9     3.32   19.1    0        57.0    38.3</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00    99       10.0     3.83   14.1    0        70.0    53.7</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00   100       11.4     4.85   15.6    0.130    67.6    51.3</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 20 more rows, 5 more variables: MaxRelativeHumidity &lt;dbl&gt;,</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation &lt;dbl&gt;, WindSpeed &lt;dbl&gt;, WindDirection &lt;dbl&gt;, PET &lt;dbl&gt;, and</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   abbreviated variable names ¹​MeanTemperature, ²​MinTemperature,</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ³​MaxTemperature, ⁴​Precipitation, ⁵​MeanRelativeHumidity,</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ⁶​MinRelativeHumidity</span></span></code></pre></div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates                 DOY MeanTemperature MinTemperature MaxTemperature</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;              &lt;dbl&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00    91            3.24          -2.53           6.99</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00    92            2.99          -4.20           7.67</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00    93            2.39          -5.61           7.59</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00    94            4.02          -3.93           9.20</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00    95            7.38          -3.29          14.3 </span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00    96            8.78           1.31          13.6 </span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00    97           12.1            2.44          18.4 </span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00    98           12.9            3.32          19.1 </span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00    99           10.0            3.83          14.1 </span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00   100           11.4            4.85          15.6 </span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more rows</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 8 more variables: Precipitation &lt;dbl&gt;, MeanRelativeHumidity &lt;dbl&gt;,</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinRelativeHumidity &lt;dbl&gt;, MaxRelativeHumidity &lt;dbl&gt;, Radiation &lt;dbl&gt;,</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WindSpeed &lt;dbl&gt;, WindDirection &lt;dbl&gt;, PET &lt;dbl&gt;</span></span></code></pre></div>
 <p>We can “unnest” the results to get the data in a <em>long</em> format
 (each combination of location and date in a different row):</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tidyr<span class="sc">::</span><span class="fu">unnest</span>(points_interpolated, <span class="at">cols =</span> <span class="st">&quot;interpolated_data&quot;</span>)</span>
@@ -736,11 +735,11 @@ example above, <code>interpolate_data</code> returns the same
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-08 00:00:00</span></span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-09 00:00:00</span></span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_05284      889.  25.2   313. (2.320167 42.24139) 2022-04-10 00:00:00</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 440 more rows, and 12 more variables: DOY &lt;dbl&gt;,</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MeanTemperature &lt;dbl&gt;, MinTemperature &lt;dbl&gt;, MaxTemperature &lt;dbl&gt;,</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Precipitation &lt;dbl&gt;, MeanRelativeHumidity &lt;dbl&gt;, MinRelativeHumidity &lt;dbl&gt;,</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MaxRelativeHumidity &lt;dbl&gt;, Radiation &lt;dbl&gt;, WindSpeed &lt;dbl&gt;,</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WindDirection &lt;dbl&gt;, PET &lt;dbl&gt;</span></span></code></pre></div>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 440 more rows</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 12 more variables: DOY &lt;dbl&gt;, MeanTemperature &lt;dbl&gt;, MinTemperature &lt;dbl&gt;,</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MaxTemperature &lt;dbl&gt;, Precipitation &lt;dbl&gt;, MeanRelativeHumidity &lt;dbl&gt;,</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinRelativeHumidity &lt;dbl&gt;, MaxRelativeHumidity &lt;dbl&gt;, Radiation &lt;dbl&gt;,</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WindSpeed &lt;dbl&gt;, WindDirection &lt;dbl&gt;, PET &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 </div>
 <div id="interpolator-object" class="section level2">
@@ -879,7 +878,7 @@ and can be also opened with any GIS software that supports
 NetCDF-CF.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>temporal_folder <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_interpolator</span>(interpolator, <span class="fu">file.path</span>(temporal_folder, <span class="st">&quot;interpolator.nc&quot;</span>))</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Creating nc file following the NetCDF-CF conventions &lt;]8;;https://cfconventions.org/cf-conventions/cf-conventions.htmlhttps://cfconventions.org/cf-conventions/cf-conventions.html]8;;&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Creating nc file following the NetCDF-CF conventions &lt;https://cfconventions.org/cf-conventions/cf-conventions.html&gt;</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Adding spatial info to nc file</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Done</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># file should exists now</span></span>
@@ -1000,7 +999,7 @@ interpolator, as well as the writing:</p>
 <span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 1...</span></span>
 <span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • Evaluating N: 20, alpha: 10...</span></span>
 <span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Calibration done: Minimum MAE: 1.37971537117584; N: 20; alpha: 10</span></span>
-<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Creating nc file following the NetCDF-CF conventions &lt;]8;;https://cfconventions.org/cf-conventions/cf-conventions.htmlhttps://cfconventions.org/cf-conventions/cf-conventions.html]8;;&gt;</span></span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Creating nc file following the NetCDF-CF conventions &lt;https://cfconventions.org/cf-conventions/cf-conventions.html&gt;</span></span>
 <span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Adding spatial info to nc file</span></span>
 <span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ✔ Done</span></span></code></pre></div>
 <p>This way we can create and calibrate the interpolator once, and using
@@ -1018,67 +1017,67 @@ measures.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cross_validation <span class="ot">&lt;-</span> <span class="fu">interpolation_cross_validation</span>(interpolator, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cross_validation<span class="sc">$</span>errors</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5,670 × 21</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               station stationID MinTe…¹ MaxTe…² Range…³ Relat…⁴ Radia…⁵</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;                &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00       1 C6         0.125   -0.783 -0.908   0.620  -1.65  </span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00       1 C6         0.0598  -0.588 -0.648   1.80   -0.638 </span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00       1 C6         0.145   -1.08  -1.23    0.924  -0.186 </span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00       1 C6        -0.306   -0.400 -0.0946  0.642  -0.152 </span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00       1 C6        -0.0977  -1.42  -1.32    3.83   -0.0750</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00       1 C6        -0.248   -0.797 -0.549   2.43   -0.136 </span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00       1 C6        -0.457   -1.10  -0.644   1.35    0.0621</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00       1 C6         1.24    -0.848 -2.09   -0.0186 -0.515 </span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00       1 C6        -0.546   -1.12  -0.571   1.46   -0.0995</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00       1 C6         0.601   -0.267 -0.868   1.39   -0.440 </span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 5,660 more rows, 13 more variables: Precipitation_error &lt;dbl&gt;,</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinTemperature_predicted &lt;dbl&gt;, MaxTemperature_predicted &lt;dbl&gt;,</span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RangeTemperature_predicted &lt;dbl&gt;, RelativeHumidity_predicted &lt;dbl&gt;,</span></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation_predicted &lt;dbl&gt;, Precipitation_predicted &lt;dbl&gt;,</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinTemperature_observed &lt;dbl&gt;, MaxTemperature_observed &lt;dbl&gt;,</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RangeTemperature_observed &lt;dbl&gt;, RelativeHumidity_observed &lt;dbl&gt;,</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation_observed &lt;dbl&gt;, Precipitation_observed &lt;dbl&gt;, and abbreviated …</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               station stationID MinTemperature_error</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;                &lt;int&gt; &lt;chr&gt;                    &lt;dbl&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00       1 C6                      0.125 </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00       1 C6                      0.0598</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00       1 C6                      0.145 </span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00       1 C6                     -0.306 </span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00       1 C6                     -0.0977</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00       1 C6                     -0.248 </span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00       1 C6                     -0.457 </span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00       1 C6                      1.24  </span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00       1 C6                     -0.546 </span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00       1 C6                      0.601 </span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 5,660 more rows</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 17 more variables: MaxTemperature_error &lt;dbl&gt;,</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RangeTemperature_error &lt;dbl&gt;, RelativeHumidity_error &lt;dbl&gt;,</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation_error &lt;dbl&gt;, Precipitation_error &lt;dbl&gt;,</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinTemperature_predicted &lt;dbl&gt;, MaxTemperature_predicted &lt;dbl&gt;,</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RangeTemperature_predicted &lt;dbl&gt;, RelativeHumidity_predicted &lt;dbl&gt;,</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation_predicted &lt;dbl&gt;, Precipitation_predicted &lt;dbl&gt;, …</span></span>
 <span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>cross_validation<span class="sc">$</span>station_stats</span>
 <span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 189 × 20</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    station stationID MinTemp…¹ MaxTem…² Range…³ Relat…⁴ Radiat…⁵ MinTe…⁶ MaxTe…⁷</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       1 C6          -0.109  -0.606   -0.497    1.98  -1.18      0.343   0.625</span></span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       2 C7          -1.03   -0.582    0.452    4.13  -0.363     1.04    0.646</span></span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       3 C8           0.0180  0.0356   0.0176  -1.08  -0.297     0.491   0.254</span></span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       4 C9          -0.316   0.657    0.973   -0.983  0.0691    0.616   0.709</span></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       5 CC          -0.0373 -0.483   -0.445    3.12  -1.98      0.426   0.609</span></span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       6 CD           0.508  -1.03    -1.53   -12.4   -0.705     0.880   1.14 </span></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       7 CE          -1.62   -0.779    0.837    0.288 -0.334     1.68    0.922</span></span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       8 CG          -1.51   -0.379    1.13     6.50   0.00762   2.03    1.14 </span></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       9 CI           0.888   0.509   -0.379   -7.61  -0.436     1.32    0.711</span></span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      10 CJ           0.572   0.00525 -0.567   -9.84  -0.303     1.07    0.453</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 179 more rows, 11 more variables: RangeTemperature_station_mae &lt;dbl&gt;,</span></span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RelativeHumidity_station_mae &lt;dbl&gt;, Radiation_station_mae &lt;dbl&gt;,</span></span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_observed &lt;dbl&gt;,</span></span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_predicted &lt;dbl&gt;,</span></span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_bias &lt;dbl&gt;,</span></span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_relative_bias &lt;dbl&gt;,</span></span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   DaysPrecipitation_station_bias &lt;int&gt;, …</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    station stationID MinTemperature_station_bias MaxTemperature_station_bias</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt;                           &lt;dbl&gt;                       &lt;dbl&gt;</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1       1 C6                            -0.109                     -0.606  </span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2       2 C7                            -1.03                      -0.582  </span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3       3 C8                             0.0180                     0.0356 </span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4       4 C9                            -0.316                      0.657  </span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5       5 CC                            -0.0373                    -0.483  </span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6       6 CD                             0.508                     -1.03   </span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7       7 CE                            -1.62                      -0.779  </span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       8 CG                            -1.51                      -0.379  </span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       9 CI                             0.888                      0.509  </span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      10 CJ                             0.572                      0.00525</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 179 more rows</span></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 16 more variables: RangeTemperature_station_bias &lt;dbl&gt;,</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RelativeHumidity_station_bias &lt;dbl&gt;, Radiation_station_bias &lt;dbl&gt;,</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinTemperature_station_mae &lt;dbl&gt;, MaxTemperature_station_mae &lt;dbl&gt;,</span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RangeTemperature_station_mae &lt;dbl&gt;, RelativeHumidity_station_mae &lt;dbl&gt;,</span></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation_station_mae &lt;dbl&gt;, TotalPrecipitation_station_observed &lt;dbl&gt;,</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_station_predicted &lt;dbl&gt;, …</span></span>
 <span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>cross_validation<span class="sc">$</span>dates_stats</span>
 <span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 30 × 19</span></span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               MinTemp…¹ MaxTe…² Range…³ Relat…⁴ Radia…⁵ MinTe…⁶ MaxTe…⁷</span></span>
-<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;                  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00    0.0125  0.0405  0.0280   0.509 -1.32     0.692   0.587</span></span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00    0.0329  0.0972  0.0643   0.300 -0.333    0.787   0.743</span></span>
-<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00   -0.116   0.0325  0.148    0.925 -0.496    1.34    0.838</span></span>
-<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00   -0.142   0.0400  0.182    0.996  0.0523   1.10    0.708</span></span>
-<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00   -0.185   0.0786  0.263    0.666  0.589    1.50    0.989</span></span>
-<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00   -0.0303  0.0688  0.0991   0.288  0.131    1.22    0.810</span></span>
-<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00   -0.156   0.107   0.262    0.376  0.522    1.75    0.948</span></span>
-<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00   -0.0582  0.0600  0.118    0.284  0.219    1.87    0.946</span></span>
-<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00    0.0801  0.0474 -0.0327   0.400 -1.04     1.05    0.724</span></span>
-<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00   -0.101   0.0761  0.177    0.368 -0.817    1.37    0.977</span></span>
-<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 20 more rows, 11 more variables: RangeTemperature_date_mae &lt;dbl&gt;,</span></span>
-<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RelativeHumidity_date_mae &lt;dbl&gt;, Radiation_date_mae &lt;dbl&gt;,</span></span>
-<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_observed &lt;dbl&gt;,</span></span>
-<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_predicted &lt;dbl&gt;,</span></span>
-<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_bias &lt;dbl&gt;,</span></span>
-<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_relative_bias &lt;dbl&gt;,</span></span>
-<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   StationsPrecipitation_date_bias &lt;int&gt;, …</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    dates               MinTemperature_date_bias MaxTemperature_date_bias</span></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;                                 &lt;dbl&gt;                    &lt;dbl&gt;</span></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2022-04-01 00:00:00                   0.0125                   0.0405</span></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2022-04-02 00:00:00                   0.0329                   0.0972</span></span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2022-04-03 00:00:00                  -0.116                    0.0325</span></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2022-04-04 00:00:00                  -0.142                    0.0400</span></span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2022-04-05 00:00:00                  -0.185                    0.0786</span></span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2022-04-06 00:00:00                  -0.0303                   0.0688</span></span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2022-04-07 00:00:00                  -0.156                    0.107 </span></span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2022-04-08 00:00:00                  -0.0582                   0.0600</span></span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2022-04-09 00:00:00                   0.0801                   0.0474</span></span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2022-04-10 00:00:00                  -0.101                    0.0761</span></span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more rows</span></span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 16 more variables: RangeTemperature_date_bias &lt;dbl&gt;,</span></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RelativeHumidity_date_bias &lt;dbl&gt;, Radiation_date_bias &lt;dbl&gt;,</span></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   MinTemperature_date_mae &lt;dbl&gt;, MaxTemperature_date_mae &lt;dbl&gt;,</span></span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   RangeTemperature_date_mae &lt;dbl&gt;, RelativeHumidity_date_mae &lt;dbl&gt;,</span></span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   Radiation_date_mae &lt;dbl&gt;, TotalPrecipitation_date_observed &lt;dbl&gt;,</span></span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   TotalPrecipitation_date_predicted &lt;dbl&gt;, …</span></span>
 <span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>cross_validation<span class="sc">$</span>r2</span>
 <span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $MinTemperature</span></span>
 <span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9388959</span></span>
@@ -1120,24 +1119,24 @@ the weekly summary in an additional column.</p>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 7</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_d…¹ weekly…²</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;           &lt;list&gt;  </span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable names ¹​interpolated_data, ²​weekly_mean</span></span></code></pre></div>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_data </span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;            </span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 1 more variable: weekly_mean &lt;list&gt;</span></span></code></pre></div>
 </div>
 <div id="calculating-rainfall-erosivity" class="section level3">
 <h3>Calculating rainfall erosivity</h3>
@@ -1166,24 +1165,24 @@ used for individual locations:</p>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
 <span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 7</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_data erosi…¹</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;            &lt;list&gt; </span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble&gt;          &lt;dbl&gt;  </span></span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable name ¹​erosivity</span></span></code></pre></div>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_data </span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;            </span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 1 more variable: erosivity &lt;list&gt;</span></span></code></pre></div>
 </div>
 <div id="piping-all-together" class="section level3">
 <h3>Piping all together</h3>
@@ -1227,25 +1226,25 @@ processes:</p>
 <span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 0.7578958 ymin: 41.31541 xmax: 2.98657 ymax: 42.6336</span></span>
 <span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
 <span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 9</span></span>
-<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_d…¹ weekly…²</span></span>
-<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;           &lt;list&gt;  </span></span>
-<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble&gt;         &lt;tibble&gt;</span></span>
-<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 2 more variables: monthly_max &lt;list&gt;, monthly_erosivity &lt;list&gt;, and</span></span>
-<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   abbreviated variable names ¹​interpolated_data, ²​weekly_mean</span></span></code></pre></div>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    plot_id elevation slope aspect             geometry interpolated_data </span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;POINT [°]&gt; &lt;list&gt;            </span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 P_05284      889. 25.2   313.   (2.320167 42.24139) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 P_06572      680. 18.0    79.9  (2.552233 42.02596) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 P_07201      141.  4.17   52.9  (2.721874 41.88258) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 P_07512      254. 14.3   261.     (2.98657 41.9006) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 P_08207     1860. 36.4   293.   (2.209903 42.33968) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 P_08299      183.  4.12   92.9  (2.817143 42.24325) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 P_09341      819  23.4   128.   (1.126766 42.42612) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 P_10272      860  34.8   347.   (1.398528 42.26791) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 P_10861      706  22.4    22.6 (0.9314126 42.04226) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 P_11651      585  22.0   199.   (0.7578958 41.8612) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 P_12150      674. 30.3   154.   (1.481719 41.81838) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 P_12227      752.  6.04   27.7    (1.283161 41.591) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 P_12417      702  11.6    63.1 (0.8727224 41.35875) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 P_13007      972.  4.21  338.    (1.120383 42.6336) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 P_14029      556. 14.1    41.4  (1.480716 41.31541) &lt;tibble [30 × 13]&gt;</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 3 more variables: weekly_mean &lt;list&gt;, monthly_max &lt;list&gt;,</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   monthly_erosivity &lt;list&gt;</span></span></code></pre></div>
 </div>
 </div>
 <div id="interpolation-on-raster-data" class="section level2">

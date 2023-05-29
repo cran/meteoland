@@ -13,7 +13,7 @@ MeteorologyUncorrectedData(
 )
 }
 \arguments{
-\item{points}{An object of class \code{\link{SpatialPoints}}.}
+\item{points}{An object of class \code{SpatialPoints}.}
 
 \item{reference_data}{Reference (historic) meteorological data used to
 calibrate correction factors when compared with observations. A vector of
@@ -48,7 +48,7 @@ See correction details in vignettes or in \code{\link{correctionpoints}}.
 }
 \seealso{
 \code{\linkS4class{MeteorologyUncorrectedData}},
-\code{\link{examplecorrectiondata}}, \code{\link{defaultCorrectionParams}}.
+\code{\link{defaultCorrectionParams}}.
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres} Ainsa, CREAF
