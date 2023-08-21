@@ -16,8 +16,7 @@ interpolator_calibration(
   interpolator,
   stations = NULL,
   update_interpolation_params = FALSE,
-  variable = c("MinTemperature", "MaxTemperature", "DewTemperature", "Precipitation",
-    "PrecipitationAmount", "PrecipitationEvent"),
+  variable = "MinTemperature",
   N_seq = seq(5, 30, by = 5),
   alpha_seq = seq(0.25, 10, by = 0.25),
   verbose = getOption("meteoland_verbosity", TRUE)
@@ -44,11 +43,17 @@ object must be updated with the calculated parameters. Default to FALSE}
 
 \item{variable}{A string indicating the meteorological variable for which
 interpolation parameters \code{"N"} and \code{"alpha"} will be calibrated.
-Accepted values are \code{MinTemperature}, \code{MaxTemperature},
-\code{DewTemperature}, \code{Precipitation} (for precipitation with the same
-values for precipitation events an regression of precipitation amounts),
-\code{PrecipitationAmount} (for regression of precipitation amounts) and
-\code{PrecipitationEvent} (for precipitation events).}
+Accepted values are:
+\itemize{
+\item{\code{MinTemperature} (kernel for minimum temperature)}
+\item{\code{MaxTemperature} (kernel for maximum temperature)}
+\item{\code{DewTemperature} (kernel for dew-temperature (i.e. relative humidity))}
+\item{\code{Precipitation} (to calibrate the same
+kernel for both precipitation events and regression of precipitation amounts;
+not recommended)}
+\item{\code{PrecipitationAmount} (kernel for regression of precipitation amounts)}
+\item{\code{PrecipitationEvent} (kernel for precipitation events)}
+}}
 
 \item{N_seq}{Numeric vector with \code{"N"} values to be tested}
 
@@ -143,9 +148,25 @@ updated_interpolator <- interpolator_calibration(
   alpha_seq = seq(8, 9, by = 0.25)
 )
 
+
 # check the new interpolator have the parameters updated
 get_interpolation_params(updated_interpolator)$N_MaxTemperature
 get_interpolation_params(updated_interpolator)$alpha_MaxTemperature
 }
 
+}
+\references{
+Thornton, P.E., Running, S.W., 1999. An improved algorithm for
+estimating incident daily solar radiation from measurements of temperature,
+humidity, and precipitation. Agric. For. Meteorol. 93, 211–228.
+doi:10.1016/S0168-1923(98)00126-9.
+
+De Caceres M, Martin-StPaul N, Turco M, Cabon A, Granda V (2018) Estimating
+daily meteorological data and downscaling climate models over landscapes.
+Environmental Modelling and Software 108: 186-196.
+}
+\author{
+Miquel De \enc{Cáceres}{Caceres} Ainsa, EMF-CREAF
+
+Victor Granda \enc{García}{Garcia}, EMF-CREAF
 }

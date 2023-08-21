@@ -473,18 +473,44 @@ worldmet2meteoland <- function(meteo, complete = FALSE) {
 
 #' Complete missing meteo variables
 #'
-#' Calculates missing meteo variables
-#'
-#' This function takes a meteo object (with meteoland names) and complete any
+#' Calculates missing values of relative humidity, radiation and potential
+#' evapotranspiration from a data frame with daily values of
+#' minimum/maximum/mean temperature and precipitation. The function 
+#' takes a meteo object (with meteoland names) and complete any
 #' missing variable if it is possible
 #'
-#' @param meteo meteoland meteo data
+#' @param meteo meteoland weather data
 #' @param verbose Logical indicating if the function must show messages and info.
 #' Default value checks \code{"meteoland_verbosity"} option and if not set, defaults
 #' to TRUE. It can be turned off for the function with FALSE, or session wide with
 #' \code{options(meteoland_verbosity = FALSE)}
+#' 
 #' @return the same \code{meteo} data provided with the the variables completed
 #'
+#' @details
+#' #' The function fills values for humidity, radiation and PET only if they are
+#' missing in the input data frame. If a column 'SpecificHumidity' is present
+#' in the input data, relative humidity is calculated from it. Otherwise,
+#' relative humidity is calculated assuming that dew point temperature equals
+#' the minimum temperature. Potential solar radiation is calculated from
+#' latitude, slope and aspect. Incoming solar radiation is then corrected
+#' following Thornton & Running (1999) and potential evapotranspiration
+#' following Penman (1948).
+#'
+#' @references 
+#' Thornton, P.E., Running, S.W., 1999. An improved algorithm for
+#' estimating incident daily solar radiation from measurements of temperature,
+#' humidity, and precipitation. Agric. For. Meteorol. 93, 211-228.
+#'
+#' Penman, H. L. 1948. Natural evaporation from open water, bare soil and
+#' grass. Proceedings of the Royal Society of London. Series A. Mathematical
+#' and Physical Sciences, 193, 120-145. 
+#' 
+#' @author 
+#' Miquel De \enc{Cáceres}{Caceres} Ainsa, EMF-CREAF
+#' 
+#' Victor Granda \enc{García}{Garcia}, EMF-CREAF
+#' 
 #' @examples
 #'
 #' \donttest{
@@ -604,33 +630,18 @@ complete_meteo <- function(meteo, verbose = getOption("meteoland_verbosity", TRU
     )
   }
 
-  if (is.null(meteo[["MeanTemperature"]])) {
-    meteo[["MeanTemperature"]] <- NA_real_
-  }
-
-  if (is.null(meteo[["MeanRelativeHumidity"]])) {
-    meteo[["MeanRelativeHumidity"]] <- NA_real_
-  }
-
-  if (is.null(meteo[["MinRelativeHumidity"]])) {
-    meteo[["MinRelativeHumidity"]] <- NA_real_
-  }
-
-  if (is.null(meteo[["MaxRelativeHumidity"]])) {
-    meteo[["MaxRelativeHumidity"]] <- NA_real_
-  }
-
-  if (is.null(meteo[["Radiation"]])) {
-    meteo[["Radiation"]] <- NA_real_
-  }
-
-  if (is.null(meteo[["aspect"]])) {
-    meteo[["aspect"]] <- NA_real_
-  }
-
-  if (is.null(meteo[["slope"]])) {
-    meteo[["slope"]] <- NA_real_
-  }
+  # fill missong vars in meteo with NA
+  c(
+    "MeanTemperature", "MeanRelativeHumidity", "MinRelativeHumidity", "MaxRelativeHumidity",
+    "Precipitation", "Radiation", "aspect", "slope"
+  ) |>
+    purrr::walk(
+      \(variable) {
+        if (is.null(meteo[[variable]])) {
+          meteo[[variable]] <<- NA_real_
+        }
+      }
+    )
 
   meteo_completed <- meteo |>
     dplyr::mutate(
