@@ -50,17 +50,17 @@ ready_meteo <- unformatted_meteo |>
 ready_meteo
 
 ## ----meteospain, eval = FALSE-------------------------------------------------
-#  library(meteospain)
-#  get_meteo_from(
-#    "meteogalicia",
-#    meteogalicia_options('daily', as.Date("2022-12-01"), as.Date("2022-12-05"))
-#  ) |>
-#    meteospain2meteoland()
+# library(meteospain)
+# get_meteo_from(
+#   "meteogalicia",
+#   meteogalicia_options('daily', as.Date("2022-12-01"), as.Date("2022-12-05"))
+# ) |>
+#   meteospain2meteoland()
 
 ## ----worldmet, eval = FALSE---------------------------------------------------
-#  library(worldmet)
-#  worldmet::importNOAA("081120-99999", year = 2022) |>
-#    worldmet2meteoland()
+# library(worldmet)
+# worldmet::importNOAA("081120-99999", year = 2022) |>
+#   worldmet2meteoland()
 
 ## ----raster_meteo_preparing, echo = FALSE-------------------------------------
 raster_meteo_reference <- interpolate_data(

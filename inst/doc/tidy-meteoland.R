@@ -32,10 +32,12 @@ points_interpolated <- points_to_interpolate_example |>
 points_interpolated
 
 ## ----non_mandatory_vars_in_meteo, error=TRUE----------------------------------
+try({
 meteo_without_temp <- meteoland_meteo_example
 meteo_without_temp[["MinTemperature"]] <- NULL
 meteo_without_temp[["MaxTemperature"]] <- NULL
 with_meteo(meteo_without_temp)
+})
 
 ## ----interpolatior_params-----------------------------------------------------
 # parameters
