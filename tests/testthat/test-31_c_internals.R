@@ -1,7 +1,6 @@
 # test data needed
 
 
-
 ## Radiation functions tests ####
 test_that("radiation c internals work as expected", {
 

@@ -49,8 +49,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -61,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -344,11 +345,11 @@ meteoland</h1>
 
 
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(meteoland)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt; Package &#39;meteoland&#39; [ver. 2.2.3]</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt; Package &#39;meteoland&#39; [ver. 2.2.5]</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; S&#39;està carregant el paquet requerit: abind</span></span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; S&#39;està carregant el paquet requerit: sf</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; Linking to GEOS 3.10.2, GDAL 3.4.1, PROJ 8.2.1; sf_use_s2() is TRUE</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt; S&#39;està adjuntant el paquet: &#39;dplyr&#39;</span></span>
@@ -421,21 +422,21 @@ format:</p>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 7</span></span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt;    date       station latitude longitude min_temp max_temp    rh</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;  1 2022-12-01 a           41.4     -0.33     3.84     12.2  45.6</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;  2 2022-12-02 a           41.4     -0.33     5.99     18.4  29.5</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;  3 2022-12-03 a           41.4     -0.33     7.41     16.2  60.3</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;  4 2022-12-04 a           41.4     -0.33    12.5      18.4  39.1</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;  5 2022-12-05 a           41.4     -0.33    14.4      29.2  28.2</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt;  6 2022-12-01 b           40.1      0.12     8.88     22.7  63.6</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;  7 2022-12-02 b           40.1      0.12    11.3      18.9  41.2</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;  8 2022-12-03 b           40.1      0.12     5.34     11.1  62.0</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;  9 2022-12-04 b           40.1      0.12     6.63     17.7  20  </span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; 10 2022-12-05 b           40.1      0.12    17.6      25.4  20  </span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 11 2022-12-01 c           42        1.12    15.4      30.3  53.8</span></span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 12 2022-12-02 c           42        1.12     4.23     12.5  37.9</span></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; 13 2022-12-03 c           42        1.12    18.7      25.8  20  </span></span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; 14 2022-12-04 c           42        1.12     2.30     11.4  62.1</span></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; 15 2022-12-05 c           42        1.12    16.2      23.2 100</span></span></code></pre></div>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;  1 2022-12-01 a           41.4     -0.33   -0.676    11.2   32.2</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;  2 2022-12-02 a           41.4     -0.33   12.9      20.2   69.8</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;  3 2022-12-03 a           41.4     -0.33    4.91     13.1   20  </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;  4 2022-12-04 a           41.4     -0.33    6.78     17.9   44.7</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;  5 2022-12-05 a           41.4     -0.33   10.8      20.1   42.3</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt;  6 2022-12-01 b           40.1      0.12   23.8      37.5   24.7</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;  7 2022-12-02 b           40.1      0.12   20.7      30.0   32.8</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;  8 2022-12-03 b           40.1      0.12   10.6      18.9   33.2</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;  9 2022-12-04 b           40.1      0.12    3.20     11.0   41.5</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; 10 2022-12-05 b           40.1      0.12    6.47     17.6   20  </span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 11 2022-12-01 c           42        1.12    3.89     21.2   37.3</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 12 2022-12-02 c           42        1.12   17.9      26.9   20  </span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; 13 2022-12-03 c           42        1.12   17.0      29.4   76.6</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; 14 2022-12-04 c           42        1.12    0.375     8.65  90.4</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; 15 2022-12-05 c           42        1.12    4.81     17.9   34.6</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>ready_meteo <span class="ot">&lt;-</span> unformatted_meteo <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="co"># convert names to correct ones</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
@@ -458,21 +459,21 @@ format:</p>
 <span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 9</span></span>
 <span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt;    date       station min_temp max_temp    rh MinTemperature MaxTemperature</span></span>
 <span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt;  * &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;</span></span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt;  1 2022-12-01 a           3.84     12.2  45.6           3.84           12.2</span></span>
-<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt;  2 2022-12-02 a           5.99     18.4  29.5           5.99           18.4</span></span>
-<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt;  3 2022-12-03 a           7.41     16.2  60.3           7.41           16.2</span></span>
-<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt;  4 2022-12-04 a          12.5      18.4  39.1          12.5            18.4</span></span>
-<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt;  5 2022-12-05 a          14.4      29.2  28.2          14.4            29.2</span></span>
-<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt;  6 2022-12-01 b           8.88     22.7  63.6           8.88           22.7</span></span>
-<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt;  7 2022-12-02 b          11.3      18.9  41.2          11.3            18.9</span></span>
-<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt;  8 2022-12-03 b           5.34     11.1  62.0           5.34           11.1</span></span>
-<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt;  9 2022-12-04 b           6.63     17.7  20             6.63           17.7</span></span>
-<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt; 10 2022-12-05 b          17.6      25.4  20            17.6            25.4</span></span>
-<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt; 11 2022-12-01 c          15.4      30.3  53.8          15.4            30.3</span></span>
-<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt; 12 2022-12-02 c           4.23     12.5  37.9           4.23           12.5</span></span>
-<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; 13 2022-12-03 c          18.7      25.8  20            18.7            25.8</span></span>
-<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co">#&gt; 14 2022-12-04 c           2.30     11.4  62.1           2.30           11.4</span></span>
-<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#&gt; 15 2022-12-05 c          16.2      23.2 100            16.2            23.2</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt;  1 2022-12-01 a         -0.676    11.2   32.2         -0.676          11.2 </span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt;  2 2022-12-02 a         12.9      20.2   69.8         12.9            20.2 </span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt;  3 2022-12-03 a          4.91     13.1   20            4.91           13.1 </span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt;  4 2022-12-04 a          6.78     17.9   44.7          6.78           17.9 </span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt;  5 2022-12-05 a         10.8      20.1   42.3         10.8            20.1 </span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt;  6 2022-12-01 b         23.8      37.5   24.7         23.8            37.5 </span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt;  7 2022-12-02 b         20.7      30.0   32.8         20.7            30.0 </span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt;  8 2022-12-03 b         10.6      18.9   33.2         10.6            18.9 </span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt;  9 2022-12-04 b          3.20     11.0   41.5          3.20           11.0 </span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt; 10 2022-12-05 b          6.47     17.6   20            6.47           17.6 </span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt; 11 2022-12-01 c          3.89     21.2   37.3          3.89           21.2 </span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt; 12 2022-12-02 c         17.9      26.9   20           17.9            26.9 </span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; 13 2022-12-03 c         17.0      29.4   76.6         17.0            29.4 </span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co">#&gt; 14 2022-12-04 c          0.375     8.65  90.4          0.375           8.65</span></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#&gt; 15 2022-12-05 c          4.81     17.9   34.6          4.81           17.9 </span></span>
 <span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: MeanRelativeHumidity &lt;dbl&gt;, geometry &lt;POINT [°]&gt;</span></span></code></pre></div>
 <p>And <em>voilà</em>, we have our meteo data in the correct format</p>
 </div>

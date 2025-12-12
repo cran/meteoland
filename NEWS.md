@@ -1,3 +1,12 @@
+# meteoland 2.2.5
+- Swap interpolated MinTemperature and MaxTemperature values when MinTemperature > MaxTemperature
+
+# meteoland 2.2.4
+- Warning raised for interpolation weights that would generate NaN in temperature interpolation (NA is returned), added tests, fix #33
+
+# meteoland 2.2.3.9000
+- Implemented verbose in write interpolator method, fix #32
+
 # meteoland 2.2.3
 - Completing PET in complete_meteo(), implementing issue #23
 

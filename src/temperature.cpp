@@ -19,12 +19,18 @@ double interpolateTemperaturePoint(double xp, double yp, double zp,
   //Weights for weighted regression
   NumericVector WDif(nDif,0.0);
   int c = 0;
+  double WDifcum = 0.0;
   for(int i=0;i<nstations;i++) {
     for(int j=0;j<i;j++) {
       WDif[c] = W[i]*W[j];
-      // if(debug) Rcout<<" "<<tDif[c]<<" "<<WDif[c]<<"\n";
+      WDifcum += WDif[c];
+      // if(debug) Rcout<<c<<" "<<tDif[c]<<" "<<WDif[c]<<"\n";
       c++;
     }
+  }
+  if(debug) Rcout<< " tDif size "<< nDif << " c " << c << " WDifcum " << WDifcum << "\n";
+  if(WDifcum==0.0) {
+    return(R_NaN);
   }
   //Weighted regression
   NumericVector wr = weightedRegression(tDif, zDif, WDif);
@@ -34,7 +40,9 @@ double interpolateTemperaturePoint(double xp, double yp, double zp,
     // Rcout<<T[i]<<"/";
     Wnum +=W[i]*(T[i]+wr[0]+wr[1]*(zp-Z[i]));
   }
-  if(debug) Rcout<< " nstations: "<< nstations<<" wr0: "<<wr[0]<<" wr1: "<< wr[1]<<" Wnum: "<<Wnum<<" sumW: "<<std::accumulate(W.begin(), W.end(), 0.0)<<"\n";
+  if(debug) {
+    Rcout<< " nstations: "<< nstations<<" sum(W): "<< sum(W)<<" sum(WDif): "<< sum(WDif) << " wr0: "<<wr[0]<<" wr1: "<< wr[1]<<" Wnum: "<<Wnum<<"\n";
+  }
   return(Wnum/std::accumulate(W.begin(), W.end(), 0.0));
 }
 
@@ -155,6 +163,7 @@ NumericVector interpolateTemperaturePoints(NumericVector Xp, NumericVector Yp, N
       c++;
     }
   }
+  
   for(int i=0;i<npoints;i++) {
     Tp[i] = interpolateTemperaturePoint(Xp[i], Yp[i], Zp[i], X,Y,Z,T, zDif, tDif,
                                         iniRp, alpha, N, iterations, debug);
@@ -171,6 +180,7 @@ NumericMatrix interpolateTemperatureSeriesPoints(NumericVector Xp, NumericVector
   int nDays = T.ncol();
   NumericMatrix Tp(npoints,nDays);
   LogicalVector missing(nstations);
+  int numNaN = 0;
   for(int d = 0;d<nDays;d++) {
     // Rcout<<"Day: "<<d<<"\n";
     int nmis = 0;
@@ -198,9 +208,17 @@ NumericMatrix interpolateTemperatureSeriesPoints(NumericVector Xp, NumericVector
                                                        Xday, Yday, Zday, Tday,
                                                        iniRp, alpha, N, iterations, debug);
     for(int p=0;p<npoints;p++) {
-      Tp(p,d) = Tpday[p];
+      if(Rcpp::traits::is_nan<REALSXP>(Tpday[p])) {
+        numNaN++;
+        Tp(p,d) = NA_REAL;
+      } else {
+        Tp(p,d) = Tpday[p];
+      }
       // Rcout<<" value: "<<Tpday[p]<<"\n";
     }
+  }
+  if(numNaN>0) {
+    warning("Could not perform temperature interpolation in %i point-days because of zero product weights in weighted regression (N = %d, alpha = %d)", numNaN, N, alpha);
   }
   return(Tp);
 }
