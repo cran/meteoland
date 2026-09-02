@@ -1,8 +1,8 @@
 Package: meteoland
 Type: Package
 Title: Landscape Meteorology Tools
-Version: 2.2.7
-Date: 2026-05-08
+Version: 2.2.8
+Date: 2026-09-02
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com', comment = c(ORCID = "0000-0001-7132-2080")),
@@ -28,7 +28,7 @@ VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Config/roxygen2/version: 8.0.0
-Packaged: 2026-05-08 13:08:14 UTC; miquel
+Packaged: 2026-09-02 13:38:44 UTC; miquel
 Author: Miquel De Cáceres [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-7132-2080>),
   Víctor Granda [aut] (ORCID: <https://orcid.org/0000-0002-0469-1991>),
@@ -36,4 +36,4 @@ Author: Miquel De Cáceres [aut, cre] (ORCID:
   Antoine Cabon [aut] (ORCID: <https://orcid.org/0000-0001-6426-1726>)
 Maintainer: Miquel De Cáceres <miquelcaceres@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-05-08 14:00:02 UTC
+Date/Publication: 2026-09-02 14:30:02 UTC
